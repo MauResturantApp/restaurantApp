@@ -2,14 +2,15 @@ package mau.resturantapp.aktivitys;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import org.greenrobot.eventbus.EventBus;
+
 import mau.resturantapp.R;
+import mau.resturantapp.events.ShowHideCartEvent;
 
 /**
  * Created by anwar on 10/15/16.
@@ -37,19 +38,11 @@ public class CartMenu_frag extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.push_up_in, R.anim.push_down_out1);
-        Fragment fragmentCartContent = fragmentManager.findFragmentById(R.id.cartContentShowHide_frag);
         if (v == hideShowCartBtn) {
 
-            if (fragmentCartContent.isHidden()) {
-                transaction.show(fragmentCartContent).commit();
+            ShowHideCartEvent event = new ShowHideCartEvent();
 
-            } else {
-                transaction.hide(fragmentCartContent).commit();
-
-            }
+            EventBus.getDefault().post(event);
         }
 
     }

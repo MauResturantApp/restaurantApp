@@ -2,6 +2,8 @@ package mau.resturantapp.aktivitys;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,9 +14,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import mau.resturantapp.R;
 import mau.resturantapp.data.MenuItem;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.events.NewItemToCartEvent;
+import mau.resturantapp.events.ShowHideCartEvent;
 
 /**
  * Created by anwar on 10/14/16.
@@ -24,6 +31,7 @@ public class CartContent_frag extends Fragment {
 
     private View view;
     private RecyclerView recycler;
+    private int adapterPosition;
     private CartItemList_Adapter adapter;
 
     @Override
@@ -37,10 +45,32 @@ public class CartContent_frag extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recycler.setLayoutManager(layoutManager);
         recycler.setItemAnimator(new DefaultItemAnimator());
+        EventBus.getDefault().register(this);
         recycler.setAdapter(adapter);
         return view;
     }
 
+    @Subscribe
+    public void onShowHideEvent(ShowHideCartEvent event) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.push_up_in, R.anim.push_down_out1);
+        Fragment fragmentCartContent = fragmentManager.findFragmentById(R.id.cartContentShowHide_frag);
+        if (fragmentCartContent.isHidden()) {
+            transaction.show(fragmentCartContent).commit();
+
+        } else {
+            transaction.hide(fragmentCartContent).commit();
+
+        }
+
+    }
+
+
+    @Subscribe
+    public void newItemToCartEvent(NewItemToCartEvent event) {
+        adapter.notifyDataSetChanged();
+    }
 
     public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adapter.ViewHolder> {
 
@@ -51,6 +81,7 @@ public class CartContent_frag extends Fragment {
 
             public ViewHolder(View itemView) {
                 super(itemView);
+                adapterPosition = getAdapterPosition();
                 listImgIcon = (ImageView) itemView.findViewById(R.id.kurv_list_icon);
                 listImgBtn = (ImageButton) itemView.findViewById(R.id.fjern_varer_button);
                 listItemtxt = (TextView) itemView.findViewById(R.id.vare_id_kurv_text);
@@ -58,8 +89,8 @@ public class CartContent_frag extends Fragment {
                 listImgBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        appData.cartContent.remove(getAdapterPosition());
-                        notifyItemRemoved(getAdapterPosition());
+                        appData.cartContent.remove(adapterPosition);
+                        notifyItemRemoved(adapterPosition);
                     }
                 });
 

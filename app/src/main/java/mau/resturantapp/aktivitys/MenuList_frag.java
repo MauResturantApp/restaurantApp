@@ -13,12 +13,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import mau.resturantapp.R;
 import mau.resturantapp.data.MenuItem;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.events.NewItemToCartEvent;
 
 /**
  * Created by anwar on 10/17/16.
@@ -108,6 +111,8 @@ public class MenuList_frag extends Fragment {
                     public void onClick(View v) {
                         appData.cartContent.add(tempVare.get(position));
                         Toast.makeText(getContext(), tempVare.get(position).getNavn() + "er tilføget til kurv", Toast.LENGTH_SHORT).show();
+                        NewItemToCartEvent event = new NewItemToCartEvent();
+                        EventBus.getDefault().post(event);
 
                     }
                 });

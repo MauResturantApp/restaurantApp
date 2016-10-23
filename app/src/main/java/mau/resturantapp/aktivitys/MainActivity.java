@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainTollbar = (Toolbar) findViewById(R.id.mainToolbar);
         setSupportActionBar(mainTollbar);
         getSupportActionBar().setTitle(null);
-
     }
 
 
