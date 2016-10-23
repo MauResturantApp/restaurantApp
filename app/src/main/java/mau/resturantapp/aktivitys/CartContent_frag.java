@@ -31,7 +31,6 @@ public class CartContent_frag extends Fragment {
 
     private View view;
     private RecyclerView recycler;
-    private int adapterPosition;
     private CartItemList_Adapter adapter;
 
     @Override
@@ -81,7 +80,6 @@ public class CartContent_frag extends Fragment {
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                adapterPosition = getAdapterPosition();
                 listImgIcon = (ImageView) itemView.findViewById(R.id.kurv_list_icon);
                 listImgBtn = (ImageButton) itemView.findViewById(R.id.fjern_varer_button);
                 listItemtxt = (TextView) itemView.findViewById(R.id.vare_id_kurv_text);
@@ -89,8 +87,8 @@ public class CartContent_frag extends Fragment {
                 listImgBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        appData.cartContent.remove(adapterPosition);
-                        notifyItemRemoved(adapterPosition);
+                        appData.cartContent.remove(getAdapterPosition());
+                        notifyItemRemoved(getAdapterPosition());
                     }
                 });
 
