@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:weightSum="1">
+
+    <ScrollView
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="109dp"
+                app:srcCompat="@android:drawable/btn_star"
+                android:id="@+id/imageView" />
+
+            <TextView
+                android:text="Her skrives der velkomst/intro besked"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:id="@+id/textView" />
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimaryDark"
+                android:layout_height="175dp"
+                android:id="@+id/imageButton4" />
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="175dp"
+                android:id="@+id/imageButton8" />
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="175dp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

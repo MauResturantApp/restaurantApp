@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#000000"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:background="@color/colorPrimaryDark"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="56dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="59dp"
+            android:layout_gravity="end">
+
+
+            <ImageButton
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
+                app:srcCompat="@mipmap/kurv_plus"
+                android:id="@+id/skjulVisBut" />
+
+            <TextView
+                android:text="Din indkøbskurv er tom"
+
+                android:layout_width="180dp"
+                android:textSize="20dp"
+
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:id="@+id/totalIndkøbText" />
+
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="50dp"
+                android:layout_gravity="right"
+                android:id="@+id/imageView4"
+                app:srcCompat="@drawable/kurv_icon" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

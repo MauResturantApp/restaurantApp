@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:orientation="vertical"
+    android:paddingBottom="0dp"
+    android:paddingLeft="1dp"
+    android:paddingRight="1dp"
+    android:paddingTop="1dp"
+    tools:context="mau.resturantapp.aktivitys.MainActivity">
+
+
+    <FrameLayout
+        android:background="@color/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+
+            android:layout_marginBottom="117dp"
+            android:layout_width="match_parent"
+
+            android:layout_height="match_parent"
+            android:id="@+id/mainFrameFrag"></FrameLayout>
+
+
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_gravity="bottom"
+            android:name="mau.resturantapp.aktivitys.CartContent_frag"
+            android:transitionName="kurv"
+            tools:layout="@layout/kurv_frag"
+            android:layout_marginBottom="117dp"
+            android:id="@+id/cartContentShowHide_frag" />
+
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="60dp"
+            android:layout_gravity="bottom"
+            android:name="mau.resturantapp.aktivitys.CartMenu_frag"
+            android:id="@+id/buttomFragKurv"
+            tools:layout="@layout/kurvshowhide_frag" />
+
+
+        <include
+            android:id="@+id/mainToolbar"
+            layout="@layout/maintoolbar_toolbar">
+
+        </include>
+
+    </FrameLayout>
+
+</LinearLayout>
