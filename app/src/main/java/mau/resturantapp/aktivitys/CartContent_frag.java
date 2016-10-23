@@ -1,5 +1,6 @@
 package mau.resturantapp.aktivitys;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,9 +46,17 @@ public class CartContent_frag extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recycler.setLayoutManager(layoutManager);
         recycler.setItemAnimator(new DefaultItemAnimator());
-        EventBus.getDefault().register(this);
         recycler.setAdapter(adapter);
         return view;
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        EventBus.getDefault().register(this);
+
+
     }
 
     @Subscribe
@@ -63,12 +73,15 @@ public class CartContent_frag extends Fragment {
 
         }
 
+        Log.d("showhideevent", "kaldt");
     }
 
 
     @Subscribe
     public void newItemToCartEvent(NewItemToCartEvent event) {
         adapter.notifyDataSetChanged();
+
+        Log.d("newitemevent", "kaldt");
     }
 
     public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adapter.ViewHolder> {

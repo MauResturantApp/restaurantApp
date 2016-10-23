@@ -9,9 +9,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import mau.resturantapp.R;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.events.NewItemToCartEvent;
 import mau.resturantapp.events.ShowHideCartEvent;
 
 /**
@@ -35,7 +37,7 @@ public class CartMenu_frag extends Fragment implements View.OnClickListener {
         totalPrice = (TextView) rod.findViewById(R.id.totalIndkøbText);
 
         hideShowCartBtn.setOnClickListener(this);
-
+        EventBus.getDefault().register(this);
 
         return rod;
     }
@@ -47,11 +49,16 @@ public class CartMenu_frag extends Fragment implements View.OnClickListener {
             ShowHideCartEvent event = new ShowHideCartEvent();
 
             EventBus.getDefault().post(event);
-            int price = getTotalPrice();
-            totalPrice.setText("Total pris: " + price);
+
 
         }
 
+    }
+
+    @Subscribe
+    public void newItemEvent(NewItemToCartEvent event) {
+        int price = getTotalPrice();
+        totalPrice.setText("Total pris: " + price);
     }
 
     private int getTotalPrice() {
