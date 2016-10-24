@@ -1,6 +1,7 @@
 package mau.resturantapp.aktivitys;
 
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,12 +10,26 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
-public class FindWay_frag extends AppCompatActivity implements LocationListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import mau.resturantapp.R;
+
+public class FindWay_frag extends Fragment implements LocationListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private Button btnGetDirections;
+    private View rod;
 
     // Information variables
     private Location location;
@@ -38,16 +53,17 @@ public class FindWay_frag extends AppCompatActivity implements LocationListener,
     // Google Map
     MapFragment mFrag;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        rod = inflater.inflate(R.layout.findos_frag, container, false);
 
         // Location control started
         geoLocation();
 
         // Button for directions
-        btnGetDirections = (Button) findViewById(R.id.btnGetDirections);
+        // Button for directions
+        btnGetDirections = (Button) rod.findViewById(R.id.btnGetDirections);
         btnGetDirections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,25 +72,30 @@ public class FindWay_frag extends AppCompatActivity implements LocationListener,
         });
 
         // Google map
+        // Google map
         mFrag = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mFrag.getMapAsync(this);
+
+        return rod;
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        System.out.println("onResume call");
+    public void onDestroy() {
+        super.onDestroy();
+        stopGeoLocation();
+    }
 
-        // Start location tracker
+    @Override
+    public void onResume() {
+        super.onResume();
+
         geoLocation();
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
-        System.out.println("onPause call");
 
-        // Stop location tracker
         stopGeoLocation();
     }
 
@@ -145,7 +166,7 @@ public class FindWay_frag extends AppCompatActivity implements LocationListener,
         try {
             // Set LocationManager from given Context
             if(lm == null)
-                lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+                lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
             // Get location from network
             if(lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -170,11 +191,11 @@ public class FindWay_frag extends AppCompatActivity implements LocationListener,
         } catch(SecurityException e) {
             // TODO If insufficient permissions are granted, this code should be executed. Stacktrace included for now.
             //System.out.println(e.getMessage());
-            System.out.println(e.getStackTrace());
+            e.getStackTrace();
         } catch(Exception e) {
             // TODO "Unknown" error handling code goes here. Stacktrace included for now.
             //System.out.println(e.getMessage());
-            System.out.println(e.getStackTrace());
+            e.getStackTrace();
         }
 
         return location;
@@ -190,7 +211,7 @@ public class FindWay_frag extends AppCompatActivity implements LocationListener,
         } catch (SecurityException e) {
             // TODO Should probably handle this as well.
             System.out.println(e.getMessage());
-            System.out.println(e.getStackTrace());
+            e.getStackTrace();
         }
     }
 
@@ -199,7 +220,7 @@ public class FindWay_frag extends AppCompatActivity implements LocationListener,
      */
     private void promptUserNoGPS() {
         // Build alert dialog
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
 
         // Set title and message for user
         alert.setTitle("GPS turned off");
