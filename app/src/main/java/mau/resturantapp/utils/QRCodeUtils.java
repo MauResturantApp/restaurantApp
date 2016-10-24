@@ -3,10 +3,24 @@ package mau.resturantapp.utils;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.ChecksumException;
+import com.google.zxing.FormatException;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.RGBLuminanceSource;
+import com.google.zxing.Reader;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeReader;
+import com.google.zxing.qrcode.QRCodeWriter;
+
 public class QRCodeUtils {
     /**
      * Creates a QR image as bitmap with given content string as encoded content.<br>
-     * Furthermore, the content of the string shouldn't be longer than the QR's capabilities.<br>
+     * Furthermore, the content of the given string shouldn't be longer than the QR's capabilities.<br>
      * @see <a href="https://en.wikipedia.org/wiki/QR_code#Storage">QR Design</a>
      *
      * @param content The content of the QR
