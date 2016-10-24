@@ -48,4 +48,12 @@
         android:id="@+id/passwordFieldCheck"
         android:hint="@string/password_hint" />
 
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/emailField"
+        android:layout_alignStart="@+id/signUpButton"
+        android:id="@+id/progBar_signup" />
+
 </RelativeLayout>

@@ -3,6 +3,7 @@ package mau.resturantapp.aktivitys;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,16 +62,18 @@ public class Login_frag extends Fragment implements View.OnClickListener, OnComp
 
         if (v == logInButton) {
             loader.setVisibility(View.VISIBLE);
-            //loading
             validLogin();
         }
         if (v == signUpTextView) {
-
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            Fragment frag = new Signup_frag();
+            ft.replace(R.id.mainFrameFrag, frag).commit();
 
         }
 
 
     }
+
 
     private void validLogin() {
         String email = emailEditText.getText().toString();
