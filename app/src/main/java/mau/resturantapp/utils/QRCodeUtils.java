@@ -17,6 +17,9 @@ import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+/**
+ * Used to encode ({@see #EncodeBitmapQRCode}) and decode ({@see #DecodeBitmapQRCode}) QR bitmaps.
+ */
 public class QRCodeUtils {
     /**
      * Creates a QR image as bitmap with given content string as encoded content.<br>
@@ -27,7 +30,7 @@ public class QRCodeUtils {
      * @param size The size of the image
      * @return QR image as bitmap
      */
-    public Bitmap GenerateImageViewQRCode(String content, int size) throws WriterException {
+    public static Bitmap EncodeBitmapQRCode(String content, int size) throws WriterException {
         QRCodeWriter qrw = new QRCodeWriter();
         int w, h;
 
@@ -56,7 +59,7 @@ public class QRCodeUtils {
      * @throws ChecksumException
      * @throws NotFoundException
      */
-    public String DecodeBitmapQRCodeText(Bitmap qr) throws FormatException, ChecksumException, NotFoundException {
+    public static String DecodeBitmapQRCode(Bitmap qr) throws FormatException, ChecksumException, NotFoundException {
         Reader r;
         BinaryBitmap bmap;
         LuminanceSource src;
