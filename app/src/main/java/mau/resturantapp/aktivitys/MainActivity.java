@@ -47,6 +47,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ft.replace(R.id.mainFrameFrag, frag).commit();
         }
 
+        if (menuSelect == R.id.menu_findos) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            Fragment frag = new FindWay_frag();
+            ft.replace(R.id.mainFrameFrag, frag).commit();
+        }
+
 
         return true;
     }

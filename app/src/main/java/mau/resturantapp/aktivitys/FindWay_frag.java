@@ -1,7 +1,6 @@
 package mau.resturantapp.aktivitys;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +18,8 @@ import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -50,7 +50,7 @@ public class FindWay_frag extends Fragment implements LocationListener, OnMapRea
     private LocationManager lm;
 
     // Google Map
-    MapFragment mFrag;
+    SupportMapFragment mFrag;
 
     @Nullable
     @Override
@@ -71,8 +71,7 @@ public class FindWay_frag extends Fragment implements LocationListener, OnMapRea
         });
 
         // Google map
-        // Google map
-        mFrag = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        mFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mFrag.getMapAsync(this);
 
         return rod;
