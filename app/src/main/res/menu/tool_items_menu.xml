@@ -44,9 +44,13 @@
         android:orderInCategory="6"
         android:title="log in"
         app:showAsAction="ifRoom">
-
-
     </item>
+
+    <item
+        android:id="@+id/menu_qrTest"
+        android:orderInCategory="6"
+        android:title="qr Koder"
+        app:showAsAction="ifRoom"></item>
 
 
 </menu>
