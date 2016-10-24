@@ -27,13 +27,13 @@ public class QRCamera extends Fragment implements ZXingScannerView.ResultHandler
     @Override
     public void onPause() {
         super.onPause();
-        qrscanner.stopCamera();
+        //qrscanner.stopCamera();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        qrscanner.startCamera();
+        //qrscanner.startCamera();
     }
 
     @Override
