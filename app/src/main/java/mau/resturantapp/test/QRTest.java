@@ -61,13 +61,7 @@ public class QRTest extends Fragment {
                 try {
                     qrcode.setImageBitmap(QRCodeUtils.EncodeBitmapQRCode(newContentText.getText().toString(), DEFAULT_QR_SIZE));
                     qrTestContent.setText(QRCodeUtils.DecodeBitmapQRCode(((BitmapDrawable) qrcode.getDrawable()).getBitmap()));
-                } catch (WriterException e) {
-                    e.printStackTrace();
-                } catch (FormatException e) {
-                    e.printStackTrace();
-                } catch (ChecksumException e) {
-                    e.printStackTrace();
-                } catch (NotFoundException e) {
+                } catch (WriterException | FormatException | ChecksumException | NotFoundException e) {
                     e.printStackTrace();
                 } catch (Exception e) {
                     e.printStackTrace();
