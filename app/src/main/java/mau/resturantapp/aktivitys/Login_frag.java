@@ -5,11 +5,13 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +32,7 @@ public class Login_frag extends Fragment implements View.OnClickListener, OnComp
     protected Button logInButton;
     protected TextView signUpTextView;
     private FirebaseAuth mFirebaseAuth;
+    private ProgressBar loader;
     private View rod;
 
     @Override
@@ -38,11 +41,13 @@ public class Login_frag extends Fragment implements View.OnClickListener, OnComp
 
         mFirebaseAuth = FirebaseAuth.getInstance();
 
+
+        loader = (ProgressBar) rod.findViewById(R.id.progBar_logIn);
         signUpTextView = (TextView) rod.findViewById(R.id.signUpText);
         emailEditText = (EditText) rod.findViewById(R.id.emailField);
         passwordEditText = (EditText) rod.findViewById(R.id.passwordField);
         logInButton = (Button) rod.findViewById(R.id.loginButton);
-
+        loader.setVisibility(View.GONE);
 
         logInButton.setOnClickListener(this);
         signUpTextView.setOnClickListener(this);
@@ -54,6 +59,7 @@ public class Login_frag extends Fragment implements View.OnClickListener, OnComp
     public void onClick(View v) {
 
         if (v == logInButton) {
+            loader.setVisibility(View.VISIBLE);
             //loading
             validLogin();
         }
@@ -87,14 +93,15 @@ public class Login_frag extends Fragment implements View.OnClickListener, OnComp
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.push_up_in, R.anim.push_down_out1);
-        Fragment frag = new Home_frag();
-
+        Fragment frag = new MenuTabs_frag();
+        Log.d("succe", "login");
         transaction.replace(R.id.mainFrameFrag, frag);
 
     }
 
     @Override
     public void onComplete(@NonNull Task task) {
+        loader.setVisibility(View.GONE);
         if (task.isSuccessful()) {
             onSuccesfullLogin();
         } else {
@@ -103,4 +110,6 @@ public class Login_frag extends Fragment implements View.OnClickListener, OnComp
 
         }
     }
+
+
 }
