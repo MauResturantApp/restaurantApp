@@ -21,6 +21,8 @@ public class QRCamera extends Fragment implements ZXingScannerView.ResultHandler
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rod = inflater.inflate(R.layout.qr_camera_test, container, false);
 
+        QRScanner(rod);
+
         return rod;
     }
 
