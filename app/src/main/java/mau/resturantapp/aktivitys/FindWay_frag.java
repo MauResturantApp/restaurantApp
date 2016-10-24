@@ -5,4 +5,5 @@ package mau.resturantapp.aktivitys;
  */
 
 public class FindWay_frag {
+
 }

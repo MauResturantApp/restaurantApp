@@ -39,6 +39,14 @@
         android:title="indstillinger"
         android:icon="@drawable/indstilling_icon"
         app:showAsAction="always"></item>
+    <item
+        android:id="@+id/menu_login"
+        android:orderInCategory="6"
+        android:title="log in"
+        app:showAsAction="ifRoom">
+
+
+    </item>
 
 
 </menu>

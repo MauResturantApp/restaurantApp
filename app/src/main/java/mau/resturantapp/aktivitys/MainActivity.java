@@ -41,6 +41,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Fragment frag = new MenuTabs_frag();
             ft.replace(R.id.mainFrameFrag, frag).commit();
         }
+        if (menuSelect == R.id.menu_login) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            Fragment frag = new Login_frag();
+            ft.replace(R.id.mainFrameFrag, frag).commit();
+        }
 
 
         return true;
