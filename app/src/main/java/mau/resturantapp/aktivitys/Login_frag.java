@@ -3,17 +3,18 @@ package mau.resturantapp.aktivitys;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import mau.resturantapp.R;
@@ -22,7 +23,7 @@ import mau.resturantapp.R;
  * Created by anwar on 10/16/16.
  */
 
-public class Login_frag extends Fragment implements View.OnClickListener {
+public class Login_frag extends Fragment implements View.OnClickListener, OnCompleteListener {
 
     protected EditText emailEditText;
     protected EditText passwordEditText;
@@ -53,8 +54,8 @@ public class Login_frag extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
 
         if (v == logInButton) {
-
-
+            //loading
+            validLogin();
         }
         if (v == signUpTextView) {
 
@@ -72,29 +73,34 @@ public class Login_frag extends Fragment implements View.OnClickListener {
         password = password.trim();
 
         if (email.isEmpty() || password.isEmpty()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
-            builder.setMessage(R.string.login_error_message)
-                    .setTitle(R.string.login_error_title)
-                    .setPositiveButton(android.R.string.ok, null);
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            Toast.makeText(getContext(), "Venligst udfyld både e-mail og pasord", Toast.LENGTH_LONG).show();
+
+
         } else {
             mFirebaseAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
+                    .addOnCompleteListener(this);
+        }
+    }
 
-                            } else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(this.g);
-                                builder.setMessage(task.getException().getMessage())
-                                        .setTitle(R.string.login_error_title)
-                                        .setPositiveButton(android.R.string.ok, null);
-                                AlertDialog dialog = builder.create();
-                                dialog.show();
-                            }
-                        }
-                    });
+
+    private void onSuccesfullLogin() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.push_up_in, R.anim.push_down_out1);
+        Fragment frag = new Home_frag();
+
+        transaction.replace(R.id.mainFrameFrag, frag);
+
+    }
+
+    @Override
+    public void onComplete(@NonNull Task task) {
+        if (task.isSuccessful()) {
+            onSuccesfullLogin();
+        } else {
+            Toast.makeText(getContext(), "pasord eller e-mail er forkert, prøv igen", Toast.LENGTH_LONG).show();
+
+
         }
     }
 }
