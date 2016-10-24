@@ -3,8 +3,6 @@ package mau.resturantapp.aktivitys;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +17,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.greenrobot.eventbus.EventBus;
+
 import mau.resturantapp.R;
+import mau.resturantapp.events.OnSuccesfullLogInEvent;
 
 /**
  * Created by anwar on 10/16/16.
@@ -90,13 +91,9 @@ public class Login_frag extends Fragment implements View.OnClickListener, OnComp
 
 
     private void onSuccesfullLogin() {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.push_up_in, R.anim.push_down_out1);
-        Fragment frag = new MenuTabs_frag();
-        Log.d("succe", "login");
-        transaction.replace(R.id.mainFrameFrag, frag);
-
+        OnSuccesfullLogInEvent event = new OnSuccesfullLogInEvent();
+        EventBus.getDefault().post(event);
+        Log.d("Logged in", "sending to home");
     }
 
     @Override

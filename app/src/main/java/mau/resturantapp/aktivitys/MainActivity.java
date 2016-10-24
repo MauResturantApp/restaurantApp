@@ -8,9 +8,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import mau.resturantapp.R;
 import mau.resturantapp.data.MenuItem;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.events.OnSuccesfullLogInEvent;
+import mau.resturantapp.test.QRCamera;
 import mau.resturantapp.test.QRTest;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -24,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         generateItems();
         mainTollbar = (Toolbar) findViewById(R.id.mainToolbar);
         setSupportActionBar(mainTollbar);
+        EventBus.getDefault().register(this);
         getSupportActionBar().setTitle(null);
     }
 
@@ -73,6 +79,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Fragment frag = new Contact_frag();
             ft.replace(R.id.mainFrameFrag, frag).commit();
         }
+        if (menuSelect == R.id.menu_qrCamera) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            Fragment frag = new QRCamera();
+            ft.replace(R.id.mainFrameFrag, frag).commit();
+        }
 
 
         return true;
@@ -84,8 +95,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
-    public void hidebar() {
-
+    @Subscribe
+    public void logedInEvent(OnSuccesfullLogInEvent event) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment frag = new Home_frag();
+        ft.replace(R.id.mainFrameFrag, frag).commit();
     }
 
     public void generateItems() {
