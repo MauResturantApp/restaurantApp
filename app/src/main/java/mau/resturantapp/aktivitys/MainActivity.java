@@ -11,6 +11,7 @@ import android.view.View;
 import mau.resturantapp.R;
 import mau.resturantapp.data.MenuItem;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.test.QRTest;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -50,6 +51,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (menuSelect == R.id.menu_findos) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             Fragment frag = new FindWay_frag();
+            ft.replace(R.id.mainFrameFrag, frag).commit();
+        }
+        if (menuSelect == R.id.menu_qrTest) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            Fragment frag = new QRTest();
+            ft.replace(R.id.mainFrameFrag, frag).commit();
+        }
+        if (menuSelect == R.id.menu_home) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            Fragment frag = new Home_frag();
+            ft.replace(R.id.mainFrameFrag, frag).commit();
+        }
+        if (menuSelect == R.id.menu_indstillinger) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            Fragment frag = new Settings_frag();
+            ft.replace(R.id.mainFrameFrag, frag).commit();
+        }
+        if (menuSelect == R.id.menu_kontakt) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            Fragment frag = new Contact_frag();
             ft.replace(R.id.mainFrameFrag, frag).commit();
         }
 
