@@ -15,5 +15,5 @@
     <string name="add_item">Add New Item</string>
     <string name="action_logout">Logout</string>
     <string name="sign_up_click">Or click here to sign up!</string>
-
+    <string name="btnDirDirection">Get directions</string>
 </resources>
