@@ -2,6 +2,98 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+
+    <TextView
+        android:text="CheckOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_checkout_headtxt"
+        android:layout_weight="0.07"
+        android:textSize="24sp"
+        android:lineSpacingExtra="8sp"
+        android:textStyle="normal|bold"
+        android:textAlignment="center"
+        android:textColor="@color/viewfinder_border" />
+
+    <TextView
+        android:text="Fulde navn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_checkout_name"
+        android:layout_weight="0.06"
+        android:textSize="18sp"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textAlignment="center" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/edittxt_checkout_name" />
+
+    <TextView
+        android:text="Indskriv din e-mail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_checkout_email"
+        android:layout_weight="0.07"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/edittxt_checkout_email" />
+
+    <TextView
+        android:text="indskriv telefon nummer."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtnumber_checkout_tlf"
+        android:layout_weight="0.07"
+        android:textSize="18sp"
+        android:textAlignment="center" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:id="@+id/edittxtnum_checkout_phone" />
+
+    <TextView
+        android:text="vælg tidpunkts for afhæntning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_checkout_time"
+        android:layout_weight="0.07"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="time"
+        android:ems="10"
+        android:id="@+id/edittxt_checkout_date" />
+
+    <Button
+        android:text="Bestil!"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_checkout_checkout"
+        android:layout_weight="0.07"
+        android:textSize="24sp"
+        style="@android:style/Widget.Holo.Light.Button"
+        android:elevation="13dp"
+        android:fontFamily="casual"
+        android:typeface="serif"
+        android:textColor="?android:attr/colorMultiSelectHighlight" />
 
 </LinearLayout>

@@ -2,10 +2,12 @@ package mau.resturantapp.aktivitys;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -27,6 +29,7 @@ public class CartMenu_frag extends Fragment implements View.OnClickListener {
 
     private ImageButton hideShowCartBtn;
     private TextView totalPrice;
+    private ImageView checkOutBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,9 +38,11 @@ public class CartMenu_frag extends Fragment implements View.OnClickListener {
 
         hideShowCartBtn = (ImageButton) rod.findViewById(R.id.skjulVisBut);
         totalPrice = (TextView) rod.findViewById(R.id.totalIndkøbText);
+        checkOutBtn = (ImageView) rod.findViewById(R.id.imgBtn_Cart_Checkout);
 
         hideShowCartBtn.setOnClickListener(this);
         EventBus.getDefault().register(this);
+        checkOutBtn.setOnClickListener(this);
 
         return rod;
     }
@@ -51,6 +56,12 @@ public class CartMenu_frag extends Fragment implements View.OnClickListener {
             EventBus.getDefault().post(event);
 
 
+        }
+
+        if (v == checkOutBtn) {
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            Fragment frag = new Checkout_frag();
+            ft.replace(R.id.mainFrameFrag, frag).commit();
         }
 
     }

@@ -9,40 +9,41 @@
     android:layout_marginBottom="1dp">
 
     <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         app:srcCompat="@drawable/ic_action_name"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/kurv_list_icon" />
+        android:id="@+id/icon_cartContent_itemIcon" />
 
 
     <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         app:srcCompat="@drawable/remove_kurv_icon"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:id="@+id/fjern_varer_button" />
+        android:id="@+id/imgBtn_cartContent_removeItem" />
 
     <TextView
         android:text="TextView"
-        android:textSize="15dp"
+        android:textSize="14dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@id/kurv_list_icon"
-        android:layout_toStartOf="@id/fjern_varer_button"
-        android:id="@+id/vare_id_kurv_text" />
+        android:id="@+id/txt_cartContent_mainItemtext"
+        android:layout_above="@+id/txt_cartContent_extraItemText"
+        android:layout_toEndOf="@+id/icon_cartContent_itemIcon"
+        android:layout_toStartOf="@id/imgBtn_cartContent_removeItem" />
 
     <TextView
         android:text=""
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/kurv_list_icon"
-        android:layout_toEndOf="@+id/kurv_list_icon"
-        android:layout_toStartOf="@id/fjern_varer_button"
-        android:id="@+id/vare_id_ekstraText" />
+        android:layout_alignBottom="@+id/icon_cartContent_itemIcon"
+        android:layout_toEndOf="@+id/icon_cartContent_itemIcon"
+        android:layout_toStartOf="@id/imgBtn_cartContent_removeItem"
+        android:id="@+id/txt_cartContent_extraItemText" />
 
 
 </RelativeLayout>

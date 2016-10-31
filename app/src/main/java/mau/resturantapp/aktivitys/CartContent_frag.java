@@ -93,9 +93,9 @@ public class CartContent_frag extends Fragment {
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                listImgIcon = (ImageView) itemView.findViewById(R.id.kurv_list_icon);
-                listImgBtn = (ImageButton) itemView.findViewById(R.id.fjern_varer_button);
-                listItemtxt = (TextView) itemView.findViewById(R.id.vare_id_kurv_text);
+                listImgIcon = (ImageView) itemView.findViewById(R.id.icon_cartContent_itemIcon);
+                listImgBtn = (ImageButton) itemView.findViewById(R.id.imgBtn_cartContent_removeItem);
+                listItemtxt = (TextView) itemView.findViewById(R.id.txt_cartContent_mainItemtext);
 
                 listImgBtn.setOnClickListener(new View.OnClickListener() {
                     @Override

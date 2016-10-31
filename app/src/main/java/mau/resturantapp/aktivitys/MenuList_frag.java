@@ -99,14 +99,14 @@ public class MenuList_frag extends Fragment {
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 convertView = inflater.inflate(rod, parent, false);
                 ViewHolder viewer = new ViewHolder();
-                viewer.imgview = (ImageView) convertView.findViewById(R.id.kurv_list_icon);
-                viewer.addBut = (ImageButton) convertView.findViewById(R.id.fjern_varer_button);
-                viewer.hovedText = (TextView) convertView.findViewById(R.id.vare_id_kurv_text);
-                viewer.ekstraText = (TextView) convertView.findViewById(R.id.vare_id_ekstraText);
-                viewer.addBut.setImageResource(R.drawable.add_item_icon);
-                viewer.hovedText.setText(tempVare.get(position).getNavn() + "" + tempVare.get(position).getPris() + "DKK");
+                viewer.itemIcon = (ImageView) convertView.findViewById(R.id.icon_cartContent_itemIcon);
+                viewer.addNewItemBtn = (ImageButton) convertView.findViewById(R.id.imgBtn_cartContent_removeItem);
+                viewer.mainItemTxt = (TextView) convertView.findViewById(R.id.txt_cartContent_mainItemtext);
+                viewer.extraItemTxt = (TextView) convertView.findViewById(R.id.txt_cartContent_extraItemText);
+                viewer.addNewItemBtn.setImageResource(R.drawable.add_item_icon);
+                viewer.mainItemTxt.setText(tempVare.get(position).getNavn() + "" + tempVare.get(position).getPris() + "DKK");
                 convertView.setTag(viewer);
-                viewer.addBut.setOnClickListener(new View.OnClickListener() {
+                viewer.addNewItemBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         appData.cartContent.add(tempVare.get(position));
@@ -120,7 +120,7 @@ public class MenuList_frag extends Fragment {
 
             } else {
                 mainViewH = (ViewHolder) convertView.getTag();
-                mainViewH.hovedText.setText(tempVare.get(position).getNavn() + "" + tempVare.get(position).getPris() + "DKK");
+                mainViewH.mainItemTxt.setText(tempVare.get(position).getNavn() + "" + tempVare.get(position).getPris() + "DKK");
             }
 
 
@@ -128,10 +128,10 @@ public class MenuList_frag extends Fragment {
         }
 
         private class ViewHolder {
-            ImageView imgview;
-            TextView hovedText;
-            TextView ekstraText;
-            ImageButton addBut;
+            ImageView itemIcon;
+            TextView mainItemTxt;
+            TextView extraItemTxt;
+            ImageButton addNewItemBtn;
 
 
         }
