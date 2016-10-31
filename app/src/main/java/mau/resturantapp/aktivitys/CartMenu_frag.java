@@ -2,10 +2,13 @@ package mau.resturantapp.aktivitys;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,8 +39,8 @@ public class CartMenu_frag extends Fragment implements View.OnClickListener {
         rod = inflater.inflate(R.layout.kurvshowhide_frag, container, false);
 
 
-        hideShowCartBtn = (ImageButton) rod.findViewById(R.id.skjulVisBut);
-        totalPrice = (TextView) rod.findViewById(R.id.totalIndkøbText);
+        hideShowCartBtn = (ImageButton) rod.findViewById(R.id.imgBtn_cart_showHide);
+        totalPrice = (TextView) rod.findViewById(R.id.txt_cart_totalPrice);
         checkOutBtn = (ImageView) rod.findViewById(R.id.imgBtn_Cart_Checkout);
 
         hideShowCartBtn.setOnClickListener(this);
@@ -54,16 +57,35 @@ public class CartMenu_frag extends Fragment implements View.OnClickListener {
             ShowHideCartEvent event = new ShowHideCartEvent();
 
             EventBus.getDefault().post(event);
-
+            rotateArrow();
 
         }
 
         if (v == checkOutBtn) {
-            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            Fragment frag = new Checkout_frag();
-            ft.replace(R.id.mainFrameFrag, frag).commit();
+            goToCheckOut();
         }
 
+    }
+
+    private void rotateArrow() {
+        final Animation rotate = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_180_right);
+        hideShowCartBtn.startAnimation(rotate);
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        Fragment fragmentCartContent = fragmentManager.findFragmentById(R.id.cartContentShowHide_frag);
+        if (fragmentCartContent.isHidden()) {
+            hideShowCartBtn.setImageResource(R.drawable.ic_arrow_downward_black_24dp);
+        } else {
+            hideShowCartBtn.setImageResource(R.drawable.ic_arrow_upward_black_24dp);
+        }
+
+    }
+
+
+    private void goToCheckOut() {
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        Fragment frag = new Checkout_frag();
+        ft.replace(R.id.mainFrameFrag, frag).commit();
     }
 
     @Subscribe
@@ -78,8 +100,7 @@ public class CartMenu_frag extends Fragment implements View.OnClickListener {
         for (int i = 0; i < appData.cartContent.size(); i++) {
             totalprice += appData.cartContent.get(i).getPris();
         }
-
-
+        
         return totalprice;
     }
 }
