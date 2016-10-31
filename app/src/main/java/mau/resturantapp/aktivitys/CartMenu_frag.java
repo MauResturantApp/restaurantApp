@@ -7,8 +7,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -68,15 +66,13 @@ public class CartMenu_frag extends Fragment implements View.OnClickListener {
     }
 
     private void rotateArrow() {
-        final Animation rotate = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_180_right);
-        hideShowCartBtn.startAnimation(rotate);
 
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         Fragment fragmentCartContent = fragmentManager.findFragmentById(R.id.cartContentShowHide_frag);
         if (fragmentCartContent.isHidden()) {
-            hideShowCartBtn.setImageResource(R.drawable.ic_arrow_downward_black_24dp);
-        } else {
             hideShowCartBtn.setImageResource(R.drawable.ic_arrow_upward_black_24dp);
+        } else {
+            hideShowCartBtn.setImageResource(R.drawable.ic_arrow_downward_black_24dp);
         }
 
     }
