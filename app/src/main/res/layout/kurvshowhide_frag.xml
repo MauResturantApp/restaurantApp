@@ -8,10 +8,7 @@
 
     <LinearLayout
         android:background="@color/colorPrimaryDark"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
+
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:orientation="horizontal"
@@ -20,26 +17,25 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="59dp"
-            android:layout_gravity="end">
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:weightSum="1">
 
 
             <ImageButton
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
+                android:layout_width="54dp"
+                android:layout_height="match_parent"
                 android:background="@color/colorPrimaryDark"
-                app:srcCompat="@mipmap/kurv_plus"
-                android:id="@+id/skjulVisBut" />
+                app:srcCompat="@drawable/ic_arrow_upward_black_24dp"
+                android:id="@+id/imgBtn_cart_showHide" />
 
             <TextView
                 android:text="Din indkøbskurv er tom"
-
                 android:layout_width="180dp"
                 android:textSize="20dp"
-
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:id="@+id/totalIndkøbText" />
+                android:id="@+id/txt_cart_totalPrice" />
 
 
             <ImageView

@@ -49,6 +49,7 @@ public class Checkout_frag extends Fragment implements View.OnClickListener {
     }
 
     private void finishCheckOut() {
+        // TODO
 
     }
 }

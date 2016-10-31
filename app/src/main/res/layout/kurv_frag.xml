@@ -7,12 +7,22 @@
     android:weightSum="1"
     tools:context=".aktivitys.MainActivity">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:paddingLeft="2dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingRight="2dp"
+        android:layout_height="wrap_content"
+        android:background="#FF3412">
+
     <android.support.v7.widget.RecyclerView
-        android:background="#F342"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         android:id="@+id/kurv_listview" />
 
+
+    </FrameLayout>
 
 </LinearLayout>

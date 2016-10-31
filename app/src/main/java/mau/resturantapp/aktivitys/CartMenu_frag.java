@@ -100,7 +100,7 @@ public class CartMenu_frag extends Fragment implements View.OnClickListener {
         for (int i = 0; i < appData.cartContent.size(); i++) {
             totalprice += appData.cartContent.get(i).getPris();
         }
-        
+
         return totalprice;
     }
 }

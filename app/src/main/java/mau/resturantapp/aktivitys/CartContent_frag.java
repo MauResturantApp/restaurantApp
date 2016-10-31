@@ -101,6 +101,8 @@ public class CartContent_frag extends Fragment {
                     @Override
                     public void onClick(View v) {
                         appData.cartContent.remove(getAdapterPosition());
+                        NewItemToCartEvent event = new NewItemToCartEvent();
+                        EventBus.getDefault().post(event);
                         notifyItemRemoved(getAdapterPosition());
                     }
                 });

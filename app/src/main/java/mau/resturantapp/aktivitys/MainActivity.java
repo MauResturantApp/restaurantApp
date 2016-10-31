@@ -2,6 +2,7 @@ package mau.resturantapp.aktivitys;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -31,6 +32,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(mainTollbar);
         EventBus.getDefault().register(this);
         getSupportActionBar().setTitle(null);
+
+        showHomeScreen();
+        hideCart();
+
+
     }
 
 
@@ -97,6 +103,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Subscribe
     public void logedInEvent(OnSuccesfullLogInEvent event) {
+        showHomeScreen();
+    }
+
+    private void hideCart() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        Fragment fragmentCartContent = fragmentManager.findFragmentById(R.id.cartContentShowHide_frag);
+        transaction.hide(fragmentCartContent).commit();
+    }
+
+    private void showHomeScreen() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment frag = new Home_frag();
         ft.replace(R.id.mainFrameFrag, frag).commit();
