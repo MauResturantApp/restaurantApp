@@ -50,7 +50,7 @@ public class MenuList_frag extends Fragment {
     private LinearLayoutManager manager;
     private FirebaseRecyclerAdapter<Product, ProductHolder> recyclerViewAdapter;
 
-    public class ProductHolder extends RecyclerView.ViewHolder{
+    public static class ProductHolder extends RecyclerView.ViewHolder{
 
         View rod;
         ImageView itemIcon;
@@ -79,16 +79,8 @@ public class MenuList_frag extends Fragment {
         }
 
         public void setImageButton(final int position) {
+            Log.d("recyclerViewAdapter", "imagebutton");
             addNewItemBtn = (ImageButton) rod.findViewById(R.id.imgBtn_menu_removeItem);
-            addNewItemBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    appData.cartContent.add(recyclerViewAdapter.getItem(position));
-                    Toast.makeText(getContext(), recyclerViewAdapter.getItem(position).getName() + "er tilføget til kurv", Toast.LENGTH_SHORT).show();
-                    NewItemToCartEvent event = new NewItemToCartEvent();
-                    EventBus.getDefault().post(event);
-                }
-            });
         }
     }
 
@@ -159,19 +151,28 @@ public class MenuList_frag extends Fragment {
     }
 
     private void startRecyclerViewAdapter() {
+        Log.d("recyclerViewAdapter", ref.toString());
         Query query = ref;
         recyclerViewAdapter = new FirebaseRecyclerAdapter<Product, ProductHolder>(
                 Product.class, R.layout.menu_item_list, ProductHolder.class, query) {
 
             @Override
             protected void populateViewHolder(ProductHolder productHolder, Product product, int position) {
-                Log.d("recyclerViewAdapter", "1");
-                        
+                Log.d("recyclerViewAdapter", ""+position);
                 final int mPosition = position;
                 productHolder.setProductName(product.getName());
                 productHolder.setPrice(product.getPrice());
                 productHolder.setItemIcon();
                 productHolder.setImageButton(mPosition);
+                productHolder.addNewItemBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        appData.cartContent.add(recyclerViewAdapter.getItem(mPosition));
+                        Toast.makeText(getContext(), recyclerViewAdapter.getItem(mPosition).getName() + "er tilføget til kurv", Toast.LENGTH_SHORT).show();
+                        NewItemToCartEvent event = new NewItemToCartEvent();
+                        EventBus.getDefault().post(event);
+                    }
+                });
             }
         };
 
