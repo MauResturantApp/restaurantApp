@@ -3,25 +3,38 @@ package mau.resturantapp.aktivitys;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import mau.resturantapp.R;
 import mau.resturantapp.data.MenuItem;
 import mau.resturantapp.data.appData;
 import mau.resturantapp.events.NewItemToCartEvent;
+
+import mau.resturantapp.data.Product;
 
 /**
  * Created by anwar on 10/17/16.
@@ -32,6 +45,33 @@ public class MenuList_frag extends Fragment {
 
     private int pageNumber;
     private ListView menuList;
+
+    private DatabaseReference ref;
+
+    private RecyclerView products;
+    private LinearLayoutManager manager;
+    private FirebaseRecyclerAdapter<Product, ProductHolder> recyclerViewAdapter;
+
+    public static class ProductHolder extends RecyclerView.ViewHolder{
+
+        View productView;
+
+        public ProductHolder(View productView){
+            super(productView);
+            this.productView = productView;
+
+        }
+
+        public void setProductName(String name){
+            TextView textView = (TextView) productView.findViewById(R.id.productName);
+            textView.setText(name);
+        }
+
+        public void setPrice(int price){
+            Button button = (Button) productView.findViewById(R.id.priceButton);
+            button.setText(Integer.toString(price));
+        }
+    }
 
     public static MenuList_frag newInstance(int page) {
         Bundle args = new Bundle();
@@ -48,50 +88,92 @@ public class MenuList_frag extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStart() {
+        super.onStart();
 
-        menuList = null;
-        pageNumber = 1;
-
+        startRecyclerViewAdapter();
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        pageNumber = 1;
+    public void onStop() {
+        super.onStop();
+
+        if(recyclerViewAdapter != null){
+            recyclerViewAdapter.cleanup();
+        }
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rod = inflater.inflate(R.layout.menu1_frag, container, false);
+        View rod = inflater.inflate(R.layout.tabcontent_recyclerlist, container, false);
+
+        products = (RecyclerView) rod.findViewById(R.id.recyclerview_tabcontent);
+        manager = new LinearLayoutManager(getActivity().getApplicationContext());
+
+        products.setHasFixedSize(false); //Test forskel
+        products.setLayoutManager(manager);
 
         menuList = (ListView) rod.findViewById(R.id.menu_ViewPagerContent);
         ArrayList<MenuItem> tempMenu = new ArrayList<>();
         switch (pageNumber) {
             case 1:
-                tempMenu = appData.menu1;
+                ref = appData.firebaseDatabase.getReference("products/Frugt");
                 break;
             case 2:
-                tempMenu = appData.menu2;
+                ref = appData.firebaseDatabase.getReference("products/Frugt");
                 break;
             case 3:
-                tempMenu = appData.menu3;
+                ref = appData.firebaseDatabase.getReference("products/Frugt");
                 break;
             case 4:
-                tempMenu = appData.menu4;
+                ref = appData.firebaseDatabase.getReference("products/Frugt");
                 break;
             case 5:
-                tempMenu = appData.menu5;
+                ref = appData.firebaseDatabase.getReference("products/Frugt");
                 break;
 
         }
 
-        menuList.setAdapter(new FoodMenuAdapter(getContext(), R.layout.menu_item_list, tempMenu));
+        //menuList.setAdapter(new FoodMenuAdapter(getContext(), R.layout.menu_item_list, tempMenu));
 
 
         return rod;
+    }
+
+    private void startRecyclerViewAdapter() {
+        Query query = ref;
+        recyclerViewAdapter = new FirebaseRecyclerAdapter<Product, ProductHolder>(
+                Product.class, R.layout.menu_item_list, ProductHolder.class, query) {
+
+            @Override
+            protected void populateViewHolder(ProductHolder productHolder, Product product, int position) {
+                final int mPosition = position;
+                productHolder.setProductName(product.getName());
+                productHolder.setPrice(product.getPrice());
+                productHolder.productView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Basket.addToBasket(mPosition, mFirebaseUser);
+                        ListIterator iterator = Basket.getProducts().listIterator();
+                        String items = "";
+                        for(int i = 0; i < Basket.getProducts().size(); i++){
+                            if(iterator.hasNext()){
+                                System.out.println(iterator.toString());
+                                Product product = (Product) iterator.next();
+                                items = items + product.getName();
+                            }
+                        }
+                        basket.setText(Basket.getProducts().size() + ": " + items);
+                    }
+                });
+            }
+        };
+
+        recyclerViewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+        });
+
+        products.setAdapter(recyclerViewAdapter);
     }
 
     public class FoodMenuAdapter extends ArrayAdapter<MenuItem> {

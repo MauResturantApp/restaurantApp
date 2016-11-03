@@ -23,7 +23,7 @@ public class appData {
 
     public static FirebaseDatabase firebaseDatabase;
     public static FirebaseUser firebaseUser;
-    public static FirebaseAuth firebaseAuth;
+    public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
 
 }

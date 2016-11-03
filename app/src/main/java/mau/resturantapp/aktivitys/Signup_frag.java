@@ -36,7 +36,6 @@ public class Signup_frag extends Fragment implements View.OnClickListener, OnCom
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rod = inflater.inflate(R.layout.signup_frag, container, false);
 
-        appData.firebaseAuth = appData.firebaseAuth.getInstance();
         loader = (ProgressBar) rod.findViewById(R.id.progBar_signup);
         passwordEditText = (EditText) rod.findViewById(R.id.passwordField);
         emailEditText = (EditText) rod.findViewById(R.id.emailField);

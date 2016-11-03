@@ -41,7 +41,6 @@ public class Login_frag extends Fragment implements View.OnClickListener, OnComp
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rod = inflater.inflate(R.layout.login_frag, container, false);
 
-        appData.firebaseAuth = FirebaseAuth.getInstance();
 
 
         loader = (ProgressBar) rod.findViewById(R.id.progBar_logIn);
