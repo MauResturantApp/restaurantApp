@@ -21,6 +21,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import mau.resturantapp.R;
 import mau.resturantapp.data.MenuItem;
+import mau.resturantapp.data.Product;
 import mau.resturantapp.data.appData;
 import mau.resturantapp.events.NewItemToCartEvent;
 import mau.resturantapp.events.ShowHideCartEvent;
@@ -119,8 +120,8 @@ public class CartContent_frag extends Fragment {
 
         @Override
         public void onBindViewHolder(CartItemList_Adapter.ViewHolder holder, int position) {
-            MenuItem tempMenuItem = appData.cartContent.get(position);
-            holder.listItemtxt.setText(tempMenuItem.getNavn() + " x 1   " + tempMenuItem.getPris());
+            Product tempMenuItem = appData.cartContent.get(position);
+            holder.listItemtxt.setText(tempMenuItem.getName() + " x 1   " + tempMenuItem.getPrice());
         }
 
         @Override

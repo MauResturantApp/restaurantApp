@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import org.greenrobot.eventbus.EventBus;
@@ -52,24 +50,45 @@ public class MenuList_frag extends Fragment {
     private LinearLayoutManager manager;
     private FirebaseRecyclerAdapter<Product, ProductHolder> recyclerViewAdapter;
 
-    public static class ProductHolder extends RecyclerView.ViewHolder{
+    public class ProductHolder extends RecyclerView.ViewHolder{
 
-        View productView;
+        View rod;
+        ImageView itemIcon;
+        TextView mainItemTxt;
+        TextView extraItemTxt;
+        ImageButton addNewItemBtn;
 
-        public ProductHolder(View productView){
-            super(productView);
-            this.productView = productView;
+        public ProductHolder(View rod){
+            super(rod);
+            this.rod = rod;
 
         }
 
         public void setProductName(String name){
-            TextView textView = (TextView) productView.findViewById(R.id.productName);
-            textView.setText(name);
+            mainItemTxt = (TextView) rod.findViewById(R.id.txt_menu_mainItemtext);
+            mainItemTxt.setText(name);
         }
 
         public void setPrice(int price){
-            Button button = (Button) productView.findViewById(R.id.priceButton);
-            button.setText(Integer.toString(price));
+            extraItemTxt = (TextView) rod.findViewById(R.id.txt_menu_extraItemText);
+            extraItemTxt.setText(Integer.toString(price));
+        }
+
+        public void setItemIcon(){
+            itemIcon = (ImageView) rod.findViewById(R.id.icon_menu_itemIcon);
+        }
+
+        public void setImageButton(final int position) {
+            addNewItemBtn = (ImageButton) rod.findViewById(R.id.imgBtn_menu_removeItem);
+            addNewItemBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    appData.cartContent.add(recyclerViewAdapter.getItem(position));
+                    Toast.makeText(getContext(), recyclerViewAdapter.getItem(position).getName() + "er tilføget til kurv", Toast.LENGTH_SHORT).show();
+                    NewItemToCartEvent event = new NewItemToCartEvent();
+                    EventBus.getDefault().post(event);
+                }
+            });
         }
     }
 
@@ -114,8 +133,6 @@ public class MenuList_frag extends Fragment {
         products.setHasFixedSize(false); //Test forskel
         products.setLayoutManager(manager);
 
-        menuList = (ListView) rod.findViewById(R.id.menu_ViewPagerContent);
-        ArrayList<MenuItem> tempMenu = new ArrayList<>();
         switch (pageNumber) {
             case 1:
                 ref = appData.firebaseDatabase.getReference("products/Frugt");
@@ -148,25 +165,13 @@ public class MenuList_frag extends Fragment {
 
             @Override
             protected void populateViewHolder(ProductHolder productHolder, Product product, int position) {
+                Log.d("recyclerViewAdapter", "1");
+                        
                 final int mPosition = position;
                 productHolder.setProductName(product.getName());
                 productHolder.setPrice(product.getPrice());
-                productHolder.productView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Basket.addToBasket(mPosition, mFirebaseUser);
-                        ListIterator iterator = Basket.getProducts().listIterator();
-                        String items = "";
-                        for(int i = 0; i < Basket.getProducts().size(); i++){
-                            if(iterator.hasNext()){
-                                System.out.println(iterator.toString());
-                                Product product = (Product) iterator.next();
-                                items = items + product.getName();
-                            }
-                        }
-                        basket.setText(Basket.getProducts().size() + ": " + items);
-                    }
-                });
+                productHolder.setItemIcon();
+                productHolder.setImageButton(mPosition);
             }
         };
 
@@ -176,7 +181,7 @@ public class MenuList_frag extends Fragment {
         products.setAdapter(recyclerViewAdapter);
     }
 
-    public class FoodMenuAdapter extends ArrayAdapter<MenuItem> {
+/*    public class FoodMenuAdapter extends ArrayAdapter<MenuItem> {
         private int rod;
         private List<MenuItem> tempVare;
 
@@ -234,5 +239,5 @@ public class MenuList_frag extends Fragment {
         }
 
 
-    }
+    }*/
 }
