@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(mainTollbar);
         EventBus.getDefault().register(this);
         getSupportActionBar().setTitle(null);
-
         showHomeScreen();
         hideCart();
 
@@ -48,50 +47,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         int menuSelect = item.getItemId();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment frag;
 
-        if (menuSelect == R.id.menu_foodmenu) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            Fragment frag = new MenuTabs_frag();
-            ft.replace(R.id.mainFrameFrag, frag).commit();
-        }
-        if (menuSelect == R.id.menu_login) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            Fragment frag = new Login_frag();
-            ft.replace(R.id.mainFrameFrag, frag).commit();
-        }
+        switch (menuSelect) {
+            case R.id.menu_foodmenu:
+                frag = new MenuTabs_frag();
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+                break;
 
-        if (menuSelect == R.id.menu_findos) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            Fragment frag = new FindWay_frag();
-            ft.replace(R.id.mainFrameFrag, frag).commit();
-        }
-        if (menuSelect == R.id.menu_qrTest) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            Fragment frag = new QRTest();
-            ft.replace(R.id.mainFrameFrag, frag).commit();
-        }
-        if (menuSelect == R.id.menu_home) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            Fragment frag = new Home_frag();
-            ft.replace(R.id.mainFrameFrag, frag).commit();
-        }
-        if (menuSelect == R.id.menu_indstillinger) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            Fragment frag = new Settings_frag();
-            ft.replace(R.id.mainFrameFrag, frag).commit();
-        }
-        if (menuSelect == R.id.menu_kontakt) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            Fragment frag = new Contact_frag();
-            ft.replace(R.id.mainFrameFrag, frag).commit();
-        }
-        if (menuSelect == R.id.menu_qrCamera) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            Fragment frag = new QRCamera();
-            ft.replace(R.id.mainFrameFrag, frag).commit();
-        }
+            case R.id.menu_login:
+                frag = new Login_frag();
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+                break;
 
+            case R.id.menu_findos:
+                frag = new FindWay_frag();
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+                break;
 
+            case R.id.menu_qrTest:
+                frag = new QRTest();
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+                break;
+
+            case R.id.menu_home:
+                frag = new Home_frag();
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+                break;
+
+            case R.id.menu_indstillinger:
+                frag = new Settings_frag();
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+                break;
+
+            case R.id.menu_kontakt:
+
+                frag = new Contact_frag();
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+                break;
+
+            case R.id.menu_qrCamera:
+
+                frag = new QRCamera();
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+                break;
+
+            default:
+                break;
+
+        }
         return true;
     }
 

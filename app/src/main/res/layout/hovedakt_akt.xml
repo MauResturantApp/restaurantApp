@@ -34,13 +34,13 @@
 
             android:transitionName="kurv"
             tools:layout="@layout/kurv_frag"
-            android:layout_marginBottom="117dp"
+            android:layout_marginBottom="110dp"
             android:id="@+id/cartContentShowHide_frag" />
 
         <fragment
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="60dp"
+            android:layout_marginBottom="56dp"
             android:layout_gravity="bottom"
             android:name="mau.resturantapp.aktivitys.CartMenu_frag"
             android:id="@+id/buttomFragKurv"

@@ -5,21 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:weightSum="1"
+    android:background="@color/authui_colorPrimary"
     tools:context=".aktivitys.MainActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:paddingLeft="2dp"
-        android:paddingTop="2dp"
         android:paddingBottom="2dp"
-        android:paddingRight="2dp"
-        android:layout_height="wrap_content"
+        android:paddingTop="2dp"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp"
+        android:layout_height="match_parent"
         android:background="#FF3412">
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
+        android:background="@color/authui_colorPrimary"
         android:id="@+id/kurv_listview" />
 
 

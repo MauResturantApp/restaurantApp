@@ -32,18 +32,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:id="@+id/txt_cartContent_mainItemtext"
-        android:layout_above="@+id/txt_cartContent_extraItemText"
-        android:layout_toEndOf="@+id/icon_cartContent_itemIcon"
-        android:layout_toStartOf="@id/imgBtn_cartContent_removeItem" />
-
-    <TextView
-        android:text=""
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/icon_cartContent_itemIcon"
         android:layout_toEndOf="@+id/icon_cartContent_itemIcon"
         android:layout_toStartOf="@id/imgBtn_cartContent_removeItem"
-        android:id="@+id/txt_cartContent_extraItemText" />
+        android:layout_alignParentBottom="true" />
 
 
 </RelativeLayout>

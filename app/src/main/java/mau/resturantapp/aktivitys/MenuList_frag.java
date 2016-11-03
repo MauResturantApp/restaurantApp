@@ -111,7 +111,6 @@ public class MenuList_frag extends Fragment {
         public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder mainViewH = null;
             if (convertView == null) {
-
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 convertView = inflater.inflate(rod, parent, false);
                 ViewHolder viewer = new ViewHolder();
