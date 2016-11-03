@@ -1,5 +1,9 @@
 package mau.resturantapp.data;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 /**
@@ -16,6 +20,10 @@ public class appData {
     public static ArrayList<MenuItem> menu4 = new ArrayList<>();
     public static ArrayList<MenuItem> menu5 = new ArrayList<>();
     public static String[] currentTabs = tempItem.getTabs();
+
+    public static FirebaseDatabase firebaseDatabase;
+    public static FirebaseUser firebaseUser;
+    public static FirebaseAuth firebaseAuth;
 
 
 }

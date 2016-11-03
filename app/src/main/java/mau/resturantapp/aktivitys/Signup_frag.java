@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import mau.resturantapp.R;
+import mau.resturantapp.data.appData;
 
 /**
  * Created by anwar on 10/24/16.
@@ -29,14 +30,13 @@ public class Signup_frag extends Fragment implements View.OnClickListener, OnCom
     protected EditText emailEditText;
     protected Button signUpButton;
     protected EditText passWrodConfirm;
-    private FirebaseAuth mFirebaseAuth;
     private ProgressBar loader;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rod = inflater.inflate(R.layout.signup_frag, container, false);
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
+        appData.firebaseAuth = appData.firebaseAuth.getInstance();
         loader = (ProgressBar) rod.findViewById(R.id.progBar_signup);
         passwordEditText = (EditText) rod.findViewById(R.id.passwordField);
         emailEditText = (EditText) rod.findViewById(R.id.emailField);
@@ -68,7 +68,7 @@ public class Signup_frag extends Fragment implements View.OnClickListener, OnCom
             Toast.makeText(getContext(), "De indtastede password matcher ikke, venligst prøv igen", Toast.LENGTH_LONG).show();
             loader.setVisibility(View.GONE);
         } else {
-            mFirebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this);
+            appData.firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this);
         }
     }
 

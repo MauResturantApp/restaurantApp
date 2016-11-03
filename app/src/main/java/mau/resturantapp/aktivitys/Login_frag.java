@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import org.greenrobot.eventbus.EventBus;
 
 import mau.resturantapp.R;
+import mau.resturantapp.data.appData;
 import mau.resturantapp.events.OnSuccesfullLogInEvent;
 
 /**
@@ -33,7 +34,6 @@ public class Login_frag extends Fragment implements View.OnClickListener, OnComp
     protected EditText passwordEditText;
     protected Button logInButton;
     protected TextView signUpTextView;
-    private FirebaseAuth mFirebaseAuth;
     private ProgressBar loader;
     private View rod;
 
@@ -41,7 +41,7 @@ public class Login_frag extends Fragment implements View.OnClickListener, OnComp
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rod = inflater.inflate(R.layout.login_frag, container, false);
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
+        appData.firebaseAuth = FirebaseAuth.getInstance();
 
 
         loader = (ProgressBar) rod.findViewById(R.id.progBar_logIn);
@@ -87,7 +87,7 @@ public class Login_frag extends Fragment implements View.OnClickListener, OnComp
 
 
         } else {
-            mFirebaseAuth.signInWithEmailAndPassword(email, password)
+            appData.firebaseAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this);
         }
     }
