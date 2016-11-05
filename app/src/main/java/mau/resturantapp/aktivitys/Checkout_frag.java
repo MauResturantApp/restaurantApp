@@ -8,7 +8,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ServerValue;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import mau.resturantapp.R;
+import mau.resturantapp.data.Order;
+import mau.resturantapp.data.appData;
 
 /**
  * Created by anwar on 10/16/16.
@@ -22,6 +30,8 @@ public class Checkout_frag extends Fragment implements View.OnClickListener {
     private EditText editPhone;
     private EditText editDate;
     private Button checkoutBtn;
+
+    private DatabaseReference ref;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,7 +59,14 @@ public class Checkout_frag extends Fragment implements View.OnClickListener {
     }
 
     private void finishCheckOut() {
-        // TODO
+        String uid = appData.getUID();
+        if (uid != null) {
+            ref = appData.firebaseDatabase.getReference("orders/" + uid);
+            Order order = new Order(appData.cartContent, appData.getTotalPrice(), ServerValue.TIMESTAMP);
+            ref.push().setValue(order);
+        } else {
+            //login first!
+        }
 
     }
 }

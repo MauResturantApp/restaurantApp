@@ -1,5 +1,7 @@
 package mau.resturantapp.data;
 
+import android.support.annotation.Nullable;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
@@ -25,5 +27,34 @@ public class appData {
     public static FirebaseUser firebaseUser;
     public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
+
+    public static int getTotalPrice() {
+        int totalprice = 0;
+
+        for (int i = 0; i < appData.cartContent.size(); i++) {
+            totalprice += appData.cartContent.get(i).getPrice();
+        }
+
+        return totalprice;
+    }
+
+    //These functions can potentially be moved to a Firebase related singleton.
+
+    public static boolean isLoggedIn(){
+        if(firebaseAuth.getCurrentUser() != null){
+            return true;
+        }
+
+        return false;
+    }
+
+    @Nullable
+    public static String getUID(){
+        if(isLoggedIn()) {
+            return firebaseAuth.getCurrentUser().getUid();
+        }
+
+        return null;
+    }
 
 }
