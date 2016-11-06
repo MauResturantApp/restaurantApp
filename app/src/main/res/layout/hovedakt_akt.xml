@@ -17,15 +17,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
 
+        <FrameLayout
             android:layout_marginBottom="117dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/mainFrameLayout">
+        <FrameLayout
             android:layout_width="match_parent"
 
             android:layout_height="match_parent"
             android:id="@+id/mainFrameFrag"></FrameLayout>
 
-
+    </FrameLayout>
         <fragment
             android:layout_width="match_parent"
             android:layout_height="150dp"

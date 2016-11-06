@@ -7,7 +7,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -34,8 +36,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setTitle(null);
         showHomeScreen();
         hideCart();
+        final FrameLayout mainFrame = (FrameLayout) findViewById(R.id.mainFrameLayout);
+        mainFrame.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
 
+                if(view == mainFrame){
 
+                    hideCart();
+                    return true;
+                }
+                   return false;
+
+            }
+        });
     }
 
 
@@ -53,43 +67,57 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (menuSelect) {
             case R.id.menu_foodmenu:
                 frag = new MenuTabs_frag();
+                ft.addToBackStack(null);
                 ft.replace(R.id.mainFrameFrag, frag).commit();
                 break;
 
             case R.id.menu_login:
                 frag = new Login_frag();
+                                ft.addToBackStack(null);
                 ft.replace(R.id.mainFrameFrag, frag).commit();
                 break;
 
             case R.id.menu_findos:
                 frag = new FindWay_frag();
+                                                ft.addToBackStack(null);
+
                 ft.replace(R.id.mainFrameFrag, frag).commit();
                 break;
 
             case R.id.menu_qrTest:
                 frag = new QRTest();
+                                                ft.addToBackStack(null);
+
                 ft.replace(R.id.mainFrameFrag, frag).commit();
                 break;
 
             case R.id.menu_home:
                 frag = new Home_frag();
+                                                ft.addToBackStack(null);
+
                 ft.replace(R.id.mainFrameFrag, frag).commit();
                 break;
 
             case R.id.menu_indstillinger:
                 frag = new Settings_frag();
+                                                ft.addToBackStack(null);
+
                 ft.replace(R.id.mainFrameFrag, frag).commit();
                 break;
 
             case R.id.menu_kontakt:
 
                 frag = new Contact_frag();
+                                                ft.addToBackStack(null);
+
                 ft.replace(R.id.mainFrameFrag, frag).commit();
                 break;
 
             case R.id.menu_qrCamera:
 
                 frag = new QRCamera();
+                                                ft.addToBackStack(null);
+
                 ft.replace(R.id.mainFrameFrag, frag).commit();
                 break;
 
@@ -117,6 +145,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Fragment fragmentCartContent = fragmentManager.findFragmentById(R.id.cartContentShowHide_frag);
         transaction.hide(fragmentCartContent).commit();
     }
+
+
 
     private void showHomeScreen() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
