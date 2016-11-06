@@ -16,7 +16,7 @@ import mau.resturantapp.R;
 public class Home_frag extends Fragment {
 
     private View rod;
-
+//jj
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rod = inflater.inflate(R.layout.home_frag, container, false);
