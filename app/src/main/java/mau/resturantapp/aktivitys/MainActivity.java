@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,12 +37,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         showHomeScreen();
         hideCart();
         final FrameLayout mainFrame = (FrameLayout) findViewById(R.id.mainFrameLayout);
-        mainFrame.setOnTouchListener(new FrameLayout.OnTouchListener() {
+        mainFrame.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                Log.d("hej","hej");
-                    hideCart();
 
+                if(view == mainFrame){
+
+                    hideCart();
+                    return true;
+                }
                    return false;
 
             }

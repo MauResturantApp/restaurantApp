@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
+    android:id="@+id/mainLinear"
     android:orientation="vertical"
     android:paddingBottom="0dp"
     android:paddingLeft="1dp"
@@ -22,6 +23,7 @@
             android:layout_marginBottom="117dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clickable="true"
             android:id="@+id/mainFrameLayout">
         <FrameLayout
             android:layout_width="match_parent"
