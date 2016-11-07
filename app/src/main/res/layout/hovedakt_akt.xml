@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#000000"
     android:id="@+id/mainLinear"
     android:orientation="vertical"
@@ -19,39 +20,46 @@
         android:layout_height="match_parent">
 
 
-        <FrameLayout
-            android:layout_marginBottom="117dp"
+
+        <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
+            android:layout_marginBottom="55dp"
             android:layout_height="match_parent"
             android:clickable="true"
-            android:id="@+id/mainFrameLayout">
-        <FrameLayout
-            android:layout_width="match_parent"
+            android:fitsSystemWindows="true"
+            android:id="@+id/coordLayout_cart">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/mainFrameFrag">
 
-            android:layout_height="match_parent"
-            android:id="@+id/mainFrameFrag"></FrameLayout>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                app:layout_behavior="@string/bottom_sheet_behavior"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:id="@+id/frameLayout_bottomSheet">
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="145dp"
+                android:name="mau.resturantapp.aktivitys.CartContent_frag"
+                android:transitionName="kurv"
+                tools:layout="@layout/kurv_frag"
+                android:id="@+id/cartContentShowHide_frag" />
 
-    </FrameLayout>
-        <fragment
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_gravity="bottom"
-            android:name="mau.resturantapp.aktivitys.CartContent_frag"
+            </FrameLayout>
 
-            android:transitionName="kurv"
-            tools:layout="@layout/kurv_frag"
-            android:layout_marginBottom="110dp"
-            android:id="@+id/cartContentShowHide_frag" />
+            <android.support.design.widget.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/kurv_icon"
+                android:id="@+id/floatActBtn_cartContent"
+                app:layout_anchor="@id/cartContentShowHide_frag"
+                app:layout_anchorGravity="clip_horizontal"/>
 
-        <fragment
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="56dp"
-            android:layout_gravity="bottom"
-            android:name="mau.resturantapp.aktivitys.CartMenu_frag"
-            android:id="@+id/buttomFragKurv"
-            tools:layout="@layout/kurvshowhide_frag" />
-
+        </android.support.design.widget.CoordinatorLayout>
 
         <include
             android:id="@+id/mainToolbar"
