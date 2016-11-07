@@ -51,26 +51,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         bottomSheetBehavior.setPeekHeight(150);
         bottomSheetBehavior.setHideable(true);
 
-        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if(newState == STATE_HIDDEN){
-                    bottomSheetBehavior.setState(STATE_HIDDEN);
-                }
-            }
 
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                    if(bottomSheetBehavior.getState() == STATE_DRAGGING) {
-                        Log.d("stage 1", "state 2 " );
-                        if (slideOffset < -0.4) {
-                            bottomSheetBehavior.setState(STATE_HIDDEN);
-                            Log.d("stage 1", "state 23 " + bottomSheetBehavior.getState());
-
-                        }
-                    }
-            }
-        });
 
 
         actBtn = (FloatingActionButton) findViewById(R.id.floatActBtn_cartContent);
@@ -78,15 +59,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         actBtn.setOnClickListener(this);
 
 
-        FrameLayout mainFrame = (FrameLayout) findViewById(R.id.mainFrameFrag);
-        mainFrame.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                bottomSheetBehavior.setState(STATE_HIDDEN);
-
-                return false;
-            }
-        });
 
     }
 
