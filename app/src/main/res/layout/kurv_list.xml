@@ -25,7 +25,7 @@
 
 
         <TextView
-            android:text="TextView"
+            android:text="TextView ----------------------------------------------------------"
             android:textSize="15dp"
             android:textStyle="italic"
             android:textAlignment="textStart"

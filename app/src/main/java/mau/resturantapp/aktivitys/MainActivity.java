@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
         bottomSheetBehavior.setState(STATE_COLLAPSED);
 
+        bottomBar.setElevation(4);
+
         bottomBar.setActiveTabColor("#e00404");
         bottomBar.setBackgroundColor(Color.rgb(157,219,50));
 
