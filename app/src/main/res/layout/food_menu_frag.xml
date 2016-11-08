@@ -11,7 +11,9 @@
         android:id="@+id/tabLayout"
         app:tabIndicatorHeight="5dp"
         app:tabIndicatorColor="@color/common_google_signin_btn_text_dark"
-
+        android:background="@color/colorPrimaryDark"
+        app:tabTextColor="@color/colorPrimary"
+        app:tabSelectedTextColor="@color/primaryTextRed"
         android:layout_height="wrap_content">
 
     </android.support.design.widget.TabLayout>
@@ -20,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="0px"
         android:layout_weight="1"
-        android:background="@color/com_facebook_button_background_color_disabled"
+        android:background="@color/colorPrimary"
         android:id="@+id/menuTabContent">
 
     </android.support.v4.view.ViewPager>

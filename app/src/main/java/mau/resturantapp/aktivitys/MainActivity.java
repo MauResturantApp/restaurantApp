@@ -48,9 +48,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         FrameLayout sheet = (FrameLayout) findViewById(R.id.frameLayout_bottomSheet);
         bottomSheetBehavior = from(sheet);
 
-        bottomSheetBehavior.setPeekHeight(150);
+        bottomSheetBehavior.setPeekHeight(46);
         bottomSheetBehavior.setHideable(true);
 
+        bottomSheetBehavior.setState(STATE_COLLAPSED);
 
 
 

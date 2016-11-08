@@ -3,38 +3,53 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="15dp"
-    android:layout_marginRight="15dp"
-    android:layout_marginTop="1dp"
-    android:layout_marginBottom="1dp">
+>
 
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        app:srcCompat="@drawable/ic_action_name"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/icon_cartContent_itemIcon" />
-
+        android:layout_alignParentStart="true">
 
     <ImageButton
         android:layout_width="30dp"
         android:layout_height="30dp"
         app:srcCompat="@drawable/remove_kurv_icon"
         android:layout_alignParentTop="true"
+        android:layout_margin="1dp"
+        android:background="@color/colorOrange"
         android:layout_alignParentRight="true"
         android:id="@+id/imgBtn_cartContent_removeItem" />
 
-    <TextView
-        android:text="TextView"
-        android:textSize="14dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:id="@+id/txt_cartContent_mainItemtext"
-        android:layout_toEndOf="@+id/icon_cartContent_itemIcon"
-        android:layout_toStartOf="@id/imgBtn_cartContent_removeItem"
-        android:layout_alignParentBottom="true" />
 
+
+        <TextView
+            android:text="TextView"
+            android:textSize="15dp"
+            android:textStyle="italic"
+            android:textAlignment="textStart"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/primaryTextRed"
+            android:id="@+id/txt_cartContent_mainItemtext"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_alignTop="@+id/imgBtn_cartContent_removeItem"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/txt_cart_priceText" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="5DKK"
+            android:textColor="@color/primaryTextRed"
+            android:background="@color/colorPrimary"
+            android:textAlignment="center"
+            android:id="@+id/txt_cart_priceText"
+            android:layout_alignBottom="@+id/imgBtn_cartContent_removeItem"
+            android:layout_toStartOf="@+id/imgBtn_cartContent_removeItem" />
+    </RelativeLayout>
 
 </RelativeLayout>

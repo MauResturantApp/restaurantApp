@@ -67,7 +67,6 @@ public class CartContentFirebase_frag extends Fragment {
             super(rod);
             this.rod = rod;
 
-            ImgIcon = (ImageView) rod.findViewById(R.id.icon_cartContent_itemIcon);
             ImgBtn = (ImageButton) rod.findViewById(R.id.imgBtn_cartContent_removeItem);
         }
 
