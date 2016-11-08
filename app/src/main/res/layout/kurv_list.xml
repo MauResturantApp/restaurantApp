@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/primaryTextRed"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
 
@@ -17,7 +17,7 @@
         android:layout_height="30dp"
         app:srcCompat="@drawable/remove_kurv_icon"
         android:layout_alignParentTop="true"
-        android:layout_margin="1dp"
+        android:layout_marginBottom="1dp"
         android:background="@color/colorOrange"
         android:layout_alignParentRight="true"
         android:id="@+id/imgBtn_cartContent_removeItem" />
@@ -34,8 +34,6 @@
             android:background="@color/colorPrimary"
             android:textColor="@color/primaryTextRed"
             android:id="@+id/txt_cartContent_mainItemtext"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
             android:layout_alignTop="@+id/imgBtn_cartContent_removeItem"
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@+id/txt_cart_priceText" />

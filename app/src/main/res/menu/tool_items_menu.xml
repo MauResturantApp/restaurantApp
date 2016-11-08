@@ -4,6 +4,7 @@
     tools:context=".aktivitys.MainActivity"
     >
 
+
     <item
         android:id="@+id/menu_home"
         android:orderInCategory="1"

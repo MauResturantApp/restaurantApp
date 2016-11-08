@@ -1,6 +1,8 @@
 package mau.resturantapp.aktivitys;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
@@ -17,6 +19,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnMenuTabSelectedListener;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -29,21 +34,26 @@ import mau.resturantapp.test.QRTest;
 
 import static android.support.design.widget.BottomSheetBehavior.*;
 
-public class MainActivity extends AppCompatActivity implements OnClickListener {
+public class MainActivity extends AppCompatActivity implements OnClickListener, OnMenuTabSelectedListener {
 
-    private Toolbar mainTollbar;
+    //private Toolbar mainTollbar;
     private FloatingActionButton actBtn;
     private BottomSheetBehavior bottomSheetBehavior;
+    private BottomBar bottomBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hovedakt_akt);
-        mainTollbar = (Toolbar) findViewById(R.id.mainToolbar);
-        setSupportActionBar(mainTollbar);
+        //mainTollbar = (Toolbar) findViewById(R.id.mainToolbar);
+       // setSupportActionBar(mainTollbar);
         EventBus.getDefault().register(this);
-        getSupportActionBar().setTitle(null);
+       // getSupportActionBar().setTitle(null);
         showHomeScreen();
+
+        bottomBar = BottomBar.attach(this,savedInstanceState);
+        bottomBar.setItemsFromMenu(R.menu.bottom_menu,this);
 
         FrameLayout sheet = (FrameLayout) findViewById(R.id.frameLayout_bottomSheet);
         bottomSheetBehavior = from(sheet);
@@ -53,7 +63,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
         bottomSheetBehavior.setState(STATE_COLLAPSED);
 
-
+        bottomBar.setActiveTabColor("#e00404");
+        bottomBar.setBackgroundColor(Color.rgb(157,219,50));
 
         actBtn = (FloatingActionButton) findViewById(R.id.floatActBtn_cartContent);
 
@@ -76,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         }
 
     }
-
+    /*
     @Override
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         int menuSelect = item.getItemId();
@@ -152,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         getMenuInflater().inflate(R.menu.tool_items_menu, menu);
         return true;
     }
-
+*/
     @Subscribe
     public void logedInEvent(OnSuccesfullLogInEvent event) {
         showHomeScreen();
@@ -174,4 +185,32 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     }
 
 
+    @Override
+    public void onMenuItemSelected(@IdRes int menuItemId) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment frag;
+
+        switch (menuItemId){
+            case R.id.menuItem_food:
+                frag = new MenuTabs_frag();
+                ft.addToBackStack(null);
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+
+                break;
+
+            case R.id.menuItem_home:
+                frag = new Home_frag();
+                ft.addToBackStack(null);
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+                break;
+
+            case R.id.menuItem_contact:
+                frag = new Contact_frag();
+                ft.addToBackStack(null);
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+                break;
+            default:
+                break;
+        }
+    }
 }

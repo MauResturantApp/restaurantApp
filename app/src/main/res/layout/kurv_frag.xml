@@ -15,11 +15,11 @@
         android:paddingLeft="1dp"
         android:paddingRight="1dp"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark">
+        android:background="@color/primaryTextRed">
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="42dp"
-            android:background="@color/colorPrimaryDark">
+            android:background="@color/primaryTextRed">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -37,11 +37,11 @@
                     android:textAlignment="center"
                     android:text="CheckOut"
                     android:layout_margin="2dp"
-                    android:background="@color/colorPrimaryDark"
+                    android:background="@color/primaryTextRed"
                     android:id="@+id/btn_checkout"
                     android:clickable="true"
                     android:layout_height="match_parent"
-                    android:textColor="@color/primaryTextRed"
+                    android:textColor="@color/colorPrimary"
                      />
                 </FrameLayout>
                 <TextView
@@ -62,6 +62,9 @@
         </FrameLayout>
 
         <android.support.v7.widget.RecyclerView
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginBottom="1dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"

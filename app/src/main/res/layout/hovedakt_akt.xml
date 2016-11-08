@@ -1,28 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/mainLinear"
-    android:orientation="vertical"
+    android:id="@+id/mainCord"
+    android:fitsSystemWindows="true"
     tools:context="mau.resturantapp.aktivitys.MainActivity">
 
-
-    <FrameLayout
-        android:background="@color/colorPrimary"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-
-        <android.support.design.widget.CoordinatorLayout
-            android:layout_width="match_parent"
-            android:layout_marginBottom="56dp"
-            android:layout_height="match_parent"
-            android:clickable="true"
-            android:fitsSystemWindows="true"
-            android:id="@+id/coordLayout_cart">
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -52,18 +37,10 @@
                 android:src="@drawable/kurv_icon"
                 android:tint="@color/colorWhite"
                 android:id="@+id/floatActBtn_cartContent"
-                app:backgroundTint="@color/colorPrimaryDark"
+                app:backgroundTint="@color/primaryTextRed"
                 app:layout_anchor="@id/cartContentShowHide_frag"
                 app:layout_anchorGravity="clip_horizontal"/>
 
+
+
         </android.support.design.widget.CoordinatorLayout>
-
-        <include
-            android:id="@+id/mainToolbar"
-            layout="@layout/maintoolbar_toolbar">
-
-        </include>
-
-    </FrameLayout>
-
-</LinearLayout>
