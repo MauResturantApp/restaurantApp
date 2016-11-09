@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -58,7 +59,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         FrameLayout sheet = (FrameLayout) findViewById(R.id.frameLayout_bottomSheet);
         bottomSheetBehavior = from(sheet);
 
-        bottomSheetBehavior.setPeekHeight(46);
+
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        float dp = 46f;
+        float fpixels = metrics.density * dp;
+        int pixels = (int) (fpixls + 0.5f);
+
+        bottomSheetBehavior.setPeekHeight(pixels);
         bottomSheetBehavior.setHideable(true);
 
         bottomSheetBehavior.setState(STATE_COLLAPSED);

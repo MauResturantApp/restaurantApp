@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menuItem_home"
-        android:icon="@drawable/ic_home_icon"
+        android:icon="@drawable/ic_action_home"
         android:title="Hjem" />
     <item
         android:id="@+id/menuItem_food"
