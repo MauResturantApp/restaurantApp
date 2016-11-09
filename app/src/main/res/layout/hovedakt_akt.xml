@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    tools:context="mau.resturantapp.aktivitys.MainActivity"
+    >
+
+<android.support.design.widget.CoordinatorLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:id="@+id/mainCord"
-    android:fitsSystemWindows="true"
-    tools:context="mau.resturantapp.aktivitys.MainActivity">
+    android:layout_marginBottom="60dp"
+    android:fitsSystemWindows="true">
+
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/mainFrameFrag">
+
 
             </FrameLayout>
 
@@ -31,6 +40,15 @@
 
             </FrameLayout>
 
+        <ImageButton
+        android:layout_width="45dp"
+        android:src="@drawable/ic_action_sidemenu"
+        android:background="#80ffffff"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_sidemenu" />
+
             <android.support.design.widget.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,5 +61,34 @@
                 app:layout_anchorGravity="clip_horizontal"/>
 
 
-
         </android.support.design.widget.CoordinatorLayout>
+
+
+    <android.support.design.widget.NavigationView
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:id="@+id/navView_sideMenu"
+        android:fitsSystemWindows="true"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/sidemenu_header"
+        app:menu="@menu/drawermenu"
+        >
+
+    </android.support.design.widget.NavigationView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <com.roughike.bottombar.BottomBar
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/bottomBar_main"
+        android:layout_alignParentBottom="true"
+        app:bb_tabXmlResource="@xml/bottom_tabs"
+        android:background="@color/colorPrimaryDark"
+        app:bb_activeTabColor="#e00404"
+        ></com.roughike.bottombar.BottomBar>
+    </RelativeLayout>
+
+
+</android.support.v4.widget.DrawerLayout>

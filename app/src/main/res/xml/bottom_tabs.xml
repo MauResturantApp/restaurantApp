@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <tabs>
+
+        <tab
+            id="@+id/botbar_home"
+            icon="@drawable/ic_action_home"
+            title="Hjem" />
+        <tab
+            id="@+id/botbar_food"
+            icon="@drawable/ic_action_food"
+            title="Se Menu" />
+        <tab
+            id="@+id/botbar_contact"
+            icon="@drawable/ic_action_contact"
+            title="Kontakt" />
+    </tabs>

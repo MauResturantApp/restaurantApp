@@ -37,7 +37,7 @@ dependencies {
     compile 'com.firebaseui:firebase-ui:0.6.1'
     compile 'com.google.android.gms:play-services-maps:9.6.1'
     compile 'me.dm7.barcodescanner:zxing:1.8.4'
-    compile 'com.roughike:bottom-bar:1.2.1'
+    compile 'com.roughike:bottom-bar:2.0.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

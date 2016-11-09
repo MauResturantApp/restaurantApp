@@ -1,15 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/menuItem_home"
-        android:icon="@drawable/ic_action_home"
-        android:title="Hjem" />
-    <item
-        android:id="@+id/menuItem_food"
-        android:icon="@drawable/ic_action_food"
-        android:title="Se Menu" />
-    <item
-        android:id="@+id/menuItem_contact"
-        android:icon="@drawable/ic_action_contact"
-        android:title="Kontakt" />
 </menu>

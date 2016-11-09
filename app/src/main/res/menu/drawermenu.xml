@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+    <item
+        android:id="@+id/menu_findos"
+        android:orderInCategory="1"
+        android:title="Vejvisere"
+        android:icon="@drawable/findos_icon"
+        ></item>
+
+    <item
+        android:id="@+id/menu_indstillinger"
+        android:orderInCategory="5"
+        android:title="Indstillinger"
+        android:icon="@drawable/indstilling_icon"
+        ></item>
+    <item
+        android:id="@+id/menu_login"
+        android:orderInCategory="6"
+        android:title="log in"
+        android:icon="@drawable/ic_action_login"
+        >
+    </item>
+
+    <item
+        android:id="@+id/menu_qrTest"
+        android:orderInCategory="7"
+        android:title="qr Koder"
+        android:icon="@drawable/ic_action_qrcode"
+        ></item>
+    <item
+        android:id="@+id/menu_qrCamera"
+        android:orderInCategory="8"
+        android:title="qr Camera"
+        android:icon="@drawable/ic_action_camera"
+        ></item>
+    </group>
+
+
+</menu>
