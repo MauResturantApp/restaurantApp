@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     tools:context="mau.resturantapp.aktivitys.MainActivity"
     >
@@ -27,7 +28,6 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
                 app:layout_behavior="@string/bottom_sheet_behavior"
                 android:id="@+id/frameLayout_bottomSheet">
             <fragment
@@ -64,17 +64,7 @@
         </android.support.design.widget.CoordinatorLayout>
 
 
-    <android.support.design.widget.NavigationView
-        android:layout_width="250dp"
-        android:layout_height="match_parent"
-        android:id="@+id/navView_sideMenu"
-        android:fitsSystemWindows="true"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/sidemenu_header"
-        app:menu="@menu/drawermenu"
-        >
 
-    </android.support.design.widget.NavigationView>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -89,6 +79,17 @@
         app:bb_activeTabColor="#e00404"
         ></com.roughike.bottombar.BottomBar>
     </RelativeLayout>
+    <android.support.design.widget.NavigationView
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:id="@+id/navView_sideMenu"
+        android:fitsSystemWindows="true"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/sidemenu_header"
+        app:menu="@menu/drawermenu"
+        >
+
+    </android.support.design.widget.NavigationView>
 
 
 </android.support.v4.widget.DrawerLayout>

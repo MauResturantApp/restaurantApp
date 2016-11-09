@@ -7,12 +7,14 @@
         android:id="@+id/menu_findos"
         android:orderInCategory="1"
         android:title="Vejvisere"
+        android:checked="false"
         android:icon="@drawable/findos_icon"
         ></item>
 
     <item
         android:id="@+id/menu_indstillinger"
         android:orderInCategory="5"
+        android:checked="false"
         android:title="Indstillinger"
         android:icon="@drawable/indstilling_icon"
         ></item>
@@ -20,6 +22,7 @@
         android:id="@+id/menu_login"
         android:orderInCategory="6"
         android:title="log in"
+        android:checked="false"
         android:icon="@drawable/ic_action_login"
         >
     </item>
@@ -28,12 +31,14 @@
         android:id="@+id/menu_qrTest"
         android:orderInCategory="7"
         android:title="qr Koder"
+        android:checked="false"
         android:icon="@drawable/ic_action_qrcode"
         ></item>
     <item
         android:id="@+id/menu_qrCamera"
         android:orderInCategory="8"
         android:title="qr Camera"
+        android:checked="false"
         android:icon="@drawable/ic_action_camera"
         ></item>
     </group>
