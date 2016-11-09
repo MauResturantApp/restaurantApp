@@ -2,21 +2,27 @@ package mau.resturantapp.aktivitys;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
 
 import org.greenrobot.eventbus.EventBus;
@@ -24,17 +30,21 @@ import org.greenrobot.eventbus.Subscribe;
 
 import mau.resturantapp.R;
 import mau.resturantapp.events.OnSuccesfullLogInEvent;
+import mau.resturantapp.test.QRCamera;
+import mau.resturantapp.test.QRTest;
 
 
 import static android.support.design.widget.BottomSheetBehavior.*;
 
-public class MainActivity extends AppCompatActivity implements OnClickListener, OnTabSelectListener {
+public class MainActivity extends AppCompatActivity implements OnClickListener, OnTabSelectListener, NavigationView.OnNavigationItemSelectedListener {
 
     //private Toolbar mainTollbar;
     private FloatingActionButton actBtn;
     private BottomSheetBehavior bottomSheetBehavior;
     private BottomBar bottomBar;
     private ImageButton drawerButton;
+    private DrawerLayout drawLayout;
+    private NavigationView sideMenu;
 
 
     @Override
@@ -49,8 +59,21 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         FrameLayout sheet = (FrameLayout) findViewById(R.id.frameLayout_bottomSheet);
         bottomSheetBehavior = from(sheet);
         drawerButton.setOnClickListener(this);
+        drawLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        sideMenu = (NavigationView) findViewById(R.id.navView_sideMenu);
+
+        bottomBar.setOnTabReselectListener(new OnTabReselectListener() {
+            @Override
+            public void onTabReSelected(@IdRes int tabId) {
+                onTabSelected(tabId);
+            }
+        });
 
         bottomBar.setOnTabSelectListener(this);
+
+        if(sideMenu != null){
+            sideMenu.setNavigationItemSelectedListener(this);
+        }
 
         int dp = DPtoPixels(46f);
         bottomSheetBehavior.setPeekHeight(dp);
@@ -80,87 +103,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
         }
         if(v == drawerButton){
-            // TODO: 11/9/16
+            drawLayout.openDrawer(Gravity.LEFT);
         }
 
     }
-    /*
-    @Override
-    public boolean onOptionsItemSelected(android.view.MenuItem item) {
-        int menuSelect = item.getItemId();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Fragment frag;
 
-        switch (menuSelect) {
-            case R.id.menu_foodmenu:
-                frag = new MenuTabs_frag();
-                ft.addToBackStack(null);
-                ft.replace(R.id.mainFrameFrag, frag).commit();
-                break;
-
-            case R.id.menu_login:
-                frag = new Login_frag();
-                                ft.addToBackStack(null);
-                ft.replace(R.id.mainFrameFrag, frag).commit();
-                break;
-
-            case R.id.menu_findos:
-                frag = new FindWay_frag();
-                                                ft.addToBackStack(null);
-
-                ft.replace(R.id.mainFrameFrag, frag).commit();
-                break;
-
-            case R.id.menu_qrTest:
-                frag = new QRTest();
-                                                ft.addToBackStack(null);
-
-                ft.replace(R.id.mainFrameFrag, frag).commit();
-                break;
-
-            case R.id.menu_home:
-                frag = new Home_frag();
-                                                ft.addToBackStack(null);
-
-                ft.replace(R.id.mainFrameFrag, frag).commit();
-                break;
-
-            case R.id.menu_indstillinger:
-                frag = new Settings_frag();
-                                                ft.addToBackStack(null);
-
-                ft.replace(R.id.mainFrameFrag, frag).commit();
-                break;
-
-            case R.id.menu_kontakt:
-
-                frag = new Contact_frag();
-                                                ft.addToBackStack(null);
-
-                ft.replace(R.id.mainFrameFrag, frag).commit();
-                break;
-
-            case R.id.menu_qrCamera:
-
-                frag = new QRCamera();
-                                                ft.addToBackStack(null);
-
-                ft.replace(R.id.mainFrameFrag, frag).commit();
-                break;
-
-            default:
-                break;
-
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.tool_items_menu, menu);
-        return true;
-    }
-*/
     @Subscribe
     public void logedInEvent(OnSuccesfullLogInEvent event) {
         showHomeScreen();
@@ -224,6 +171,66 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
             default:
                 break;
         }
+
+    }
+
+    @Override
+    public boolean onNavigationItemSelected( MenuItem item) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment frag;
+        drawLayout.closeDrawer(Gravity.LEFT);
+        item.setChecked(true);
+
+        Log.d("im in", "item selected");
+
+
+        switch (item.getItemId()) {
+
+            case R.id.menu_login:
+                frag = new Login_frag();
+                ft.addToBackStack(null);
+                Log.d("item selected", "login");
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+
+                break;
+
+            case R.id.menu_findos:
+                frag = new FindWay_frag();
+                ft.addToBackStack(null);
+                Log.d("item selected", "findway");
+
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+                break;
+
+            case R.id.menu_qrTest:
+                frag = new QRTest();
+                ft.addToBackStack(null);
+
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+                break;
+
+
+            case R.id.menu_indstillinger:
+                frag = new Settings_frag();
+                ft.addToBackStack(null);
+
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+
+                break;
+
+            case R.id.menu_qrCamera:
+                frag = new QRCamera();
+                ft.addToBackStack(null);
+
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+
+                break;
+
+            default:
+                break;
+
+        }
+        return true;
 
     }
 }
