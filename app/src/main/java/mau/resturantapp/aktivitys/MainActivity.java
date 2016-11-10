@@ -92,6 +92,18 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
+
+                if(newState == STATE_DRAGGING){
+                    fadeView.animate().alpha(0.3f);
+                    fadeView.setVisibility(View.VISIBLE);
+                }
+
+                if(newState == STATE_SETTLING){
+                    fadeView.animate().alpha(0.3f);
+                    fadeView.setVisibility(View.VISIBLE);
+                }
+
+
                 if(newState == STATE_EXPANDED){
                     fadeView.animate().alpha(0.3f);
                     fadeView.setVisibility(View.VISIBLE);
@@ -104,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
 
 
             }
