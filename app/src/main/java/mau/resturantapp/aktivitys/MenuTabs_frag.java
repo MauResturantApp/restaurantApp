@@ -36,7 +36,7 @@ public class MenuTabs_frag extends Fragment {
         rod = inflater.inflate(R.layout.food_menu_frag, container, false);
 
         tabs = (ViewPager) rod.findViewById(R.id.menuTabContent);
-        tabs.setAdapter(new TabsAdapter(getActivity().getSupportFragmentManager(), getContext()));
+        tabs.setAdapter(new TabsAdapter(getChildFragmentManager(), getContext()));
 
         tableLayout = (TabLayout) rod.findViewById(R.id.tabLayout);
 

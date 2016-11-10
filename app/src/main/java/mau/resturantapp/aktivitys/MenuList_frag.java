@@ -87,6 +87,7 @@ public class MenuList_frag extends Fragment {
     public static MenuList_frag newInstance(int page) {
         Bundle args = new Bundle();
         args.putInt(argPage, page);
+        Log.d("recyclerViewAdapter", "imagebutton" + page);
         MenuList_frag frag = new MenuList_frag();
         frag.setArguments(args);
         return frag;
@@ -96,11 +97,14 @@ public class MenuList_frag extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pageNumber = getArguments().getInt(argPage);
+        Log.d("oncreate" , "pagenumber" + pageNumber);
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        Log.d("start" , "pagenumber" + pageNumber);
 
         startRecyclerViewAdapter();
     }
@@ -108,17 +112,33 @@ public class MenuList_frag extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+        Log.d("stop" , "pagenumber" + pageNumber);
 
         if(recyclerViewAdapter != null){
             recyclerViewAdapter.cleanup();
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("pause" , "pagenumber" + pageNumber);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("destroy" , "pagenumber" + pageNumber);
+
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rod = inflater.inflate(R.layout.tabcontent_recyclerlist, container, false);
-
+        Log.d("creater inhold", "page number: " + pageNumber);
+        Button button2 = (Button) rod.findViewById(R.id.button2);
+        button2.setText("dxd"+pageNumber);
         products = (RecyclerView) rod.findViewById(R.id.recyclerview_tabcontent);
         manager = new LinearLayoutManager(getActivity().getApplicationContext());
 
