@@ -39,6 +39,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
                 app:layout_behavior="@string/bottom_sheet_behavior"
                 android:id="@+id/frameLayout_bottomSheet">
             <fragment

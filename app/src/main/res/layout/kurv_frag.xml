@@ -48,7 +48,7 @@
                     android:textAlignment="center"
                     android:gravity="center"
                     android:textSize="16dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="20dp"
                     android:textColor="@color/colorForeGround"
                     android:id="@+id/txt_cart_total"
                     android:layout_toLeftOf="@id/btnFrame" />

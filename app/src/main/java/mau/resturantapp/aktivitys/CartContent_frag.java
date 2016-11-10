@@ -102,7 +102,6 @@ public class CartContent_frag extends Fragment {
                 relativeLayout = (RelativeLayout) itemView.findViewById(R.id.relativLayout_cartContent);
 
 
-
                 listImgBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
