@@ -15,7 +15,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:paddingTop="1dp"
-            android:layout_height="42dp"
+            android:layout_height="40dp"
             android:background="@color/primaryTextRed">
 
             <RelativeLayout
@@ -23,6 +23,7 @@
                 android:layout_height="40dp"
                 android:background="@color/colorWhite"
                 android:orientation="horizontal">
+
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -51,7 +52,15 @@
                     android:textColor="@color/colorForeGround"
                     android:id="@+id/txt_cart_total"
                     android:layout_toLeftOf="@id/btnFrame" />
-
+                <View
+                    android:background="@drawable/line_margin"
+                    android:layerType="software"
+                    android:layout_height="4dp"
+                    android:layout_marginRight="85dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent"
+                    />
 
 
             </RelativeLayout>
