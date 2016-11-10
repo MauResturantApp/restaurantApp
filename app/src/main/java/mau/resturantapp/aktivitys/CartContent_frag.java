@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -91,11 +92,15 @@ public class CartContent_frag extends Fragment {
             ImageView listImgIcon;
             ImageButton listImgBtn;
             TextView listItemtxt;
+            RelativeLayout relativeLayout;
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 listImgBtn = (ImageButton) itemView.findViewById(R.id.imgBtn_cartContent_removeItem);
                 listItemtxt = (TextView) itemView.findViewById(R.id.txt_cartContent_mainItemtext);
+                relativeLayout = (RelativeLayout) itemView.findViewById(R.id.relativLayout_cartContent);
+
+
 
                 listImgBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -121,6 +126,11 @@ public class CartContent_frag extends Fragment {
         public void onBindViewHolder(CartItemList_Adapter.ViewHolder holder, int position) {
             Product tempMenuItem = appData.cartContent.get(position);
             holder.listItemtxt.setText(tempMenuItem.getName() + " x 1   " + tempMenuItem.getPrice());
+            if(position%2 != 0){
+                holder.listItemtxt.setBackgroundResource(R.color.colorSecondary);
+                holder.relativeLayout.setBackgroundResource(R.color.colorSecondary);
+
+            }
         }
 
         @Override

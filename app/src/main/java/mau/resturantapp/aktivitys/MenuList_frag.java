@@ -137,8 +137,6 @@ public class MenuList_frag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rod = inflater.inflate(R.layout.tabcontent_recyclerlist, container, false);
         Log.d("creater inhold", "page number: " + pageNumber);
-        Button button2 = (Button) rod.findViewById(R.id.button2);
-        button2.setText("dxd"+pageNumber);
         products = (RecyclerView) rod.findViewById(R.id.recyclerview_tabcontent);
         manager = new LinearLayoutManager(getActivity().getApplicationContext());
 

@@ -10,10 +10,10 @@
         android:layout_width="match_parent"
         android:id="@+id/tabLayout"
         app:tabIndicatorHeight="5dp"
-        app:tabIndicatorColor="@color/common_google_signin_btn_text_dark"
+        app:tabIndicatorColor="@color/colorSecondaryDark"
         android:background="@color/colorPrimaryDark"
         app:tabTextColor="@color/colorPrimary"
-        app:tabSelectedTextColor="@color/primaryTextRed"
+        app:tabSelectedTextColor="@color/colorSecondaryDark"
         android:layout_height="wrap_content">
 
     </android.support.design.widget.TabLayout>

@@ -9,22 +9,18 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:paddingBottom="2dp"
-        android:paddingTop="2dp"
         android:orientation="vertical"
-        android:paddingLeft="1dp"
-        android:paddingRight="1dp"
         android:layout_height="match_parent"
-        android:background="@color/primaryTextRed">
+        android:background="@color/colorSecondaryDark">
         <FrameLayout
             android:layout_width="match_parent"
+            android:paddingTop="1dp"
             android:layout_height="42dp"
             android:background="@color/primaryTextRed">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_margin="1dp"
                 android:background="@color/colorWhite"
                 android:orientation="horizontal">
                 <FrameLayout
@@ -52,7 +48,7 @@
                     android:gravity="center"
                     android:textSize="16dp"
                     android:layout_marginRight="5dp"
-                    android:textColor="@color/primaryTextRed"
+                    android:textColor="@color/colorForeGround"
                     android:id="@+id/txt_cart_total"
                     android:layout_toLeftOf="@id/btnFrame" />
 
@@ -62,13 +58,9 @@
         </FrameLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp"
-            android:layout_marginBottom="1dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
-            android:layout_marginTop="2dp"
             android:background="@color/colorWhite"
             android:id="@+id/kurv_listview" >
 

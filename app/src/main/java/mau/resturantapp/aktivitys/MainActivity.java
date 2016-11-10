@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
             sideMenu.setNavigationItemSelectedListener(this);
         }
 
-        int dp = DPtoPixels(45f); // husk f efter tallet
+        int dp = DPtoPixels(39f); // husk f efter tallet
         bottomSheetBehavior.setPeekHeight(dp);
         bottomSheetBehavior.setHideable(true);
 

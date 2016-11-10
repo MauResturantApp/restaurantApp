@@ -56,7 +56,7 @@
                 android:src="@drawable/kurv_icon"
                 android:tint="@color/colorWhite"
                 android:id="@+id/floatActBtn_cartContent"
-                app:backgroundTint="@color/primaryTextRed"
+                app:backgroundTint="@color/colorSecondaryDark"
                 app:layout_anchor="@id/cartContentShowHide_frag"
                 app:layout_anchorGravity="clip_horizontal"/>
 
@@ -76,7 +76,7 @@
         android:layout_alignParentBottom="true"
         app:bb_tabXmlResource="@xml/bottom_tabs"
         android:background="@color/colorPrimaryDark"
-        app:bb_activeTabColor="#e00404"
+        app:bb_activeTabColor="@color/colorSecondaryDark"
         ></com.roughike.bottombar.BottomBar>
     </RelativeLayout>
     <android.support.design.widget.NavigationView
