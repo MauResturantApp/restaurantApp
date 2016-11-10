@@ -46,7 +46,7 @@ import mau.resturantapp.events.ShowHideCartEvent;
  */
 
 public class CartContentFirebase_frag extends Fragment {
-
+    //hej
     private DatabaseReference ref;
     private RecyclerView cartContent;
     private LinearLayoutManager manager;
