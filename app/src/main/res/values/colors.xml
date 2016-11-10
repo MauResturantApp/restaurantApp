@@ -8,6 +8,7 @@
     <color name="colorDarkBrown">#281a0d</color>
     <color name="colorSemiDarkRed">#700505</color>
     <color name="primaryTextRed">#e00404</color>
+    <color name="colorForeGround">#161616</color>
     <color name="colorOrange">#f2c110</color>
     <color name="colorDarkOrange">#f27d10</color>
     <color name="colorBlack">#000000</color>
