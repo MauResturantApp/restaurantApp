@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
         Log.d("im in", "item selected");
 
-
+    //hej med dig
         switch (item.getItemId()) {
 
             case R.id.menu_login:
