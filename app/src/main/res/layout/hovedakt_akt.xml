@@ -13,7 +13,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/mainCord"
-    android:layout_marginBottom="60dp"
+    android:layout_marginBottom="57dp"
     android:fitsSystemWindows="true">
 
 
@@ -24,6 +24,17 @@
 
 
             </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fadeView"
+        android:layerType="hardware"
+        android:alpha="0"
+        android:fitsSystemWindows="true"
+        android:visibility="gone"
+        android:background="@color/colorBlack">
+
+    </View>
 
             <FrameLayout
                 android:layout_width="match_parent"

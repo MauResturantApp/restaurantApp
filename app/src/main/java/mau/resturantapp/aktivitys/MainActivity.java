@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,8 +17,10 @@ import android.util.Log;
 
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
@@ -36,7 +39,7 @@ import mau.resturantapp.test.QRTest;
 
 import static android.support.design.widget.BottomSheetBehavior.*;
 
-public class MainActivity extends AppCompatActivity implements OnClickListener, OnTabSelectListener, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements OnClickListener, OnTabSelectListener, OnNavigationItemSelectedListener,OnTouchListener {
 
     //private Toolbar mainTollbar;
     private FloatingActionButton actBtn;
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     private ImageButton drawerButton;
     private DrawerLayout drawLayout;
     private NavigationView sideMenu;
-
+    private View fadeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         setContentView(R.layout.hovedakt_akt);
         EventBus.getDefault().register(this);
         showHomeScreen();
+
+        fadeView = findViewById(R.id.fadeView);
+
 
         bottomBar = (BottomBar) findViewById(R.id.bottomBar_main);
         drawerButton = (ImageButton) findViewById(R.id.btn_sidemenu);
@@ -81,6 +87,31 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
         bottomSheetBehavior.setState(STATE_COLLAPSED);
 
+        fadeView.setOnTouchListener(this);
+
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if(newState == STATE_EXPANDED){
+                    fadeView.animate().alpha(0.3f);
+                    fadeView.setVisibility(View.VISIBLE);
+                }
+                if(newState == STATE_COLLAPSED || newState == STATE_HIDDEN){
+                    fadeView.animate().alpha(0.0f);
+                    fadeView.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+
+
+            }
+        });
+
+        hideCart();
+
         bottomBar.setElevation(4);
 
         actBtn = (FloatingActionButton) findViewById(R.id.floatActBtn_cartContent);
@@ -103,21 +134,16 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
         }
         if(v == drawerButton){
+            hideCart();
             drawLayout.openDrawer(Gravity.LEFT);
         }
+
 
     }
 
     @Subscribe
     public void logedInEvent(OnSuccesfullLogInEvent event) {
         showHomeScreen();
-    }
-
-    private void hideCart() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        Fragment fragmentCartContent = fragmentManager.findFragmentById(R.id.cartContentShowHide_frag);
-        transaction.hide(fragmentCartContent).commit();
     }
 
 
@@ -143,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     public void onTabSelected(@IdRes int tabId) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment frag;
-
+        hideCart();
         Log.d("tab slected", "clicked " + tabId + " --- " + R.id.botbar_food);
 
         switch (tabId){
@@ -174,6 +200,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
     }
 
+    private void hideCart(){
+        bottomSheetBehavior.setState(STATE_COLLAPSED);
+    }
+
     @Override
     public boolean onNavigationItemSelected( MenuItem item) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -182,9 +212,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         item.setChecked(true);
 
         Log.d("im in", "item selected");
-
+        hideCart();
     //hej med dig
         switch (item.getItemId()) {
+
 
             case R.id.menu_login:
                 frag = new Login_frag();
@@ -232,5 +263,16 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         }
         return true;
 
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+
+        if(v == fadeView){
+            if(bottomSheetBehavior.getState() == STATE_EXPANDED)
+                hideCart();
+        }
+
+        return false;
     }
 }
