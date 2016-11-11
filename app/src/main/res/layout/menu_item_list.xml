@@ -11,7 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="1dp">
+        >
 
     <ImageView
         android:layout_width="50dp"
@@ -19,7 +19,7 @@
         app:srcCompat="@drawable/ic_action_name"
         android:layout_alignParentTop="true"
         android:background="@color/colorPrimary"
-        android:tint="@color/colorPrimaryDark"
+        android:tint="@color/colorSecondaryDark"
         android:layout_alignParentStart="true"
         android:id="@+id/icon_menu_itemIcon" />
 
@@ -29,9 +29,9 @@
         android:layout_height="50dp"
 
         android:background="@color/colorPrimary"
-        app:srcCompat="@drawable/ic_check_black_24dp"
+        app:srcCompat="@drawable/ic_action_additem"
         android:layout_alignParentTop="true"
-        android:tint="@color/colorPrimaryDark"
+        android:tint="@color/colorSecondaryDark"
         android:layout_alignParentRight="true"
         android:id="@+id/imgBtn_menu_removeItem" />
 
@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:textColor="@color/primaryTextRed"
+        android:textColor="@color/colorForeGround"
         android:id="@+id/txt_menu_mainItemtext"
         android:background="@color/colorPrimary"
         android:layout_above="@+id/txt_menu_extraItemText"
@@ -53,11 +53,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:textColor="@color/primaryTextRed"
+        android:textColor="@color/colorForeGround"
         android:layout_alignBottom="@+id/icon_menu_itemIcon"
         android:layout_toEndOf="@+id/icon_menu_itemIcon"
         android:layout_toStartOf="@id/imgBtn_menu_removeItem"
         android:id="@+id/txt_menu_extraItemText" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_alignBottom="@id/txt_menu_extraItemText"
+            android:layerType="software"
+            android:background="@drawable/line_margin"></View>
     </RelativeLayout>
 
 </RelativeLayout>
