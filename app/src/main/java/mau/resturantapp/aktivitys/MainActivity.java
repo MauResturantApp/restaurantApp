@@ -134,6 +134,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
         actBtn.setOnClickListener(this);
 
+        if(appData.currentUser == null){
+            userLoggedOut();
+        }
+        else {
+            userLoggedIn();
+        }
+
 
 
     }
@@ -160,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     @Subscribe
     public void logedInEvent(OnSuccesfullLogInEvent event) {
         showHomeScreen();
+        userLoggedIn();
     }
 
 
@@ -283,6 +291,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                 NewItemToCartEvent event = new NewItemToCartEvent();
                 EventBus.getDefault().post(event);
                 appData.currentUser = null;
+                userLoggedOut();
                 showHomeScreen();
             default:
 

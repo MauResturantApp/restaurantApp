@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 
 import mau.resturantapp.R;
 import mau.resturantapp.data.appData;
@@ -29,7 +28,7 @@ public class Signup_frag extends Fragment implements View.OnClickListener, OnCom
     protected EditText passwordEditText;
     protected EditText emailEditText;
     protected Button signUpButton;
-    protected EditText passWrodConfirm;
+    protected EditText passWordConfirm;
     private ProgressBar loader;
 
 
@@ -40,7 +39,7 @@ public class Signup_frag extends Fragment implements View.OnClickListener, OnCom
         passwordEditText = (EditText) rod.findViewById(R.id.passwordField);
         emailEditText = (EditText) rod.findViewById(R.id.emailField);
         signUpButton = (Button) rod.findViewById(R.id.signUpButton);
-        passWrodConfirm = (EditText) rod.findViewById(R.id.passwordFieldCheck);
+        passWordConfirm = (EditText) rod.findViewById(R.id.passwordFieldCheck);
         loader.setVisibility(View.GONE);
 
         signUpButton.setOnClickListener(this);
@@ -53,7 +52,7 @@ public class Signup_frag extends Fragment implements View.OnClickListener, OnCom
         loader.setVisibility(View.VISIBLE);
         String password = passwordEditText.getText().toString();
         String email = emailEditText.getText().toString();
-        String passWordCheck = passWrodConfirm.getText().toString();
+        String passWordCheck = passWordConfirm.getText().toString();
 
         password = password.trim();
         email = email.trim();

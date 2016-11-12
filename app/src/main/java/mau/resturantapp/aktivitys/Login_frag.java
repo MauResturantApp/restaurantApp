@@ -19,16 +19,19 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import mau.resturantapp.R;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.events.LoggedInEvent;
+import mau.resturantapp.events.OnFailedLogIn;
 import mau.resturantapp.events.OnSuccesfullLogInEvent;
 
 /**
  * Created by anwar on 10/16/16.
  */
 
-public class Login_frag extends Fragment implements View.OnClickListener, OnCompleteListener {
+public class Login_frag extends Fragment implements View.OnClickListener {
 
     protected EditText emailEditText;
     protected EditText passwordEditText;
@@ -77,38 +80,30 @@ public class Login_frag extends Fragment implements View.OnClickListener, OnComp
     private void validLogin() {
         String email = emailEditText.getText().toString();
         String password = passwordEditText.getText().toString();
-
-        email = email.trim();
-        password = password.trim();
-
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(getContext(), "Venligst udfyld både e-mail og pasord", Toast.LENGTH_LONG).show();
+            loader.setVisibility(View.GONE);
 
+        }
 
-        } else {
-            appData.firebaseAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this);
+        else{
+            appData.validLogin(email,password);
         }
     }
 
-
-    private void onSuccesfullLogin() {
-        OnSuccesfullLogInEvent event = new OnSuccesfullLogInEvent();
-        EventBus.getDefault().post(event);
-        Log.d("Logged in", "sending to home");
-    }
-
-    @Override
-    public void onComplete(@NonNull Task task) {
+    @Subscribe
+    public void onSuccesLogin(LoggedInEvent event){
         loader.setVisibility(View.GONE);
-        if (task.isSuccessful()) {
-            onSuccesfullLogin();
-        } else {
-            Toast.makeText(getContext(), "pasord eller e-mail er forkert, prøv igen", Toast.LENGTH_LONG).show();
-
-
-        }
     }
+
+    @Subscribe
+    public void onFailedLogin(OnFailedLogIn event){
+        loader.setVisibility(View.GONE);
+        Toast.makeText(getContext(), "Forkert brugernavn eller password", Toast.LENGTH_LONG).show();
+
+
+    }
+
 
 
 }

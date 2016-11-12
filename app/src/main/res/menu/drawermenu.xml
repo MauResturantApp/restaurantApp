@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="none">
 
     <item
         android:id="@+id/menu_findos"
@@ -14,7 +14,6 @@
     <item
         android:id="@+id/menu_indstillinger"
         android:orderInCategory="5"
-        android:checked="false"
         android:title="Indstillinger"
         android:icon="@drawable/indstilling_icon"
         ></item>
@@ -24,14 +23,12 @@
         android:id="@+id/menu_qrTest"
         android:orderInCategory="7"
         android:title="qr Koder"
-        android:checked="false"
         android:icon="@drawable/ic_action_qrcode"
         ></item>
     <item
         android:id="@+id/menu_qrCamera"
         android:orderInCategory="8"
         android:title="qr Camera"
-        android:checked="false"
         android:icon="@drawable/ic_action_camera"
         ></item>
     </group>
@@ -42,7 +39,6 @@
             android:id="@+id/menu_login"
         android:orderInCategory="19"
         android:title="log in"
-        android:checked="false"
         android:icon="@drawable/ic_action_login"
         >
     </item>
@@ -50,13 +46,11 @@
         android:id="@+id/menu_signin"
         android:orderInCategory="20"
         android:title="Sign up"
-        android:checked="false"
         android:icon="@drawable/ic_action_newuser"></item>
     <item
         android:id="@+id/menu_logout"
         android:orderInCategory="30"
         android:title="Log out"
-        android:checked="false"
         android:icon="@drawable/ic_action_signout"
         android:visible="false">
 
