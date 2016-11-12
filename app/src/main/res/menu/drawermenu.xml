@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="none">
+    <group android:checkableBehavior="single">
 
     <item
         android:id="@+id/menu_findos"
         android:orderInCategory="1"
         android:title="Vejvisere"
-        android:checked="false"
         android:icon="@drawable/findos_icon"
         ></item>
 
@@ -31,7 +30,7 @@
         android:title="qr Camera"
         android:icon="@drawable/ic_action_camera"
         ></item>
-    </group>
+
 <item android:title="Bruger"
     android:orderInCategory="15">
     <menu>
@@ -57,5 +56,5 @@
     </item>
     </menu>
 </item>
-
+    </group>
 </menu>

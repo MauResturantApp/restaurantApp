@@ -55,6 +55,7 @@ public class Login_frag extends Fragment implements View.OnClickListener {
 
         logInButton.setOnClickListener(this);
         signUpTextView.setOnClickListener(this);
+        EventBus.getDefault().register(this);
 
         return rod;
     }

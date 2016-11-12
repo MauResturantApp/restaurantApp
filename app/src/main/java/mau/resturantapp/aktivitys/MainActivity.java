@@ -24,6 +24,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabReselectListener;
@@ -35,6 +36,7 @@ import org.greenrobot.eventbus.Subscribe;
 import mau.resturantapp.R;
 import mau.resturantapp.data.appData;
 import mau.resturantapp.events.NewItemToCartEvent;
+import mau.resturantapp.events.NewUserSuccesfullEvent;
 import mau.resturantapp.events.OnSuccesfullLogInEvent;
 import mau.resturantapp.test.QRCamera;
 import mau.resturantapp.test.QRTest;
@@ -337,5 +339,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         }
 
         return false;
+    }
+
+    @Subscribe
+    public void succesSignup(NewUserSuccesfullEvent event) {
+        showHomeScreen();
+        userLoggedIn();
     }
 }

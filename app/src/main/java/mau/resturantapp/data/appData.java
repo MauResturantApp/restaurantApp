@@ -20,6 +20,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
+import mau.resturantapp.events.NewUserFailedEvent;
+import mau.resturantapp.events.NewUserSuccesfullEvent;
 import mau.resturantapp.events.OnFailedLogIn;
 import mau.resturantapp.events.OnSuccesfullLogInEvent;
 import mau.resturantapp.user.LoggedInUser;
@@ -107,11 +109,33 @@ public class appData extends Application{
                                 }
 
                         }
-                            });
+                                   });
 
 
 
     }
+
+    public static void newUser(String email, String password){
+        appData.firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    newUserSuccesfull();
+                }
+                else{
+                    NewUserFailedEvent event = new NewUserFailedEvent();
+                    EventBus.getDefault().post(event);
+                }
+            }
+        });
+
+    }
+
+    private static void newUserSuccesfull() {
+        NewUserSuccesfullEvent event = new NewUserSuccesfullEvent();
+        EventBus.getDefault().post(event);
+    }
+
 
     private static void onFailledLogin() {
         OnFailedLogIn event = new OnFailedLogIn();

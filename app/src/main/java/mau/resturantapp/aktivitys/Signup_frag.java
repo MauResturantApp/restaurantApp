@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,14 +16,19 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import mau.resturantapp.R;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.events.NewUserFailedEvent;
+import mau.resturantapp.events.NewUserSuccesfullEvent;
 
 /**
  * Created by anwar on 10/24/16.
  */
 
-public class Signup_frag extends Fragment implements View.OnClickListener, OnCompleteListener {
+public class Signup_frag extends Fragment implements OnClickListener {
 
     private View rod;
     protected EditText passwordEditText;
@@ -43,6 +49,7 @@ public class Signup_frag extends Fragment implements View.OnClickListener, OnCom
         loader.setVisibility(View.GONE);
 
         signUpButton.setOnClickListener(this);
+        EventBus.getDefault().register(this);
 
         return rod;
     }
@@ -66,25 +73,26 @@ public class Signup_frag extends Fragment implements View.OnClickListener, OnCom
             Toast.makeText(getContext(), "De indtastede password matcher ikke, venligst prøv igen", Toast.LENGTH_LONG).show();
             loader.setVisibility(View.GONE);
         } else {
-            appData.firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this);
+            appData.newUser(email,password);
         }
     }
 
-    @Override
-    public void onComplete(@NonNull Task task) {
+    @Subscribe
+    public void succesSignup(NewUserSuccesfullEvent event) {
         loader.setVisibility(View.GONE);
-        if (task.isSuccessful()) {
-            Toast.makeText(getContext(), "Din bruger er nu oprettet, velkommen til Resturant Navn", Toast.LENGTH_LONG).show();
-            succesSignup();
-        } else {
-            Toast.makeText(getContext(), "Noget gik galt, venligst prøv igen", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "Din bruger er nu oprettet, velkommen til Resturant Navn", Toast.LENGTH_LONG).show();
+        passWordConfirm.setText("");
+        passwordEditText.setText("");
+        emailEditText.setText("");
 
-        }
     }
 
-    public void succesSignup() {
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        Fragment frag = new Home_frag();
-        ft.replace(R.id.mainFrameFrag, frag).commit();
+    @Subscribe
+    public void failedSignup(NewUserFailedEvent event) {
+        loader.setVisibility(View.GONE);
+        Toast.makeText(getContext(), "Noget gik galt, venligst prøv igen", Toast.LENGTH_LONG).show();
+        passWordConfirm.setText("");
+        passwordEditText.setText("");
     }
+
 }
