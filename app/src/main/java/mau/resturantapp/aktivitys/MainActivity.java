@@ -16,6 +16,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,6 +33,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import mau.resturantapp.R;
+import mau.resturantapp.data.appData;
+import mau.resturantapp.events.NewItemToCartEvent;
 import mau.resturantapp.events.OnSuccesfullLogInEvent;
 import mau.resturantapp.test.QRCamera;
 import mau.resturantapp.test.QRTest;
@@ -270,11 +273,49 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
                 break;
 
+            case R.id.menu_signin:
+                frag = new Signup_frag();
+                ft.addToBackStack(null);
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+                break;
+            case R.id.menu_logout:
+                appData.cartContent.clear();
+                NewItemToCartEvent event = new NewItemToCartEvent();
+                EventBus.getDefault().post(event);
+                appData.currentUser = null;
+                showHomeScreen();
             default:
+
+
                 break;
 
         }
         return true;
+
+    }
+
+    private void userLoggedIn(){
+        Menu navMenu = sideMenu.getMenu();
+        navMenu.findItem(R.id.menu_login).setVisible(false);
+        navMenu.findItem(R.id.menu_signin).setVisible(false);
+        navMenu.findItem(R.id.menu_logout).setVisible(true);
+        navMenu.findItem(R.id.menu_qrTest).setVisible(true);
+
+
+        if(appData.currentUser.isAdmin()){
+            navMenu.findItem(R.id.menu_qrCamera).setVisible(true);
+            navMenu.findItem(R.id.menu_qrTest).setVisible(true);
+        }
+    }
+    private void userLoggedOut(){
+        Menu navMenu = sideMenu.getMenu();
+        navMenu.findItem(R.id.menu_login).setVisible(true);
+        navMenu.findItem(R.id.menu_signin).setVisible(true);
+        navMenu.findItem(R.id.menu_logout).setVisible(false);
+        navMenu.findItem(R.id.menu_qrCamera).setVisible(false);
+        navMenu.findItem(R.id.menu_qrTest).setVisible(false);
+
+
 
     }
 

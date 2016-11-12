@@ -18,14 +18,7 @@
         android:title="Indstillinger"
         android:icon="@drawable/indstilling_icon"
         ></item>
-    <item
-        android:id="@+id/menu_login"
-        android:orderInCategory="6"
-        android:title="log in"
-        android:checked="false"
-        android:icon="@drawable/ic_action_login"
-        >
-    </item>
+
 
     <item
         android:id="@+id/menu_qrTest"
@@ -42,6 +35,33 @@
         android:icon="@drawable/ic_action_camera"
         ></item>
     </group>
+<item android:title="Bruger"
+    android:orderInCategory="15">
+    <menu>
+        <item
+            android:id="@+id/menu_login"
+        android:orderInCategory="19"
+        android:title="log in"
+        android:checked="false"
+        android:icon="@drawable/ic_action_login"
+        >
+    </item>
+    <item
+        android:id="@+id/menu_signin"
+        android:orderInCategory="20"
+        android:title="Sign up"
+        android:checked="false"
+        android:icon="@drawable/ic_action_newuser"></item>
+    <item
+        android:id="@+id/menu_logout"
+        android:orderInCategory="30"
+        android:title="Log out"
+        android:checked="false"
+        android:icon="@drawable/ic_action_signout"
+        android:visible="false">
 
+    </item>
+    </menu>
+</item>
 
 </menu>

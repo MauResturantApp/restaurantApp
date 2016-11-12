@@ -11,6 +11,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+import mau.resturantapp.user.LoggedInUser;
+
 /**
  * Created by anwar on 10/15/16.
  */
@@ -20,7 +22,7 @@ public class appData extends Application{
 
     public static ArrayList<Product> cartContent = new ArrayList<Product>();
     public static String[] currentTabs = tempItem.getTabs();
-
+    public static LoggedInUser currentUser;
     public static FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     public static FirebaseUser firebaseUser;
     public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
