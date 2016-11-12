@@ -16,6 +16,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -34,6 +35,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import mau.resturantapp.R;
+import mau.resturantapp.data.MenuTabs;
 import mau.resturantapp.data.appData;
 import mau.resturantapp.events.NewItemToCartEvent;
 import mau.resturantapp.events.NewUserSuccesfullEvent;
@@ -46,7 +48,6 @@ import static android.support.design.widget.BottomSheetBehavior.*;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener, OnTabSelectListener, OnNavigationItemSelectedListener,OnTouchListener {
 
-    //private Toolbar mainTollbar;
     private FloatingActionButton actBtn;
     private BottomSheetBehavior bottomSheetBehavior;
     private BottomBar bottomBar;
@@ -143,6 +144,24 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
             userLoggedIn();
         }
 
+      FrameLayout fragFrame = (FrameLayout) findViewById(R.id.mainFrameFrag);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     }
@@ -236,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         Fragment frag;
         drawLayout.closeDrawer(Gravity.LEFT);
         item.setChecked(true);
-
+        bottomBar.selectTabAtPosition(3);
         Log.d("im in", "item selected");
         hideCart();
     //hej med dig
@@ -345,5 +364,25 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     public void succesSignup(NewUserSuccesfullEvent event) {
         showHomeScreen();
         userLoggedIn();
+    }
+
+    private void setActiveBarTab(){
+        Fragment currentFrag = getSupportFragmentManager().findFragmentById(R.id.mainFrameFrag);
+
+        if(currentFrag instanceof Home_frag){
+            bottomBar.selectTabAtPosition(0);
+        }
+        else if (currentFrag instanceof MenuTabs_frag){
+                        bottomBar.selectTabAtPosition(1);
+
+
+        }
+        else if (currentFrag instanceof Contact_frag ){
+                        bottomBar.selectTabAtPosition(2);
+
+        }
+
+
+
     }
 }

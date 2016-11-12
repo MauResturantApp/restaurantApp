@@ -88,6 +88,7 @@
         android:layout_alignParentBottom="true"
         app:bb_tabXmlResource="@xml/bottom_tabs"
         android:background="@color/colorPrimaryDark"
+        app:bb_inActiveTabColor="@color/colorPrimary"
         app:bb_activeTabColor="@color/colorSecondaryDark"
         ></com.roughike.bottombar.BottomBar>
     </RelativeLayout>

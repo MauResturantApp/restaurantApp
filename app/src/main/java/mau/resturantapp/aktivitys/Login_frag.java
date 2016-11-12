@@ -61,6 +61,21 @@ public class Login_frag extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onPause() {
+        EventBus.getDefault().unregister(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        if(!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
+
+
+        super.onResume();
+    }
+
+    @Override
     public void onClick(View v) {
 
         if (v == logInButton) {

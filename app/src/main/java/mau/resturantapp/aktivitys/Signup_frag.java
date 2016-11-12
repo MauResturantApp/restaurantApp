@@ -87,6 +87,19 @@ public class Signup_frag extends Fragment implements OnClickListener {
 
     }
 
+    @Override
+    public void onPause() {
+        EventBus.getDefault().unregister(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        if(!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
+        super.onResume();
+    }
+
     @Subscribe
     public void failedSignup(NewUserFailedEvent event) {
         loader.setVisibility(View.GONE);
