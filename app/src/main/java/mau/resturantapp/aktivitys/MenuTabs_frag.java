@@ -15,8 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import mau.resturantapp.R;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.events.FragContainerChangedEvent;
+
 /**
  * Created by anwar on 10/16/16.
  */
@@ -50,6 +54,8 @@ public class MenuTabs_frag extends Fragment implements OnTabSelectedListener {
     @Override
     public void onResume() {
         super.onResume();
+        FragContainerChangedEvent event = new FragContainerChangedEvent();
+        EventBus.getDefault().post(event);
         Log.d("tabs" , "resume: " );
 
     }

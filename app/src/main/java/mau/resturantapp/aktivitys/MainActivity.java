@@ -1,5 +1,6 @@
 package mau.resturantapp.aktivitys;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.support.design.widget.NavigationView.OnNavigationItemSelectedList
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -37,6 +39,7 @@ import org.greenrobot.eventbus.Subscribe;
 import mau.resturantapp.R;
 import mau.resturantapp.data.MenuTabs;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.events.FragContainerChangedEvent;
 import mau.resturantapp.events.NewItemToCartEvent;
 import mau.resturantapp.events.NewUserSuccesfullEvent;
 import mau.resturantapp.events.OnSuccesfullLogInEvent;
@@ -61,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hovedakt_akt);
         EventBus.getDefault().register(this);
-        showHomeScreen();
 
         fadeView = findViewById(R.id.fadeView);
 
@@ -130,6 +132,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         });
 
         hideCart();
+        showHomeScreen();
+
 
         bottomBar.setElevation(4);
 
@@ -143,25 +147,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         else {
             userLoggedIn();
         }
-
-      FrameLayout fragFrame = (FrameLayout) findViewById(R.id.mainFrameFrag);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }
@@ -197,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment frag = new Home_frag();
         ft.replace(R.id.mainFrameFrag, frag).commit();
+        bottomBar.selectTabAtPosition(0);
     }
 
     private int DPtoPixels(float DP){
@@ -215,28 +201,41 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment frag;
         hideCart();
+        Fragment currentFrag = getSupportFragmentManager().findFragmentById(R.id.mainFrameFrag);
+
         Log.d("tab slected", "clicked " + tabId + " --- " + R.id.botbar_food);
 
         switch (tabId){
             case R.id.botbar_food:
-                frag = new MenuTabs_frag();
-                ft.addToBackStack(null);
-                ft.replace(R.id.mainFrameFrag, frag).commit();
+                if (!(currentFrag instanceof MenuTabs_frag)){
+
+
+                    frag = new MenuTabs_frag();
+                    ft.addToBackStack(null);
+                    ft.replace(R.id.mainFrameFrag, frag).commit();
+                }
 
                 break;
 
             case R.id.botbar_home:
-                frag = new Home_frag();
-                ft.addToBackStack(null);
-                ft.replace(R.id.mainFrameFrag, frag).commit();
+
+                if(!(currentFrag instanceof Home_frag)){
+
+                    frag = new Home_frag();
+                    ft.addToBackStack(null);
+                    ft.replace(R.id.mainFrameFrag, frag).commit();
+                }
 
                 break;
 
             case R.id.botbar_contact:
-                frag = new Contact_frag();
-                ft.addToBackStack(null);
-                ft.replace(R.id.mainFrameFrag, frag).commit();
-                Log.d("tab slected", "contact");
+                if (!(currentFrag instanceof Contact_frag) ){
+
+                    frag = new Contact_frag();
+                    ft.addToBackStack(null);
+                    ft.replace(R.id.mainFrameFrag, frag).commit();
+                    Log.d("tab slected", "contact");
+                }
 
                 break;
             default:
@@ -255,10 +254,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         Fragment frag;
         drawLayout.closeDrawer(Gravity.LEFT);
         item.setChecked(true);
-        bottomBar.selectTabAtPosition(3);
         Log.d("im in", "item selected");
         hideCart();
-    //hej med dig
         switch (item.getItemId()) {
 
 
@@ -320,6 +317,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                 break;
 
         }
+        setActiveBarTab(null);
         return true;
 
     }
@@ -366,11 +364,14 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         userLoggedIn();
     }
 
-    private void setActiveBarTab(){
+    @Subscribe
+    public void setActiveBarTab(FragContainerChangedEvent event){
         Fragment currentFrag = getSupportFragmentManager().findFragmentById(R.id.mainFrameFrag);
-
+        bottomBar.setActiveTabColor(ContextCompat.getColor(this,R.color.colorSecondaryDark));
+        Log.d("ggggggg","gggggg");
         if(currentFrag instanceof Home_frag){
             bottomBar.selectTabAtPosition(0);
+
         }
         else if (currentFrag instanceof MenuTabs_frag){
                         bottomBar.selectTabAtPosition(1);
@@ -380,6 +381,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         else if (currentFrag instanceof Contact_frag ){
                         bottomBar.selectTabAtPosition(2);
 
+        }
+        else {
+
+            bottomBar.setActiveTabColor(ContextCompat.getColor(this,R.color.colorPrimary));
         }
 
 

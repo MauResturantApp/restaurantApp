@@ -7,7 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.greenrobot.eventbus.EventBus;
+
 import mau.resturantapp.R;
+import mau.resturantapp.events.FragContainerChangedEvent;
 
 /**
  * Created by anwar on 10/16/16.
@@ -23,5 +26,12 @@ public class Contact_frag extends Fragment {
 
 
         return rod;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        FragContainerChangedEvent event = new FragContainerChangedEvent();
+        EventBus.getDefault().post(event);
     }
 }
