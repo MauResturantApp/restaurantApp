@@ -3,6 +3,7 @@ package mau.resturantapp.data;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -23,6 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import mau.resturantapp.events.NewUserFailedEvent;
 import mau.resturantapp.events.NewUserSuccesfullEvent;
@@ -43,6 +46,7 @@ public class appData extends Application{
     public static FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     public static FirebaseUser firebaseUser;
     public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    public static FirebaseAuth anonymousAuth;
     public static SharedPreferences appPrefs;
 
     @Override
@@ -170,7 +174,51 @@ public class appData extends Application{
                 Log.d("Admin check error", databaseError.getMessage());
             }
         });
+    }
 
+    public static void addTab(MenuTab menuTab){
+        DatabaseReference ref = firebaseDatabase.getReference("menutabs/");
+        ref.push().setValue(menuTab);
+    }
+
+    //Consider if transactions needed
+    public static void removeTab(MenuTab menuTab){
+        DatabaseReference ref = firebaseDatabase.getReference();
+
+        Map removeTab = new HashMap();
+        removeTab.put("menutabs/" + menuTab.getKey(), null);
+        removeTab.put("product/" + menuTab.getKey(), null);
+
+        ref.updateChildren(removeTab);
+    }
+
+    public static void updateTab(MenuTab menuTab){
+        DatabaseReference ref = firebaseDatabase.getReference("menutabs/");
+        ref.child(menuTab.getKey()).setValue(menuTab);
+    }
+
+    public static void transferAnonymousData(){
+        final DatabaseReference ref = firebaseDatabase.getReference();
+        final DatabaseReference refAnonymous = firebaseDatabase.getReference("shoppingcart/" + anonymousAuth.getCurrentUser().getUid());
+        final DatabaseReference refKnownUser = firebaseDatabase.getReference("shoppingcart/" + firebaseAuth.getCurrentUser().getUid());
+
+        refAnonymous.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    CartContent cartContent = snapshot.getValue(CartContent.class);
+                    Map childUpdates = new HashMap();
+                    childUpdates.put(refKnownUser, cartContent);
+                    childUpdates.put(refAnonymous, null);
+                    ref.updateChildren(childUpdates);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("Transfer Anonymous Data", databaseError.getMessage());
+            }
+        });
     }
 
 }

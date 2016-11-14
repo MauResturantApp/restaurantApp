@@ -12,6 +12,10 @@ public class Order {
     private int totalPrice;
     private Object timestamp;
 
+    public Order(){
+
+    }
+
     public Order(ArrayList<Product> products, int totalPrice, Object timestamp){
         this.products = products;
         this.totalPrice = totalPrice;

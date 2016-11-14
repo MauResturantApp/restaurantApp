@@ -46,15 +46,13 @@ import mau.resturantapp.events.ShowHideCartEvent;
  */
 
 public class CartContentFirebase_frag extends Fragment {
-    //hej
+
     private DatabaseReference ref;
     private RecyclerView cartContent;
     private LinearLayoutManager manager;
     private FirebaseRecyclerAdapter<Product, CartContentHolder> recyclerViewAdapter;
 
-    //Anonymous User
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private String anonymousUID;
 
     public static class CartContentHolder extends RecyclerView.ViewHolder{
 
@@ -118,14 +116,9 @@ public class CartContentFirebase_frag extends Fragment {
     public void onStart() {
         super.onStart();
 
+        startAuthStateListener();
         appData.firebaseAuth.addAuthStateListener(mAuthListener);
 
-        String uid = appData.getUID();
-        if(uid != null) {
-            ref = appData.firebaseDatabase.getReference("Shoppingcart/" + uid);
-        } else {
-            //handle not being logged in - anonymous user should be implemented
-        }
         startRecyclerViewAdapter();
     }
 
@@ -174,20 +167,17 @@ public class CartContentFirebase_frag extends Fragment {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
+                    ref = appData.firebaseDatabase.getReference("Shoppingcart/" + appData.getUID());
                     Log.d("Authstate", "onAuthStateChanged:signed_in:" + user.getUid());
                     if(user.isAnonymous()){
-                        anonymousUID = user.getUid();
+                        //Save logged in as anonymous Reference to later transfer data
+                        appData.anonymousAuth = appData.firebaseAuth;
                     } else {
-                        // User is logged
-                        //Somehow transfer data from anonymous data to lgoged in user - Link credentials?
-
-
-
+                        // User is logged in as a known user
+                        appData.transferAnonymousData();
                     }
                 } else {
                     // User is signed out
-
-
                     appData.firebaseAuth.signInAnonymously()
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
