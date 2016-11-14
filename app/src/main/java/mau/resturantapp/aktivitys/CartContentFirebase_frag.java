@@ -171,10 +171,10 @@ public class CartContentFirebase_frag extends Fragment {
                     Log.d("Authstate", "onAuthStateChanged:signed_in:" + user.getUid());
                     if(user.isAnonymous()){
                         //Save logged in as anonymous Reference to later transfer data
-                        appData.anonymousAuth = appData.firebaseAuth;
+                        //appData.anonymousAuth = appData.firebaseAuth;
                     } else {
                         // User is logged in as a known user
-                        appData.transferAnonymousData();
+                        //appData.transferAnonymousData();
                     }
                 } else {
                     // User is signed out
