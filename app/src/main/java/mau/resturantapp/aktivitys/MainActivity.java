@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                     fadeView.setVisibility(View.VISIBLE);
                 }
                 if(newState == STATE_COLLAPSED || newState == STATE_HIDDEN){
-                    fadeView.animate().alpha(0.0f);
+                    fadeView.animate().alpha(0.1f);
                     fadeView.setVisibility(View.GONE);
                 }
             }
@@ -372,6 +372,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
     @Subscribe
     public void succesSignup(NewUserSuccesfullEvent event) {
+        fadeView.animate().alpha(0.0f);
+        fadeView.setVisibility(View.GONE);
         progBar.setVisibility(View.GONE);
         showHomeScreen();
         userLoggedIn();
@@ -379,6 +381,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
     @Subscribe
     public void logginIn(LogUserInEvent event){
+        fadeView.animate().alpha(0.3f);
+        fadeView.setVisibility(View.VISIBLE);
         progBar.setVisibility(View.VISIBLE);
     }
 
@@ -399,22 +403,27 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
     @Subscribe
     public void userlogedInEvent(OnSuccesfullLogInEvent event) {
+        Toast.makeText(this,"Du er nu logget ind", Toast.LENGTH_LONG).show();
+        fadeView.animate().alpha(0.0f);
+        fadeView.setVisibility(View.GONE);
+        progBar.setVisibility(View.GONE);
         showHomeScreen();
         userLoggedIn();
-        Toast.makeText(this,"Du er nu logget ind", Toast.LENGTH_LONG);
-
-        progBar.setVisibility(View.GONE);
     }
 
     @Subscribe
     public void failedSignup(NewUserFailedEvent event){
-        Toast.makeText(this,"Fejlede med at oprette ny bruger, prøv venligst igen", Toast.LENGTH_LONG);
+        Toast.makeText(this,"Fejlede med at oprette ny bruger, prøv venligst igen", Toast.LENGTH_LONG).show();
+        fadeView.animate().alpha(0.0f);
+        fadeView.setVisibility(View.GONE);
         progBar.setVisibility(View.GONE);
     }
 
     @Subscribe
     public void failedLogin(OnFailedLogIn event){
         showLoginDialog();
+        fadeView.animate().alpha(0.0f);
+        fadeView.setVisibility(View.GONE);
         progBar.setVisibility(View.GONE);
     }
 

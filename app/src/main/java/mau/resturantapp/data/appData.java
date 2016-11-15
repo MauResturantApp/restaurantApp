@@ -100,9 +100,9 @@ public class appData extends Application{
 
 
     public static void validLogin(String userEmail, String userPassword) {
+        event.logUserIn();
         String email = userEmail;
         String password = userPassword;
-
         email = email.trim();
         password = password.trim();
 
@@ -144,11 +144,11 @@ public class appData extends Application{
     }
 
     private static void onSuccesfullLogin() {
-        event.succesfullLogin();
         String name = firebaseAuth.getCurrentUser().getDisplayName();
         String email = firebaseAuth.getCurrentUser().getEmail();
         currentUser = new LoggedInUser(name,email,0);
         isAdmin();
+        event.succesfullLogin();
     }
 
     private static void isAdmin() {
