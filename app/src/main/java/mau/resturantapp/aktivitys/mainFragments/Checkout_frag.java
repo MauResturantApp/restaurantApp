@@ -1,4 +1,4 @@
-package mau.resturantapp.aktivitys;
+package mau.resturantapp.aktivitys.mainFragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

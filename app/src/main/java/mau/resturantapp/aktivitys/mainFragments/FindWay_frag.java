@@ -1,4 +1,4 @@
-package mau.resturantapp.aktivitys;
+package mau.resturantapp.aktivitys.mainFragments;
 
 import android.app.AlertDialog;
 import android.content.Context;
