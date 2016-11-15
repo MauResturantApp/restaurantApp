@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -33,8 +32,6 @@ import org.greenrobot.eventbus.Subscribe;
 import mau.resturantapp.R;
 import mau.resturantapp.data.Product;
 import mau.resturantapp.data.appData;
-import mau.resturantapp.events.NewItemToCartEvent;
-import mau.resturantapp.events.ShowHideCartEvent;
 
 /**
  *  Work in progress
@@ -95,22 +92,6 @@ public class CartContentFirebase_frag extends Fragment {
         EventBus.getDefault().register(this);
     }
 
-    @Subscribe
-    public void onShowHideEvent(ShowHideCartEvent event) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.push_up_in, R.anim.push_down_out1);
-        Fragment fragmentCartContent = fragmentManager.findFragmentById(R.id.cartContentShowHide_frag);
-        if (fragmentCartContent.isHidden()) {
-            transaction.show(fragmentCartContent).commit();
-
-        } else {
-            transaction.hide(fragmentCartContent).commit();
-
-        }
-
-        Log.d("showhideevent", "kaldt");
-    }
 
     @Override
     public void onStart() {

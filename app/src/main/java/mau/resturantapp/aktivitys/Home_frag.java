@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import org.greenrobot.eventbus.EventBus;
 
 import mau.resturantapp.R;
-import mau.resturantapp.events.FragContainerChangedEvent;
+import mau.resturantapp.event.events.FragContainerChangedEvent;
 
 /**
  * Created by anwar on 10/16/16.

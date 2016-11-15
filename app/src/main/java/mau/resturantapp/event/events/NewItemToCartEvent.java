@@ -1,4 +1,4 @@
-package mau.resturantapp.events;
+package mau.resturantapp.event.events;
 
 /**
  * Created by anwar on 10/23/16.

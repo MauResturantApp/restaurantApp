@@ -1,6 +1,5 @@
 package mau.resturantapp.aktivitys;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -9,7 +8,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,7 +16,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -37,12 +34,17 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import mau.resturantapp.R;
-import mau.resturantapp.data.MenuTabs;
+import mau.resturantapp.aktivitys.dialogs.Dialog_askForLogin;
+import mau.resturantapp.aktivitys.dialogs.Dialog_login;
+import mau.resturantapp.aktivitys.dialogs.Dialog_signup;
 import mau.resturantapp.data.appData;
-import mau.resturantapp.events.FragContainerChangedEvent;
-import mau.resturantapp.events.NewItemToCartEvent;
-import mau.resturantapp.events.NewUserSuccesfullEvent;
-import mau.resturantapp.events.OnSuccesfullLogInEvent;
+import mau.resturantapp.event.events.FragContainerChangedEvent;
+import mau.resturantapp.event.events.NewUserSuccesfullEvent;
+import mau.resturantapp.event.events.OnFailedLogIn;
+import mau.resturantapp.event.events.OnSuccesfullLogInEvent;
+import mau.resturantapp.event.events.ShowAskforLoginDialogEvent;
+import mau.resturantapp.event.events.ShowLogInDialogEvent;
+import mau.resturantapp.event.events.ShowSignupDialogEvent;
 import mau.resturantapp.test.QRCamera;
 import mau.resturantapp.test.QRTest;
 
@@ -171,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     }
 
     @Subscribe
-    public void logedInEvent(OnSuccesfullLogInEvent event) {
+    public void userlogedInEvent(OnSuccesfullLogInEvent event) {
         showHomeScreen();
         userLoggedIn();
     }
@@ -260,54 +262,40 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
 
             case R.id.menu_login:
-                frag = new Login_frag();
-                ft.addToBackStack(null);
-                Log.d("item selected", "login");
-                ft.replace(R.id.mainFrameFrag, frag).commit();
-
+                showLoginDialog();
                 break;
 
             case R.id.menu_findos:
                 frag = new FindWay_frag();
                 ft.addToBackStack(null);
                 Log.d("item selected", "findway");
-
                 ft.replace(R.id.mainFrameFrag, frag).commit();
                 break;
 
             case R.id.menu_qrTest:
                 frag = new QRTest();
                 ft.addToBackStack(null);
-
                 ft.replace(R.id.mainFrameFrag, frag).commit();
                 break;
-
 
             case R.id.menu_indstillinger:
                 frag = new Settings_frag();
                 ft.addToBackStack(null);
-
                 ft.replace(R.id.mainFrameFrag, frag).commit();
-
                 break;
 
             case R.id.menu_qrCamera:
                 frag = new QRCamera();
                 ft.addToBackStack(null);
-
                 ft.replace(R.id.mainFrameFrag, frag).commit();
-
                 break;
 
             case R.id.menu_signin:
-                frag = new Signup_frag();
-                ft.addToBackStack(null);
-                ft.replace(R.id.mainFrameFrag, frag).commit();
+                showSignupDialog();
                 break;
             case R.id.menu_logout:
                 appData.cartContent.clear();
-                NewItemToCartEvent event = new NewItemToCartEvent();
-                EventBus.getDefault().post(event);
+                appData.event.newItemToCart();
                 appData.currentUser = null;
                 userLoggedOut();
                 showHomeScreen();
@@ -317,7 +305,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                 break;
 
         }
-        setActiveBarTab(null);
+        setActiveBarTab();
         return true;
 
     }
@@ -328,7 +316,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         navMenu.findItem(R.id.menu_signin).setVisible(false);
         navMenu.findItem(R.id.menu_logout).setVisible(true);
         navMenu.findItem(R.id.menu_qrTest).setVisible(true);
-
 
         if(appData.currentUser.isAdmin()){
             navMenu.findItem(R.id.menu_qrCamera).setVisible(true);
@@ -342,14 +329,15 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         navMenu.findItem(R.id.menu_logout).setVisible(false);
         navMenu.findItem(R.id.menu_qrCamera).setVisible(false);
         navMenu.findItem(R.id.menu_qrTest).setVisible(false);
-
-
-
     }
 
     public void Btn_Checkout_clicked(View v){
-        Dialog_login dialog = new Dialog_login();
-        dialog.show(getSupportFragmentManager(),"dialog");
+      if(appData.currentUser == null){
+          showAskForLoginDialog();
+      }
+        else{
+          // vis checkout frag her.
+      }
     }
 
     @Override
@@ -363,6 +351,22 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         return false;
     }
 
+    private void showSignupDialog(){
+        Dialog_signup d = new Dialog_signup();
+        d.show(getSupportFragmentManager(),null);
+    }
+
+    private void showLoginDialog(){
+        Dialog_login d = new Dialog_login();
+        d.show(getSupportFragmentManager(),null);
+    }
+
+    private void showAskForLoginDialog(){
+        Dialog_askForLogin d = new Dialog_askForLogin();
+        d.show(getSupportFragmentManager(),null);
+
+    }
+
     @Subscribe
     public void succesSignup(NewUserSuccesfullEvent event) {
         showHomeScreen();
@@ -370,7 +374,27 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     }
 
     @Subscribe
-    public void setActiveBarTab(FragContainerChangedEvent event){
+    public void askForLoginDialogEvent(ShowAskforLoginDialogEvent event){
+        showAskForLoginDialog();
+    }
+
+    @Subscribe
+    public void signupDialogEvent(ShowSignupDialogEvent event){
+        showSignupDialog();
+    }
+
+    @Subscribe
+    public void loginDialogEvent(ShowLogInDialogEvent event){
+        showLoginDialog();
+    }
+
+
+
+
+
+
+    @Subscribe
+    public void setActiveBarTab(){
         Fragment currentFrag = getSupportFragmentManager().findFragmentById(R.id.mainFrameFrag);
         bottomBar.setActiveTabColor(ContextCompat.getColor(this,R.color.colorSecondaryDark));
         Log.d("ggggggg","gggggg");
@@ -392,7 +416,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
             bottomBar.setActiveTabColor(ContextCompat.getColor(this,R.color.colorPrimary));
         }
 
-
-
     }
+
 }

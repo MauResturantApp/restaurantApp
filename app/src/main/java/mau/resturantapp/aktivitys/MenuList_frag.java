@@ -1,6 +1,5 @@
 package mau.resturantapp.aktivitys;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,8 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -21,16 +18,8 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-
 import mau.resturantapp.R;
-import mau.resturantapp.data.MenuItem;
 import mau.resturantapp.data.appData;
-import mau.resturantapp.events.NewItemToCartEvent;
 
 import mau.resturantapp.data.Product;
 
@@ -187,8 +176,7 @@ public class MenuList_frag extends Fragment {
                     public void onClick(View v) {
                         appData.cartContent.add(recyclerViewAdapter.getItem(mPosition));
                         Toast.makeText(getContext(), recyclerViewAdapter.getItem(mPosition).getName() + "er tilføget til kurv", Toast.LENGTH_SHORT).show();
-                        NewItemToCartEvent event = new NewItemToCartEvent();
-                        EventBus.getDefault().post(event);
+                        appData.event.newItemToCart();
                     }
                 });
             }

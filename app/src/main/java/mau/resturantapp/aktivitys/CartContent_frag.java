@@ -2,10 +2,7 @@ package mau.resturantapp.aktivitys;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,11 +19,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import mau.resturantapp.R;
-import mau.resturantapp.data.MenuItem;
 import mau.resturantapp.data.Product;
 import mau.resturantapp.data.appData;
-import mau.resturantapp.events.NewItemToCartEvent;
-import mau.resturantapp.events.ShowHideCartEvent;
+import mau.resturantapp.event.events.NewItemToCartEvent;
 
 /**
  * Created by anwar on 10/14/16.
@@ -62,23 +57,6 @@ public class CartContent_frag extends Fragment {
 
     }
 
-    @Subscribe
-    public void onShowHideEvent(ShowHideCartEvent event) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.push_up_in, R.anim.push_down_out1);
-        Fragment fragmentCartContent = fragmentManager.findFragmentById(R.id.cartContentShowHide_frag);
-        if (fragmentCartContent.isHidden()) {
-            transaction.show(fragmentCartContent).commit();
-
-        } else {
-            transaction.hide(fragmentCartContent).commit();
-
-        }
-
-        Log.d("showhideevent", "kaldt");
-    }
-
 
     @Subscribe
     public void newItemToCartEvent(NewItemToCartEvent event) {
@@ -106,8 +84,7 @@ public class CartContent_frag extends Fragment {
                     @Override
                     public void onClick(View v) {
                         appData.cartContent.remove(getAdapterPosition());
-                        NewItemToCartEvent event = new NewItemToCartEvent();
-                        EventBus.getDefault().post(event);
+                        appData.event.newItemToCart();
                         notifyItemRemoved(getAdapterPosition());
                     }
                 });

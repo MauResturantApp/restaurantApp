@@ -3,12 +3,9 @@ package mau.resturantapp.data;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,7 +19,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -30,10 +26,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import mau.resturantapp.events.NewUserFailedEvent;
-import mau.resturantapp.events.NewUserSuccesfullEvent;
-import mau.resturantapp.events.OnFailedLogIn;
-import mau.resturantapp.events.OnSuccesfullLogInEvent;
+import mau.resturantapp.event.EventCreator;
+import mau.resturantapp.event.events.NewUserFailedEvent;
+import mau.resturantapp.event.events.NewUserSuccesfullEvent;
+import mau.resturantapp.event.events.OnFailedLogIn;
+import mau.resturantapp.event.events.OnSuccesfullLogInEvent;
 import mau.resturantapp.user.LoggedInUser;
 
 /**
@@ -42,7 +39,7 @@ import mau.resturantapp.user.LoggedInUser;
 
 public class appData extends Application{
     private static MenuTabs tempItem = new MenuTabs();
-
+    public static EventCreator event = new EventCreator();
     public static ArrayList<Product> cartContent = new ArrayList<>();
     public static String[] currentTabs = tempItem.getTabs();
     public static LoggedInUser currentUser;
