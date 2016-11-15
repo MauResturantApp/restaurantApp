@@ -32,6 +32,8 @@ public class CartContent_frag extends Fragment {
     private View view;
     private RecyclerView recycler;
     private CartItemList_Adapter adapter;
+    private int positionToRemove = 0;
+    private DefaultItemAnimator animate = new DefaultItemAnimator();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,7 +45,9 @@ public class CartContent_frag extends Fragment {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recycler.setLayoutManager(layoutManager);
-        recycler.setItemAnimator(new DefaultItemAnimator());
+        recycler.setItemAnimator(animate);
+
+
         recycler.setAdapter(adapter);
         return view;
     }
@@ -57,11 +61,15 @@ public class CartContent_frag extends Fragment {
 
     }
 
+    private void removeItem(){
+        recycler.getAdapter().notifyItemRemoved(positionToRemove);
+
+    }
+
 
     @Subscribe
     public void newItemToCartEvent(NewItemToCartEvent event) {
-        adapter.notifyDataSetChanged();
-
+        adapter.notifyItemInserted(recycler.getAdapter().getItemCount()+1);
         Log.d("newitemevent", "kaldt");
     }
 
@@ -72,6 +80,8 @@ public class CartContent_frag extends Fragment {
             ImageButton listImgBtn;
             TextView listItemtxt;
             RelativeLayout relativeLayout;
+
+
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -84,8 +94,8 @@ public class CartContent_frag extends Fragment {
                     @Override
                     public void onClick(View v) {
                         appData.cartContent.remove(getAdapterPosition());
-                        appData.event.newItemToCart();
-                        notifyItemRemoved(getAdapterPosition());
+                        positionToRemove = getAdapterPosition();
+                        removeItem();
                     }
                 });
 
