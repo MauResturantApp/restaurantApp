@@ -24,6 +24,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.roughike.bottombar.BottomBar;
@@ -39,6 +40,8 @@ import mau.resturantapp.aktivitys.dialogs.Dialog_login;
 import mau.resturantapp.aktivitys.dialogs.Dialog_signup;
 import mau.resturantapp.data.appData;
 import mau.resturantapp.event.events.FragContainerChangedEvent;
+import mau.resturantapp.event.events.LogUserInEvent;
+import mau.resturantapp.event.events.NewUserFailedEvent;
 import mau.resturantapp.event.events.NewUserSuccesfullEvent;
 import mau.resturantapp.event.events.OnFailedLogIn;
 import mau.resturantapp.event.events.OnSuccesfullLogInEvent;
@@ -60,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     private DrawerLayout drawLayout;
     private NavigationView sideMenu;
     private View fadeView;
+    private ProgressBar progBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         drawerButton.setOnClickListener(this);
         drawLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         sideMenu = (NavigationView) findViewById(R.id.navView_sideMenu);
+        progBar = (ProgressBar) findViewById(R.id.progBar_main);
+        progBar.setVisibility(View.GONE);
 
         bottomBar.setOnTabReselectListener(new OnTabReselectListener() {
             @Override
@@ -172,11 +178,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
     }
 
-    @Subscribe
-    public void userlogedInEvent(OnSuccesfullLogInEvent event) {
-        showHomeScreen();
-        userLoggedIn();
-    }
+
 
 
 
@@ -256,7 +258,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         Fragment frag;
         drawLayout.closeDrawer(Gravity.LEFT);
         item.setChecked(true);
-        Log.d("im in", "item selected");
         hideCart();
         switch (item.getItemId()) {
 
@@ -367,10 +368,18 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
     }
 
+    // Event handlers
+
     @Subscribe
     public void succesSignup(NewUserSuccesfullEvent event) {
+        progBar.setVisibility(View.GONE);
         showHomeScreen();
         userLoggedIn();
+    }
+
+    @Subscribe
+    public void logginIn(LogUserInEvent event){
+        progBar.setVisibility(View.VISIBLE);
     }
 
     @Subscribe
@@ -388,13 +397,30 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         showLoginDialog();
     }
 
+    @Subscribe
+    public void userlogedInEvent(OnSuccesfullLogInEvent event) {
+        showHomeScreen();
+        userLoggedIn();
+        Toast.makeText(this,"Du er nu logget ind", Toast.LENGTH_LONG);
 
-
-
-
+        progBar.setVisibility(View.GONE);
+    }
 
     @Subscribe
-    public void setActiveBarTab(){
+    public void failedSignup(NewUserFailedEvent event){
+        Toast.makeText(this,"Fejlede med at oprette ny bruger, prøv venligst igen", Toast.LENGTH_LONG);
+        progBar.setVisibility(View.GONE);
+    }
+
+    @Subscribe
+    public void failedLogin(OnFailedLogIn event){
+        showLoginDialog();
+        progBar.setVisibility(View.GONE);
+    }
+
+
+    //used for setting the correct active tab on backpress.
+    private void setActiveBarTab(){
         Fragment currentFrag = getSupportFragmentManager().findFragmentById(R.id.mainFrameFrag);
         bottomBar.setActiveTabColor(ContextCompat.getColor(this,R.color.colorSecondaryDark));
         Log.d("ggggggg","gggggg");

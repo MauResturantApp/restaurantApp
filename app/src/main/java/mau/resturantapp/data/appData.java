@@ -115,8 +115,7 @@ public class appData extends Application{
                                     onSuccesfullLogin();
                                 }
                             else{
-                                onFailledLogin();
-
+                                event.failedLogin();
                                 }
 
                         }
@@ -126,36 +125,26 @@ public class appData extends Application{
 
     }
 
-    public static void newUser(String email, String password){
+    public static void newUser(final String email, final String password){
+        event.logUserIn();
         appData.firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    newUserSuccesfull();
+                    currentUser = new LoggedInUser(email,password,0);
+                    event.newUserSuccesfull();
+
                 }
                 else{
-                    NewUserFailedEvent event = new NewUserFailedEvent();
-                    EventBus.getDefault().post(event);
+                    event.newUserFailed();
                 }
             }
         });
 
     }
 
-    private static void newUserSuccesfull() {
-        NewUserSuccesfullEvent event = new NewUserSuccesfullEvent();
-        EventBus.getDefault().post(event);
-    }
-
-
-    private static void onFailledLogin() {
-        OnFailedLogIn event = new OnFailedLogIn();
-        EventBus.getDefault().post(event);
-    }
-
     private static void onSuccesfullLogin() {
-        OnSuccesfullLogInEvent event = new OnSuccesfullLogInEvent();
-        EventBus.getDefault().post(event);
+        event.succesfullLogin();
         String name = firebaseAuth.getCurrentUser().getDisplayName();
         String email = firebaseAuth.getCurrentUser().getEmail();
         currentUser = new LoggedInUser(name,email,0);
@@ -231,10 +220,9 @@ public class appData extends Application{
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
-                            newUserSuccesfull();
+                            event.newUserSuccesfull();
                         } else {
-                            NewUserFailedEvent event = new NewUserFailedEvent();
-                            EventBus.getDefault().post(event);
+                            event.newUserFailed();
                         }
                     }
                 });
@@ -291,8 +279,7 @@ public class appData extends Application{
                             onSuccesfullLogin();
                         }
                         else{
-                            onFailledLogin();
-
+                            event.failedLogin();
                         }
 
                     }

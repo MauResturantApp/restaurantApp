@@ -72,7 +72,7 @@ public class Dialog_login extends DialogFragment implements View.OnClickListener
         //nothing in here, closes by it self.
     }
     private void signupButtonClick(){
-      //  appData.event.signUpNewUser();
+        appData.event.showSignupDialog();
     }
     private void loginButtonClick(){
         validLogin();
