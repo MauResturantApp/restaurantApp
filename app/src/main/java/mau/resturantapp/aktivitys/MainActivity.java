@@ -347,6 +347,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
     }
 
+    public void Btn_Checkout_clicked(View v){
+        Dialog_login dialog = new Dialog_login();
+        dialog.show(getSupportFragmentManager(),"dialog");
+    }
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
 

@@ -37,6 +37,7 @@
                     android:background="@color/primaryTextRed"
                     android:id="@+id/btn_checkout"
                     android:clickable="true"
+                    android:onClick="Btn_Checkout_clicked"
                     android:layout_height="match_parent"
                     android:textColor="@color/colorPrimary"
                      />
