@@ -1,6 +1,7 @@
 package mau.resturantapp.data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Yoouughurt on 05-11-2016.
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 
 public class Order {
 
-    private ArrayList<Product> products;
+    private List<Product> products = new ArrayList<>();
     private int totalPrice;
     private Object timestamp;
 
@@ -22,11 +23,11 @@ public class Order {
         this.timestamp = timestamp;
     }
 
-    public ArrayList<Product> getProducts() {
+    public List<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(ArrayList<Product> products) {
+    public void setProducts(List<Product> products) {
         this.products = products;
     }
 

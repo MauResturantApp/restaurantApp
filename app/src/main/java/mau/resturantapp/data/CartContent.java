@@ -1,6 +1,7 @@
 package mau.resturantapp.data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Yoouughurt on 14-11-2016.
@@ -8,18 +9,18 @@ import java.util.ArrayList;
 
 public class CartContent {
 
-    private ArrayList<Product> products = new ArrayList<>();
+    private List<Product> products = new ArrayList<>();
 
     public CartContent(){
 
     }
 
 
-    public ArrayList<Product> getProducts() {
+    public List<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(ArrayList<Product> products) {
+    public void setProducts(List<Product> products) {
         this.products = products;
     }
 }
