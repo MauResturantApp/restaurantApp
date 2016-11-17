@@ -158,6 +158,7 @@ public class appData extends Application{
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     currentUser.setAdmin(true);
+                    Log.d("Logged in as admin : ", ""+currentUser.isAdmin());
                 }
             }
 
