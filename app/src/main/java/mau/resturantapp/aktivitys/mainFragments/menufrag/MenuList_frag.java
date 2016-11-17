@@ -1,6 +1,8 @@
 package mau.resturantapp.aktivitys.mainFragments.menufrag;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -156,6 +158,39 @@ public class MenuList_frag extends Fragment {
 
         return rod;
     }
+    private void succesfullAddItem(final ProductHolder holder, final int position){
+        holder.addNewItemBtn.setImageResource(R.drawable.add_item_icon);
+        holder.addNewItemBtn.setOnClickListener(null);
+
+        class lockOnClick extends AsyncTask{
+
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                SystemClock.sleep(750);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                holder.addNewItemBtn.setImageResource(R.drawable.ic_action_additem);
+                holder.addNewItemBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        appData.cartContent.add(recyclerViewAdapter.getItem(position));
+                        Toast.makeText(getContext(), recyclerViewAdapter.getItem(position).getName() + "er tilføget til kurv", Toast.LENGTH_SHORT).show();
+                        appData.event.newItemToCart();
+                        succesfullAddItem(holder,position);
+
+                    }
+                });
+
+            }
+        }
+        new lockOnClick().execute();
+
+    }
+
+
 
     private void startRecyclerViewAdapter() {
         Log.d("recyclerViewAdapter", ref.toString());
@@ -164,7 +199,7 @@ public class MenuList_frag extends Fragment {
                 Product.class, R.layout.menu_item_list, ProductHolder.class, query) {
 
             @Override
-            protected void populateViewHolder(ProductHolder productHolder, Product product, int position) {
+            protected void populateViewHolder(final ProductHolder productHolder, Product product, int position) {
                 Log.d("recyclerViewAdapter", ""+position);
                 final int mPosition = position;
                 productHolder.setProductName(product.getName());
@@ -177,6 +212,8 @@ public class MenuList_frag extends Fragment {
                         appData.cartContent.add(recyclerViewAdapter.getItem(mPosition));
                         Toast.makeText(getContext(), recyclerViewAdapter.getItem(mPosition).getName() + "er tilføget til kurv", Toast.LENGTH_SHORT).show();
                         appData.event.newItemToCart();
+                        succesfullAddItem(productHolder,mPosition);
+
                     }
                 });
             }

@@ -93,7 +93,13 @@ public class CartContent_frag extends Fragment {
                 listImgBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        appData.cartContent.remove(getAdapterPosition());
+                        try{
+                            appData.cartContent.remove(getAdapterPosition());
+                        }
+                        catch (ArrayIndexOutOfBoundsException toofast){
+                            Log.d("menulist","clicked too fast");
+                        }
+
                         positionToRemove = getAdapterPosition();
                         removeItem();
                     }

@@ -54,10 +54,11 @@
 
         <ImageButton
         android:layout_width="45dp"
-        android:src="@drawable/ic_action_sidemenu"
+        android:src="@drawable/ic_action_opendrawer"
+            android:rotation="90"
         android:background="#80ffffff"
         android:layout_marginTop="50dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="-15dp"
         android:layout_height="wrap_content"
         android:id="@+id/btn_sidemenu" />
 

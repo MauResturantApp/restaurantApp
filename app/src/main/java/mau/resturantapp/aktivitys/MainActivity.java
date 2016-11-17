@@ -74,10 +74,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hovedakt_akt);
         EventBus.getDefault().register(this);
-
         fadeView = findViewById(R.id.fadeView);
-
-
         bottomBar = (BottomBar) findViewById(R.id.bottomBar_main);
         drawerButton = (ImageButton) findViewById(R.id.btn_sidemenu);
         FrameLayout sheet = (FrameLayout) findViewById(R.id.frameLayout_bottomSheet);
@@ -116,18 +113,18 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
 
                 if(newState == STATE_DRAGGING){
-                    fadeView.animate().alpha(0.3f);
+                    fadeView.animate().alpha(0.5f);
                     fadeView.setVisibility(View.VISIBLE);
                 }
 
                 if(newState == STATE_SETTLING){
-                    fadeView.animate().alpha(0.3f);
+                    fadeView.animate().alpha(0.5f);
                     fadeView.setVisibility(View.VISIBLE);
                 }
 
 
                 if(newState == STATE_EXPANDED){
-                    fadeView.animate().alpha(0.3f);
+                    fadeView.animate().alpha(0.5f);
                     fadeView.setVisibility(View.VISIBLE);
                 }
                 if(newState == STATE_COLLAPSED || newState == STATE_HIDDEN){
