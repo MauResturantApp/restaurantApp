@@ -29,11 +29,6 @@
                 android:layout_height="150dp"
                 android:id="@+id/textView" />
 
-            <ImageButton
-                android:layout_width="match_parent"
-                android:background="@color/colorPrimaryDark"
-                android:layout_height="175dp"
-                android:id="@+id/imageButton4" />
 
             <ImageButton
                 android:layout_width="match_parent"
