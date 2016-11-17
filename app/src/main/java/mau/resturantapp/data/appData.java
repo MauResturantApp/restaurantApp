@@ -148,7 +148,6 @@ public class appData extends Application{
         String email = firebaseAuth.getCurrentUser().getEmail();
         currentUser = new LoggedInUser(name,email,0);
         isAdmin();
-        event.succesfullLogin();
     }
 
     private static void isAdmin() {
@@ -160,6 +159,8 @@ public class appData extends Application{
                     currentUser.setAdmin(true);
                     Log.d("Logged in as admin : ", ""+currentUser.isAdmin());
                 }
+                event.succesfullLogin();
+
             }
 
             @Override
