@@ -1,6 +1,10 @@
 package mau.resturantapp.data;
 
+import com.google.firebase.database.Exclude;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,5 +49,14 @@ public class Order {
 
     public void setTimestamp(Object timestamp) {
         this.timestamp = timestamp;
+    }
+
+    @Exclude
+    public Date getTimestampAsDate(){
+        Date date = new Date((Long)timestamp);
+        //Handle Locale for multi-language later
+        SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        sfd.format(date);
+        return date;
     }
 }
