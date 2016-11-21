@@ -14,6 +14,7 @@ import mau.resturantapp.event.events.ResumeTabsEvent;
 import mau.resturantapp.event.events.ShowAskforLoginDialogEvent;
 import mau.resturantapp.event.events.ShowLogInDialogEvent;
 import mau.resturantapp.event.events.ShowSignupDialogEvent;
+import mau.resturantapp.event.events.SignOutEvent;
 import mau.resturantapp.event.events.SignUpBtnClicked;
 
 /**
@@ -52,6 +53,11 @@ public class EventCreator {
         OnSuccesfullLogInEvent event = new OnSuccesfullLogInEvent();
         bus.post(event);
     }
+    public void signOut(){
+        SignOutEvent event = new SignOutEvent();
+        bus.post(event);
+    }
+
     public void resumeTabs(){
         ResumeTabsEvent event = new ResumeTabsEvent();
         bus.post(event);

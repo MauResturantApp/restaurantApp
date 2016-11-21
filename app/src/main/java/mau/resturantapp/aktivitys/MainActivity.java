@@ -299,7 +299,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                 appData.cartContent.clear();
                 appData.event.newItemToCart();
                 appData.currentUser = null;
-                userLoggedOut();
+                //userLoggedOut();
+
+                //firebase logout
+                appData.logOutUser();
+
                 showHomeScreen();
             default:
 
@@ -312,12 +316,22 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
     }
 
+    private void anonymousLoggedIn() {
+        Log.d("MainActivity", "Anonymous logged in navbar");
+        Menu navMenu = sideMenu.getMenu();
+        navMenu.findItem(R.id.menu_login).setVisible(true);
+        navMenu.findItem(R.id.menu_signin).setVisible(true);
+        navMenu.findItem(R.id.menu_logout).setVisible(false);
+        navMenu.findItem(R.id.menu_qrCamera).setVisible(false);
+        navMenu.findItem(R.id.menu_qrTest).setVisible(false);
+    }
+
     private void userLoggedIn(){
+        Log.d("MainActivity", "User logged in navbar");
         Menu navMenu = sideMenu.getMenu();
         navMenu.findItem(R.id.menu_login).setVisible(false);
         navMenu.findItem(R.id.menu_signin).setVisible(false);
         navMenu.findItem(R.id.menu_logout).setVisible(true);
-        navMenu.findItem(R.id.menu_qrTest).setVisible(true);
 
         if(appData.currentUser.isAdmin()){
             navMenu.findItem(R.id.menu_qrCamera).setVisible(true);
@@ -325,6 +339,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         }
     }
     private void userLoggedOut(){
+        Log.d("MainActivity", "User logged in navbar");
         Menu navMenu = sideMenu.getMenu();
         navMenu.findItem(R.id.menu_login).setVisible(true);
         navMenu.findItem(R.id.menu_signin).setVisible(true);
@@ -409,7 +424,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         fadeView.setVisibility(View.GONE);
         progBar.setVisibility(View.GONE);
         showHomeScreen();
-        userLoggedIn();
+        if(appData.currentUser.isAnonymous()){
+            anonymousLoggedIn();
+        } else {
+            userLoggedIn();
+        }
     }
 
     @Subscribe
