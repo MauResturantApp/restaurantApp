@@ -87,7 +87,8 @@ public class Dialog_login extends DialogFragment implements View.OnClickListener
         }
 
         else{
-            appData.validLogin(email,password);
+            //appData.validLogin(email,password);
+            appData.testValidLogin(email,password);
         }
     }
 

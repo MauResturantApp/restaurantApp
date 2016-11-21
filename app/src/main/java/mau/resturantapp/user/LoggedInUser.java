@@ -17,6 +17,11 @@ public class LoggedInUser {
     private ArrayList<Order> oldOrders = new ArrayList<>();
     private ArrayList<Product> cart = new ArrayList<>();
     private int points;
+    private boolean anonymous = false;
+
+    public LoggedInUser(){
+        anonymous = true;
+    }
 
     public LoggedInUser(String email, String name, int points) {
         this.email = email;
@@ -55,4 +60,6 @@ public class LoggedInUser {
     public void setAdmin(boolean admin) {
         this.admin = admin;
     }
+
+    public boolean isAnonymous() { return anonymous; }
 }

@@ -32,6 +32,11 @@ import org.greenrobot.eventbus.Subscribe;
 import mau.resturantapp.R;
 import mau.resturantapp.data.Product;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.event.events.OnSuccesfullLogInEvent;
+import mau.resturantapp.event.events.SignOutEvent;
+
+import static mau.resturantapp.data.appData.event;
+import static mau.resturantapp.data.appData.firebaseDatabase;
 
 /**
  *  Work in progress
@@ -92,11 +97,25 @@ public class CartContentFirebase_frag extends Fragment {
         EventBus.getDefault().register(this);
     }
 
+    @Subscribe
+    public void OnSuccesfullLoginEvent(OnSuccesfullLogInEvent event) {
+        recyclerViewAdapterCleanUp();
+        startRecyclerViewAdapter();
+    }
+
+    @Subscribe
+    public void SignOutEvent(SignOutEvent event) {
+        recyclerViewAdapterCleanUp();
+    }
+
 
     @Override
     public void onStart() {
         super.onStart();
 
+        ref = appData.firebaseDatabase.getReference("shoppingcart/" + appData.getUID());
+        appData.shoppingcartRef = firebaseDatabase.getReference("shoppingcart/" + appData.getUID());
+        Log.d("CartContent on start", ""+ref);
         startAuthStateListener();
         appData.firebaseAuth.addAuthStateListener(mAuthListener);
 
@@ -109,14 +128,21 @@ public class CartContentFirebase_frag extends Fragment {
 
         appData.firebaseAuth.removeAuthStateListener(mAuthListener);
 
+        recyclerViewAdapterCleanUp();
+
+    }
+
+    private void recyclerViewAdapterCleanUp() {
         if(recyclerViewAdapter != null){
             recyclerViewAdapter.cleanup();
         }
     }
 
     private void startRecyclerViewAdapter() {
-        Log.d("recyclerViewAdapter", ref.toString());
+        Log.d("recyclerViewAdapter", ""+appData.shoppingcartRef);
+        Log.d("recyclerViewAdapter", ""+ref);
         Query query = ref;
+        //Query query = appData.shoppingcartRef;
         recyclerViewAdapter = new FirebaseRecyclerAdapter<Product, CartContentHolder>(
                 Product.class, R.layout.kurv_list, CartContentHolder.class, query) {
 
@@ -129,6 +155,7 @@ public class CartContentFirebase_frag extends Fragment {
                     @Override
                     public void onClick(View v) {
                         //remove from cart representation in firebase
+                        Log.d("Remove item cart", ""+mPosition);
                         ref.child(mPosition+"").removeValue();
                     }
                 });
@@ -145,10 +172,15 @@ public class CartContentFirebase_frag extends Fragment {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                //recyclerViewAdapter.cleanup();
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+                FirebaseUser user1 = appData.firebaseAuth.getCurrentUser();
                 if (user != null) {
+                    Log.d("Current user", ""+user.getUid());
+                    Log.d("Current user appdata", ""+user1.getUid());
                     // User is signed in
-                    ref = appData.firebaseDatabase.getReference("Shoppingcart/" + appData.getUID());
+                    ref = appData.firebaseDatabase.getReference("shoppingcart/" + user.getUid() /*appData.getUID()*/);
+                    //startRecyclerViewAdapter();
                     Log.d("Authstate", "onAuthStateChanged:signed_in:" + user.getUid());
                     if(user.isAnonymous()){
                         //Save logged in as anonymous Reference to later transfer data
@@ -158,19 +190,11 @@ public class CartContentFirebase_frag extends Fragment {
                         //appData.transferAnonymousData();
                     }
                 } else {
+                    Log.d("Current user", "Null");
+
+                    recyclerViewAdapterCleanUp();
                     // User is signed out
-                    appData.firebaseAuth.signInAnonymously()
-                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    Log.d("Authstate", "signInAnonymously:onComplete:" + task.isSuccessful());
-                                    if (!task.isSuccessful()) {
-                                        Log.w("AuthState", "signInAnonymously", task.getException());
-                                        Toast.makeText(getContext(), "Authentication failed.",
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
+                    appData.logInAnonymously();
                 }
             }
         };

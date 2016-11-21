@@ -70,7 +70,7 @@ public class MenuList_frag extends Fragment {
         }
 
         public void setImageButton(final int position) {
-            Log.d("recyclerViewAdapter", "imagebutton");
+            //Log.d("recyclerViewAdapter", "imagebutton");
             addNewItemBtn = (ImageButton) rod.findViewById(R.id.imgBtn_menu_removeItem);
         }
     }
@@ -199,8 +199,8 @@ public class MenuList_frag extends Fragment {
                 Product.class, R.layout.menu_item_list, ProductHolder.class, query) {
 
             @Override
-            protected void populateViewHolder(final ProductHolder productHolder, Product product, int position) {
-                Log.d("recyclerViewAdapter", ""+position);
+            protected void populateViewHolder(final ProductHolder productHolder, final Product product, int position) {
+                //Log.d("recyclerViewAdapter", ""+position);
                 final int mPosition = position;
                 productHolder.setProductName(product.getName());
                 productHolder.setPrice(product.getPrice());
@@ -209,10 +209,11 @@ public class MenuList_frag extends Fragment {
                 productHolder.addNewItemBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        appData.cartContent.add(recyclerViewAdapter.getItem(mPosition));
+                        //appData.cartContent.add(recyclerViewAdapter.getItem(mPosition));
+                        appData.addProductToCart(product);
                         Toast.makeText(getContext(), recyclerViewAdapter.getItem(mPosition).getName() + "er tilføget til kurv", Toast.LENGTH_SHORT).show();
-                        appData.event.newItemToCart();
-                        succesfullAddItem(productHolder,mPosition);
+                        //appData.event.newItemToCart();
+                        //succesfullAddItem(productHolder,mPosition);
 
                     }
                 });

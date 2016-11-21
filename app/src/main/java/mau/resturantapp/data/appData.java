@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,6 +25,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import mau.resturantapp.event.EventCreator;
@@ -37,7 +39,7 @@ import mau.resturantapp.user.LoggedInUser;
  * Created by anwar on 10/15/16.
  */
 
-public class appData extends Application{
+public class appData extends Application {
     private static MenuTabs tempItem = new MenuTabs();
     public static EventCreator event = new EventCreator();
     public static ArrayList<Product> cartContent = new ArrayList<>();
@@ -51,19 +53,22 @@ public class appData extends Application{
 
     //New Cart in progress
     public static CartContent shoppingCart;
+    public static DatabaseReference shoppingcartRef;
+    FirebaseAuth.AuthStateListener mAuthStateListener;
 
     @Override
     public void onCreate() {
         super.onCreate();
-
+        //startAuthStateListener();
+        //firebaseAuth.addAuthStateListener(mAuthStateListener);
         appPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         setPrefs();
     }
 
 
-    private void setPrefs(){
-        if(!appPrefs.contains("mainColor")){
-            appPrefs.edit().putString("mainColor","#f23423")
+    private void setPrefs() {
+        if (!appPrefs.contains("mainColor")) {
+            appPrefs.edit().putString("mainColor", "#f23423")
                     .putString("textColor", "#f123456").commit();
         }
     }
@@ -80,8 +85,8 @@ public class appData extends Application{
 
     //These functions can potentially be moved to a Firebase related singleton.
 
-    public static boolean isLoggedIn(){
-        if(firebaseAuth.getCurrentUser() != null){
+    public static boolean isLoggedIn() {
+        if (firebaseAuth.getCurrentUser() != null) {
             return true;
         }
 
@@ -89,14 +94,13 @@ public class appData extends Application{
     }
 
     @Nullable
-    public static String getUID(){
-        if(isLoggedIn()) {
+    public static String getUID() {
+        if (isLoggedIn()) {
             return firebaseAuth.getCurrentUser().getUid();
         }
 
         return null;
     }
-
 
 
     public static void validLogin(String userEmail, String userPassword) {
@@ -106,36 +110,33 @@ public class appData extends Application{
         email = email.trim();
         password = password.trim();
 
-            appData.firebaseAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+        appData.firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
 
-                            if (task.isSuccessful()) {
-                                    onSuccesfullLogin();
-                                }
-                            else{
-                                event.failedLogin();
-                                }
-
+                        if (task.isSuccessful()) {
+                            onSuccesfullLogin();
+                        } else {
+                            event.failedLogin();
                         }
-                                   });
 
+                    }
+                });
 
 
     }
 
-    public static void newUser(final String email, final String password){
+    public static void newUser(final String email, final String password) {
         event.logUserIn();
         appData.firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    currentUser = new LoggedInUser(email,password,0);
+                if (task.isSuccessful()) {
+                    currentUser = new LoggedInUser(email, password, 0);
                     event.newUserSuccesfull();
 
-                }
-                else{
+                } else {
                     event.newUserFailed();
                 }
             }
@@ -146,7 +147,7 @@ public class appData extends Application{
     private static void onSuccesfullLogin() {
         String name = firebaseAuth.getCurrentUser().getDisplayName();
         String email = firebaseAuth.getCurrentUser().getEmail();
-        currentUser = new LoggedInUser(name,email,0);
+        currentUser = new LoggedInUser(name, email, 0);
         isAdmin();
     }
 
@@ -157,7 +158,7 @@ public class appData extends Application{
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     currentUser.setAdmin(true);
-                    Log.d("Logged in as admin : ", ""+currentUser.isAdmin());
+                    Log.d("Logged in as admin : ", "" + currentUser.isAdmin());
                 }
                 event.succesfullLogin();
 
@@ -170,13 +171,13 @@ public class appData extends Application{
         });
     }
 
-    public static void addTab(MenuTab menuTab){
+    public static void addTab(MenuTab menuTab) {
         DatabaseReference ref = firebaseDatabase.getReference("menutabs/");
         ref.push().setValue(menuTab);
     }
 
     //Consider if transactions needed
-    public static void removeTab(MenuTab menuTab){
+    public static void removeTab(MenuTab menuTab) {
         DatabaseReference ref = firebaseDatabase.getReference();
 
         Map removeTab = new HashMap();
@@ -186,12 +187,12 @@ public class appData extends Application{
         ref.updateChildren(removeTab);
     }
 
-    public static void updateTab(MenuTab menuTab){
+    public static void updateTab(MenuTab menuTab) {
         DatabaseReference ref = firebaseDatabase.getReference("menutabs/");
         ref.child(menuTab.getKey()).setValue(menuTab);
     }
 
-    public static void transferAnonymousData(){
+    public static void transferAnonymousData() {
         final DatabaseReference ref = firebaseDatabase.getReference();
         final DatabaseReference refAnonymous = firebaseDatabase.getReference("shoppingcart/" + anonymousAuth.getCurrentUser().getUid());
         final DatabaseReference refKnownUser = firebaseDatabase.getReference("shoppingcart/" + firebaseAuth.getCurrentUser().getUid());
@@ -214,14 +215,14 @@ public class appData extends Application{
         });
     }
 
-    public static void testNewUser(String email, String password){
-        AuthCredential credential = EmailAuthProvider.getCredential(email,password);
+    public static void testNewUser(String email, String password) {
+        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
 
         firebaseAuth.getCurrentUser().linkWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             event.newUserSuccesfull();
                         } else {
                             event.newUserFailed();
@@ -232,8 +233,8 @@ public class appData extends Application{
     }
 
     public static void testValidLogin(final String userEmail, final String userPassword) {
-
-        if(firebaseAuth.getCurrentUser().isAnonymous()){;
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user != null && user.isAnonymous()) {
             final DatabaseReference ref = firebaseDatabase.getReference("shoppingcart/" + firebaseAuth.getCurrentUser().getUid());
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -243,7 +244,6 @@ public class appData extends Application{
                         ref.removeValue();
                     }
 
-                    testLoginAndTransfer(userEmail, userPassword);
                 }
 
                 @Override
@@ -252,11 +252,14 @@ public class appData extends Application{
                 }
             });
         }
+
+        testLoginAndTransfer(userEmail, userPassword);
     }
 
     private static void testLoginAndTransfer(String userEmail, String userPassword) {
         boolean wasAnonymous = false;
-        if(firebaseAuth.getCurrentUser().isAnonymous()){
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user != null && user.isAnonymous()) {
             wasAnonymous = true;
         }
 
@@ -273,14 +276,14 @@ public class appData extends Application{
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         if (task.isSuccessful()) {
-                            if(finalWasAnonymous && shoppingCart != null){
+                            if (finalWasAnonymous && shoppingCart != null) {
                                 DatabaseReference ref = firebaseDatabase.getReference("shoppingCart/" + getUID());
                                 ref.setValue(shoppingCart);
                                 shoppingCart = null;
                             }
                             onSuccesfullLogin();
-                        }
-                        else{
+                        } else {
+                            Log.d("Fail Login Exception ", ""+task.getException());
                             event.failedLogin();
                         }
 
@@ -288,4 +291,87 @@ public class appData extends Application{
                 });
     }
 
+    public static void addProductToCart(Product product) {
+        DatabaseReference ref = firebaseDatabase.getReference("shoppingcart/" + getUID());
+
+        ref.push().setValue(product);
+    }
+
+    public static void removeProductFromCart(int position) {
+        DatabaseReference ref = firebaseDatabase.getReference("shoppingcart/" + getUID());
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Iterator<DataSnapshot> iterator = snapshot.getChildren().iterator();
+                    int length = (int) snapshot.getChildrenCount();
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("Remove from Cart", databaseError.getMessage());
+            }
+        });
+    }
+
+    public static void logOutUser() {
+        firebaseAuth.signOut();
+        Log.d("Appdata", "Logged out user");
+    }
+
+    public static void logInAnonymously() {
+        appData.firebaseAuth.signInAnonymously()
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d("Authstate", "signInAnonymously:onComplete:" + task.isSuccessful());
+                        if (!task.isSuccessful()) {
+                            Log.w("AuthState", "signInAnonymously", task.getException());
+                            event.failedLogin();
+
+                            // Toast.makeText(getContext(), "Authentication failed.",
+                            //       Toast.LENGTH_SHORT).show();
+                        } else {
+                            currentUser = new LoggedInUser();
+                            event.succesfullLogin();
+                        }
+                    }
+                });
+    }
+
+    private void startAuthStateListener() {
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                //recyclerViewAdapter.cleanup();
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                FirebaseUser user1 = appData.firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    Log.d("Current user", "" + user.getUid());
+                    Log.d("Current user appdata", "" + user1.getUid());
+                    // User is signed in
+                    shoppingcartRef = firebaseDatabase.getReference("shoppingcart/" + user.getUid() /*appData.getUID()*/);
+                    //startRecyclerViewAdapter();
+                    Log.d("Authstate", "onAuthStateChanged:signed_in:" + user.getUid());
+                    if (user.isAnonymous()) {
+                        //Save logged in as anonymous Reference to later transfer data
+                        //appData.anonymousAuth = appData.firebaseAuth;
+                    } else {
+                        // User is logged in as a known user
+                        //appData.transferAnonymousData();
+                    }
+                } else {
+                    Log.d("Current user", "Null");
+                    event.signOut();
+                    // User is signed out
+                    logInAnonymously();
+                }
+            }
+        };
+    }
 }
