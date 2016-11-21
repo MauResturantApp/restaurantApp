@@ -16,21 +16,14 @@
     <ImageButton
         android:layout_width="30dp"
         android:layout_height="30dp"
-        app:srcCompat="@drawable/ic_action_remove"
+        app:srcCompat="@drawable/remove_kurv_icon"
+        android:background="@color/colorPrimary"
         android:layout_alignParentTop="true"
-        android:tint="@color/colorOrange"
         android:layout_marginBottom="1dp"
         android:layout_alignParentRight="true"
         android:id="@+id/imgBtn_cartContent_removeItem">
         </ImageButton>
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/remove_kurv_icon"
-            android:layout_alignParentTop="true"
-            android:id="@+id/remove_minus_icon"
-            android:layout_alignParentRight="true"
-            />
+
 
 
 
@@ -41,7 +34,6 @@
             android:textAlignment="textStart"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:background="@color/colorPrimary"
             android:textColor="@color/colorForeGround"
             android:id="@+id/txt_cartContent_mainItemtext"
             android:layout_alignTop="@+id/imgBtn_cartContent_removeItem"
@@ -52,9 +44,9 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:text="5DKK"
+            android:drawableTint="@color/colorBlack"
+            android:gravity="center"
             android:textColor="@color/colorForeGround"
-            android:background="@color/colorPrimary"
-            android:textAlignment="center"
             android:id="@+id/txt_cart_priceText"
             android:layout_alignBottom="@+id/imgBtn_cartContent_removeItem"
             android:layout_toStartOf="@+id/imgBtn_cartContent_removeItem" />

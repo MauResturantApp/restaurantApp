@@ -38,12 +38,14 @@ import mau.resturantapp.R;
 import mau.resturantapp.aktivitys.dialogs.Dialog_askForLogin;
 import mau.resturantapp.aktivitys.dialogs.Dialog_login;
 import mau.resturantapp.aktivitys.dialogs.Dialog_signup;
+import mau.resturantapp.aktivitys.mainFragments.Checkout_frag;
 import mau.resturantapp.aktivitys.mainFragments.Contact_frag;
 import mau.resturantapp.aktivitys.mainFragments.FindWay_frag;
 import mau.resturantapp.aktivitys.mainFragments.Home_frag;
 import mau.resturantapp.aktivitys.mainFragments.menufrag.MenuTabs_frag;
 import mau.resturantapp.aktivitys.mainFragments.Settings_frag;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.event.events.GuestUserCheckoutEvent;
 import mau.resturantapp.event.events.LogUserInEvent;
 import mau.resturantapp.event.events.NewUserFailedEvent;
 import mau.resturantapp.event.events.NewUserSuccesfullEvent;
@@ -258,7 +260,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment frag;
         drawLayout.closeDrawer(Gravity.LEFT);
-        item.setChecked(true);
         hideCart();
         switch (item.getItemId()) {
 
@@ -353,8 +354,15 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
           showAskForLoginDialog();
       }
         else{
-          // vis checkout frag her.
+            goToCheckout();
       }
+    }
+
+    private void goToCheckout(){
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment frag = new Checkout_frag();
+        ft.addToBackStack(null);
+        ft.replace(R.id.mainFrameFrag, frag).commit();
     }
 
     @Override
@@ -429,6 +437,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         } else {
             userLoggedIn();
         }
+    }
+
+    @Subscribe
+    public void guestCheckout(GuestUserCheckoutEvent event){
+        goToCheckout();
+
     }
 
     @Subscribe

@@ -18,6 +18,10 @@ import android.widget.TextView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Objects;
+
 import mau.resturantapp.R;
 import mau.resturantapp.data.Product;
 import mau.resturantapp.data.appData;
@@ -32,7 +36,6 @@ public class CartContent_frag extends Fragment {
     private View view;
     private RecyclerView recycler;
     private CartItemList_Adapter adapter;
-    private int positionToRemove = 0;
     private DefaultItemAnimator animate = new DefaultItemAnimator();
 
     @Override
@@ -61,7 +64,9 @@ public class CartContent_frag extends Fragment {
 
     }
 
-    private void removeItem(){
+
+
+    private void removeItem(int positionToRemove){
         recycler.getAdapter().notifyItemRemoved(positionToRemove);
 
     }
@@ -75,8 +80,9 @@ public class CartContent_frag extends Fragment {
 
     public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adapter.ViewHolder> {
 
+        ArrayList<ViewHolder> views = getViews();
+
         public class ViewHolder extends RecyclerView.ViewHolder {
-            ImageView listImgIcon;
             ImageButton listImgBtn;
             TextView listItemtxt;
             RelativeLayout relativeLayout;
@@ -100,12 +106,20 @@ public class CartContent_frag extends Fragment {
                             Log.d("menulist","clicked too fast");
                         }
 
-                        positionToRemove = getAdapterPosition();
-                        removeItem();
+
+                        removeItem(getAdapterPosition());
                     }
                 });
 
             }
+        }
+
+        public ArrayList<ViewHolder> getViews(){
+            return views;
+        }
+
+        public ViewHolder getItemAtPos(int pos){
+            return getViews().get(pos);
         }
 
 
