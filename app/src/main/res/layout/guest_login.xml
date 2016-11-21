@@ -67,24 +67,8 @@
         android:ems="10"
         android:id="@+id/edittxtnum_checkout_phone" />
 
-    <TextView
-        android:text="vælg tidpunkts for afhæntning"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/txt_checkout_time"
-        android:layout_weight="0.07"
-        android:textAlignment="center"
-        android:textSize="18sp" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="time"
-        android:ems="10"
-        android:id="@+id/edittxt_checkout_date" />
-
     <Button
-        android:text="Bestil!"
+        android:text="Videre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/btn_checkout_checkout"

@@ -11,9 +11,6 @@ import android.widget.EditText;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ServerValue;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import mau.resturantapp.R;
 import mau.resturantapp.data.Order;
 import mau.resturantapp.data.appData;
@@ -22,7 +19,7 @@ import mau.resturantapp.data.appData;
  * Created by anwar on 10/16/16.
  */
 
-public class Checkout_frag extends Fragment implements View.OnClickListener {
+public class guestLogin_frag extends Fragment implements View.OnClickListener {
 
     private View rod;
     private EditText editName;
@@ -35,7 +32,7 @@ public class Checkout_frag extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rod = inflater.inflate(R.layout.checkout_frag, container, false);
+        rod = inflater.inflate(R.layout.guest_login, container, false);
 
         editName = (EditText) rod.findViewById(R.id.edittxt_checkout_name);
         editEmail = (EditText) rod.findViewById(R.id.edittxt_checkout_email);
