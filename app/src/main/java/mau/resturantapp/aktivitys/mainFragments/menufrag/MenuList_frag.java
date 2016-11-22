@@ -8,8 +8,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -48,6 +51,12 @@ public class MenuList_frag extends Fragment {
         TextView mainItemTxt;
         TextView extraItemTxt;
         ImageButton addNewItemBtn;
+        ImageButton plusItemBtn;
+        ImageButton minusItemBtn;
+        TextView amountTxt;
+        int amount = 1;
+        FrameLayout multipleItemLayout;
+        Button addMultiBtn;
 
         public ProductHolder(View rod){
             super(rod);
@@ -72,6 +81,14 @@ public class MenuList_frag extends Fragment {
         public void setImageButton(final int position) {
             //Log.d("recyclerViewAdapter", "imagebutton");
             addNewItemBtn = (ImageButton) rod.findViewById(R.id.imgBtn_menu_removeItem);
+        }
+
+        public void setmultipleLayout(){
+            plusItemBtn = (ImageButton) rod.findViewById(R.id.imgBtn_menuList_plus);
+            minusItemBtn = (ImageButton) rod.findViewById(R.id.imgBtn_menuList_minus);
+            multipleItemLayout = (FrameLayout) rod.findViewById(R.id.frameL_multipleItems);
+            amountTxt = (TextView) rod.findViewById(R.id.txt_menuList_amount);
+            addMultiBtn = (Button) rod.findViewById(R.id.btn_menuList_addMulItems);
         }
     }
 
@@ -153,6 +170,25 @@ public class MenuList_frag extends Fragment {
 
         }
 
+        products.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int totalItems = products.getAdapter().getItemCount();
+
+                for(int i = 0; i<totalItems; i++){
+                    try{
+                        ProductHolder tempholder = (ProductHolder) products.findViewHolderForLayoutPosition(i);
+                        tempholder.multipleItemLayout.setAlpha(0f);
+                    }
+                    catch (NullPointerException notAvailableYet){
+
+                    }
+
+                }
+                return false;
+            }
+        });
+
         //menuList.setAdapter(new FoodMenuAdapter(getContext(), R.layout.menu_item_list, tempMenu));
 
 
@@ -190,6 +226,25 @@ public class MenuList_frag extends Fragment {
 
     }
 
+    private void changeAmount(int btn, ProductHolder productHolder){
+        if( btn == 1){
+            if(productHolder.amount <99){
+                productHolder.amount++;
+                productHolder.amountTxt.setText(Integer.toString(productHolder.amount));
+            }
+
+        }
+        else if (btn == 0){
+            if(productHolder.amount > 0){
+
+                productHolder.amount--;
+                productHolder.amountTxt.setText(Integer.toString(productHolder.amount));
+
+            }
+        }
+
+    }
+
 
 
     private void startRecyclerViewAdapter() {
@@ -206,6 +261,7 @@ public class MenuList_frag extends Fragment {
                 productHolder.setPrice(product.getPrice());
                 productHolder.setItemIcon();
                 productHolder.setImageButton(mPosition);
+                productHolder.setmultipleLayout();
                 productHolder.addNewItemBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -219,10 +275,39 @@ public class MenuList_frag extends Fragment {
                     }
                 });
 
+                productHolder.plusItemBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        changeAmount(1,productHolder);
+                    }
+                });
+
+                productHolder.minusItemBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        changeAmount(0,productHolder);
+                    }
+                });
+
+                productHolder.addMultiBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        for(int i = 0; i<productHolder.amount;i++){
+                            appData.addProductToCart(product);
+                            productHolder.multipleItemLayout.setAlpha(0f);
+                        }
+                    }
+                });
+
                 productHolder.addNewItemBtn.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
-                        return false;
+                        productHolder.amount = 1;
+                        String amount = Integer.toString(productHolder.amount);
+                        productHolder.amountTxt.setText(amount);
+                        productHolder.multipleItemLayout.animate().setDuration(300).alpha(1f);
+
+                        return true;
                     }
                 });
             }
@@ -232,6 +317,8 @@ public class MenuList_frag extends Fragment {
         });
 
         products.setAdapter(recyclerViewAdapter);
+
+
     }
 
 /*    public class FoodMenuAdapter extends ArrayAdapter<MenuItem> {

@@ -58,6 +58,53 @@
         android:layout_toEndOf="@+id/icon_menu_itemIcon"
         android:layout_toStartOf="@id/imgBtn_menu_removeItem"
         android:id="@+id/txt_menu_extraItemText" />
+
+
+        <FrameLayout
+            android:layout_width="190dp"
+            android:layout_height="50dp"
+            android:alpha="0"
+            android:id="@+id/frameL_multipleItems"
+            android:background="@color/colorSecondaryDark"
+            android:layout_toStartOf="@id/imgBtn_menu_removeItem">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="1dp"
+                android:background="@color/colorPrimaryDark"
+                android:orientation="horizontal">
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/btn_menuList_addMulItems"
+                    android:text="OK!"/>
+                <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/imgBtn_menuList_minus"
+                    android:background="@color/colorPrimaryDark"
+                    android:src="@drawable/ic_action_minus"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="1"
+                    android:layout_marginTop="4dp"
+                    android:textSize="30dp"
+                    android:id="@+id/txt_menuList_amount"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"/>
+                <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/imgBtn_menuList_plus"
+                    android:background="@color/colorPrimaryDark"
+                    android:src="@drawable/ic_action_plus"/>
+
+
+            </LinearLayout>
+
+        </FrameLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
