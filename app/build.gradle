@@ -40,6 +40,7 @@ dependencies {
     compile 'com.roughike:bottom-bar:2.0.2'
 
     compile 'org.jetbrains:annotations-java5:15.0'
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 }
 
 apply plugin: 'com.google.gms.google-services'
