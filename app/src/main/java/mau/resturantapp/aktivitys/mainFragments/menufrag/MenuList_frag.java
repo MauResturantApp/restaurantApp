@@ -212,9 +212,17 @@ public class MenuList_frag extends Fragment {
                         //appData.cartContent.add(recyclerViewAdapter.getItem(mPosition));
                         appData.addProductToCart(product);
                         Toast.makeText(getContext(), recyclerViewAdapter.getItem(mPosition).getName() + "er tilføget til kurv", Toast.LENGTH_SHORT).show();
-                        //appData.event.newItemToCart();
-                        //succesfullAddItem(productHolder,mPosition);
+                        appData.event.newItemToCart();
+                        succesfullAddItem(productHolder,mPosition);
 
+
+                    }
+                });
+
+                productHolder.addNewItemBtn.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        return false;
                     }
                 });
             }

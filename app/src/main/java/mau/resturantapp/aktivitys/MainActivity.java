@@ -300,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                 appData.cartContent.clear();
                 appData.event.newItemToCart();
                 appData.currentUser = null;
-                //userLoggedOut();
+                userLoggedOut();
 
                 //firebase logout
                 appData.logOutUser();

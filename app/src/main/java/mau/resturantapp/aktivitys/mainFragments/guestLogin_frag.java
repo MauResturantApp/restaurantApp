@@ -37,7 +37,7 @@ public class guestLogin_frag extends Fragment implements View.OnClickListener {
         editName = (EditText) rod.findViewById(R.id.edittxt_checkout_name);
         editEmail = (EditText) rod.findViewById(R.id.edittxt_checkout_email);
         editPhone = (EditText) rod.findViewById(R.id.edittxtnum_checkout_phone);
-        editDate = (EditText) rod.findViewById(R.id.edittxt_checkout_date);
+      //  editDate = (EditText) rod.findViewById(R.id.edittxt_checkout_date);
         checkoutBtn = (Button) rod.findViewById(R.id.btn_checkout_checkout);
 
 

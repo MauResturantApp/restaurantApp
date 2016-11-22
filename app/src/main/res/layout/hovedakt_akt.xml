@@ -45,7 +45,7 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="145dp"
-                android:name="mau.resturantapp.aktivitys.CartContent_frag"
+                android:name="mau.resturantapp.aktivitys.CartContentFirebase_frag"
                 android:transitionName="kurv"
                 tools:layout="@layout/kurv_frag"
                 android:id="@+id/cartContentShowHide_frag" />

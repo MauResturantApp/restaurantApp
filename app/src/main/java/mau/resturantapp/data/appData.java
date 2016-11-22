@@ -323,6 +323,7 @@ public class appData extends Application {
 
     public static void logOutUser() {
         firebaseAuth.signOut();
+        currentUser = null;
         Log.d("Appdata", "Logged out user");
     }
 
