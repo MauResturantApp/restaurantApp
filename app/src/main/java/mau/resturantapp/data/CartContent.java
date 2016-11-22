@@ -2,6 +2,7 @@ package mau.resturantapp.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Yoouughurt on 14-11-2016.
@@ -9,18 +10,18 @@ import java.util.List;
 
 public class CartContent {
 
-    private List<Product> products = new ArrayList<>();
+    private Map<String, Product> cartContent;
 
     public CartContent(){
 
     }
 
-
-    public List<Product> getProducts() {
-        return products;
+    public CartContent(Map<String, Product> cartContent){
+        this.cartContent = cartContent;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+
+    public Map<String, Product> getCartContent() {
+        return cartContent;
     }
 }

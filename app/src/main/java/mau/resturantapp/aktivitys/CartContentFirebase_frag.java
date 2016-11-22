@@ -37,6 +37,7 @@ import mau.resturantapp.event.events.SignOutEvent;
 
 import static mau.resturantapp.data.appData.event;
 import static mau.resturantapp.data.appData.firebaseDatabase;
+import static mau.resturantapp.data.appData.loggingIn;
 
 /**
  *  Work in progress
@@ -114,7 +115,6 @@ public class CartContentFirebase_frag extends Fragment {
         super.onStart();
 
         ref = appData.firebaseDatabase.getReference("shoppingcart/" + appData.getUID());
-        appData.shoppingcartRef = firebaseDatabase.getReference("shoppingcart/" + appData.getUID());
         Log.d("CartContent on start", ""+ref);
         startAuthStateListener();
         appData.firebaseAuth.addAuthStateListener(mAuthListener);
@@ -139,10 +139,8 @@ public class CartContentFirebase_frag extends Fragment {
     }
 
     private void startRecyclerViewAdapter() {
-        Log.d("recyclerViewAdapter", ""+appData.shoppingcartRef);
         Log.d("recyclerViewAdapter", ""+ref);
         Query query = ref;
-        //Query query = appData.shoppingcartRef;
         recyclerViewAdapter = new FirebaseRecyclerAdapter<Product, CartContentHolder>(
                 Product.class, R.layout.kurv_list, CartContentHolder.class, query) {
 
@@ -172,29 +170,25 @@ public class CartContentFirebase_frag extends Fragment {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                //recyclerViewAdapter.cleanup();
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                FirebaseUser user1 = appData.firebaseAuth.getCurrentUser();
                 if (user != null) {
                     Log.d("Current user", ""+user.getUid());
-                    Log.d("Current user appdata", ""+user1.getUid());
                     // User is signed in
                     ref = appData.firebaseDatabase.getReference("shoppingcart/" + user.getUid() /*appData.getUID()*/);
-                    //startRecyclerViewAdapter();
                     Log.d("Authstate", "onAuthStateChanged:signed_in:" + user.getUid());
                     if(user.isAnonymous()){
                         //Save logged in as anonymous Reference to later transfer data
-                        //appData.anonymousAuth = appData.firebaseAuth;
                     } else {
                         // User is logged in as a known user
-                        //appData.transferAnonymousData();
+                        appData.loggingIn = false;
                     }
                 } else {
                     Log.d("Current user", "Null");
-
                     recyclerViewAdapterCleanUp();
-                    // User is signed out
-                    appData.logInAnonymously();
+                    if(!appData.loggingIn) {
+                        // User is signed out
+                        appData.logInAnonymously();
+                    }
                 }
             }
         };

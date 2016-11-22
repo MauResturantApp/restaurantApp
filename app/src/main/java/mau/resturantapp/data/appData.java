@@ -26,6 +26,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import mau.resturantapp.event.EventCreator;
@@ -53,14 +54,12 @@ public class appData extends Application {
 
     //New Cart in progress
     public static CartContent shoppingCart;
-    public static DatabaseReference shoppingcartRef;
-    FirebaseAuth.AuthStateListener mAuthStateListener;
+    public static boolean loggingIn = false;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        //startAuthStateListener();
-        //firebaseAuth.addAuthStateListener(mAuthStateListener);
+
         appPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         setPrefs();
     }
@@ -240,8 +239,17 @@ public class appData extends Application {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
                     if (snapshot.exists()) {
-                        shoppingCart = snapshot.getValue(CartContent.class);
+                        Map<String, Product> cartContent = new HashMap<>();
+                        for(DataSnapshot productSnapshot: snapshot.getChildren()){
+                            String key = productSnapshot.getKey();
+                            Product product = productSnapshot.getValue(Product.class);
+                            Log.d("CartContent: ", "key " + key + " name " + product.getName() + " price " + product.getPrice());
+                            cartContent.put(key,product);
+                        }
+                        shoppingCart = new CartContent(cartContent);
                         ref.removeValue();
+                        loggingIn = true;
+                        logOutUser();
                     }
 
                 }
@@ -257,11 +265,6 @@ public class appData extends Application {
     }
 
     private static void testLoginAndTransfer(String userEmail, String userPassword) {
-        boolean wasAnonymous = false;
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        if (user != null && user.isAnonymous()) {
-            wasAnonymous = true;
-        }
 
         String email = userEmail;
         String password = userPassword;
@@ -269,16 +272,15 @@ public class appData extends Application {
         email = email.trim();
         password = password.trim();
 
-        final boolean finalWasAnonymous = wasAnonymous;
         appData.firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         if (task.isSuccessful()) {
-                            if (finalWasAnonymous && shoppingCart != null) {
-                                DatabaseReference ref = firebaseDatabase.getReference("shoppingCart/" + getUID());
-                                ref.setValue(shoppingCart);
+                            if (shoppingCart != null) {
+                                DatabaseReference ref = firebaseDatabase.getReference("shoppingcart/" + getUID());
+                                ref.setValue(shoppingCart.getCartContent());
                                 shoppingCart = null;
                             }
                             onSuccesfullLogin();
@@ -344,34 +346,4 @@ public class appData extends Application {
                 });
     }
 
-    private void startAuthStateListener() {
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                //recyclerViewAdapter.cleanup();
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                FirebaseUser user1 = appData.firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Log.d("Current user", "" + user.getUid());
-                    Log.d("Current user appdata", "" + user1.getUid());
-                    // User is signed in
-                    shoppingcartRef = firebaseDatabase.getReference("shoppingcart/" + user.getUid() /*appData.getUID()*/);
-                    //startRecyclerViewAdapter();
-                    Log.d("Authstate", "onAuthStateChanged:signed_in:" + user.getUid());
-                    if (user.isAnonymous()) {
-                        //Save logged in as anonymous Reference to later transfer data
-                        //appData.anonymousAuth = appData.firebaseAuth;
-                    } else {
-                        // User is logged in as a known user
-                        //appData.transferAnonymousData();
-                    }
-                } else {
-                    Log.d("Current user", "Null");
-                    event.signOut();
-                    // User is signed out
-                    logInAnonymously();
-                }
-            }
-        };
-    }
 }
