@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,20 +61,21 @@ public class CartContentFirebase_frag extends Fragment {
     public static class CartContentHolder extends RecyclerView.ViewHolder{
 
         View rod;
-        ImageView ImgIcon;
-        ImageButton ImgBtn;
-        TextView Itemtxt;
+        ImageButton listImgBtn;
+        TextView listItemtxt;
+        RelativeLayout relativeLayout;
 
         public CartContentHolder(View rod){
             super(rod);
             this.rod = rod;
 
-            ImgBtn = (ImageButton) rod.findViewById(R.id.imgBtn_cartContent_removeItem);
+            listImgBtn = (ImageButton) rod.findViewById(R.id.imgBtn_cartContent_removeItem);
+            relativeLayout = (RelativeLayout) rod.findViewById(R.id.relativLayout_cartContent);
         }
 
         public void setItemtxt(String name, int price){
-            Itemtxt = (TextView) rod.findViewById(R.id.txt_cartContent_mainItemtext);
-            Itemtxt.setText(name + " x 1   " + price);
+            listItemtxt = (TextView) rod.findViewById(R.id.txt_cartContent_mainItemtext);
+            listItemtxt.setText(name + " x 1   " + price);
         }
     }
 
@@ -149,7 +151,11 @@ public class CartContentFirebase_frag extends Fragment {
                 Log.d("recyclerViewAdapter", ""+position);
                 final int mPosition = position;
                 CartContentHolder.setItemtxt(product.getName(), product.getPrice());
-                CartContentHolder.ImgBtn.setOnClickListener(new View.OnClickListener() {
+                if(position%2 != 0){
+                    CartContentHolder.listItemtxt.setBackgroundResource(R.color.colorSecondary);
+                    CartContentHolder.relativeLayout.setBackgroundResource(R.color.colorSecondary);
+                }
+                CartContentHolder.listImgBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         //remove from cart representation in firebase
