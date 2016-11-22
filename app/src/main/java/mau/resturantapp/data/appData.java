@@ -295,30 +295,15 @@ public class appData extends Application {
 
     public static void addProductToCart(Product product) {
         DatabaseReference ref = firebaseDatabase.getReference("shoppingcart/" + getUID());
-
-        ref.push().setValue(product);
+        DatabaseReference newRef = ref.push();
+        String key = newRef.getKey();
+        ShoppingCartItem shoppingCartItem = new ShoppingCartItem(product.getName(), product.getPrice(), key);
+        newRef.setValue(shoppingCartItem);
     }
 
-    public static void removeProductFromCart(int position) {
-        DatabaseReference ref = firebaseDatabase.getReference("shoppingcart/" + getUID());
-
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    Iterator<DataSnapshot> iterator = snapshot.getChildren().iterator();
-                    int length = (int) snapshot.getChildrenCount();
-
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d("Remove from Cart", databaseError.getMessage());
-            }
-        });
+    public static void removeProductFromCart(final String key) {
+        DatabaseReference ref = firebaseDatabase.getReference("shoppingcart/" + getUID() + "/" + key);
+        ref.removeValue();
     }
 
     public static void logOutUser() {
