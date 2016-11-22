@@ -7,7 +7,7 @@
 
 
     <TextView
-        android:text="CheckOut"
+        android:text="@string/guestInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/txt_checkout_headtxt"
@@ -19,7 +19,7 @@
         android:textColor="@color/viewfinder_border" />
 
     <TextView
-        android:text="Fulde navn"
+        android:text="@string/guestName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/txt_checkout_name"
@@ -36,7 +36,7 @@
         android:id="@+id/edittxt_checkout_name" />
 
     <TextView
-        android:text="Indskriv din e-mail"
+        android:text="@string/guestEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/txt_checkout_email"
@@ -52,7 +52,7 @@
         android:id="@+id/edittxt_checkout_email" />
 
     <TextView
-        android:text="indskriv telefon nummer."
+        android:text="@string/guestPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/txtnumber_checkout_tlf"
@@ -68,7 +68,7 @@
         android:id="@+id/edittxtnum_checkout_phone" />
 
     <Button
-        android:text="Videre"
+        android:text="@string/guestContinue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/btn_checkout_checkout"

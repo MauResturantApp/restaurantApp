@@ -6,14 +6,14 @@
     <item
         android:id="@+id/menu_findos"
         android:orderInCategory="1"
-        android:title="Vejvisere"
+        android:title="@string/draweMenuFindWay"
         android:icon="@drawable/findos_icon"
         ></item>
 
     <item
         android:id="@+id/menu_indstillinger"
         android:orderInCategory="5"
-        android:title="Indstillinger"
+        android:title="@string/draweMenuSettings"
         android:icon="@drawable/indstilling_icon"
         ></item>
 
@@ -21,35 +21,35 @@
     <item
         android:id="@+id/menu_qrTest"
         android:orderInCategory="7"
-        android:title="qr Koder"
+        android:title="@string/draweMenuQRcode"
         android:icon="@drawable/ic_action_qrcode"
         ></item>
     <item
         android:id="@+id/menu_qrCamera"
         android:orderInCategory="8"
-        android:title="qr Camera"
+        android:title="@string/draweMenuQrCamera"
         android:icon="@drawable/ic_action_camera"
         ></item>
 
-<item android:title="Bruger"
+<item android:title="@string/draweMenuUser"
     android:orderInCategory="15">
     <menu>
         <item
             android:id="@+id/menu_login"
         android:orderInCategory="19"
-        android:title="log in"
+        android:title="@string/draweMenuSignin"
         android:icon="@drawable/ic_action_login"
         >
     </item>
     <item
         android:id="@+id/menu_signin"
         android:orderInCategory="20"
-        android:title="Sign up"
+        android:title="@string/draweMenuSignup"
         android:icon="@drawable/ic_action_newuser"></item>
     <item
         android:id="@+id/menu_logout"
         android:orderInCategory="30"
-        android:title="Log out"
+        android:title="@string/draweMenuSignout"
         android:icon="@drawable/ic_action_signout"
         android:visible="false">
 

@@ -17,4 +17,29 @@
     <string name="sign_up_click">Or click here to sign up!</string>
     <string name="btnDirDirection">Get directions</string>
     <string name="facebook_app_id">1738385356483264</string>
+    <string name="emptyCart">Cart is empty.</string>
+    <string name="checkOut">Checkout!</string>
+    <string name="guestInfo">Please fill the boxes</string>
+    <string name="guestName">Full name</string>
+    <string name="guestEmail">Email</string>
+    <string name="guestPhone">Phone number</string>
+    <string name="guestContinue">Continue</string>
+    <string name="signupUsername">Email</string>
+    <string name="signupPassword">Password</string>
+    <string name="signupConfirmPassword">Confirm Password</string>
+    <string name="signInUsername">Email</string>
+    <string name="signInPassword">Password</string>
+    <string name="signInFacebook">Sign In with Facebook</string>
+    <string name="draweMenuFindWay">Directory</string>
+    <string name="draweMenuSettings">Settings</string>
+    <string name="draweMenuQRcode">QR code</string>
+    <string name="draweMenuQrCamera">Qr Camera</string>
+    <string name="draweMenuUser">User</string>
+    <string name="draweMenuSignin">Sign in</string>
+    <string name="draweMenuSignup">Sign up</string>
+    <string name="draweMenuSignout">Sign Out</string>
+    <string name="bottomMenuHome">Home</string>
+    <string name="bottomMenuMenu">Our Menu</string>
+    <string name="bottomMenuContact">Contact</string>
+
 </resources>

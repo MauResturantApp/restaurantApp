@@ -7,7 +7,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Email"
+        android:text="@string/signInUsername"
         android:textSize="17dp"
         android:id="@+id/txt_dialog_top"/>
     <EditText
@@ -21,7 +21,7 @@
         android:id="@+id/txt_dialog_bottom"
         android:textSize="17dp"
         android:layout_gravity="center"
-        android:text="Password"/>
+        android:text="@string/signInPassword"/>
 
 
     <EditText
@@ -37,7 +37,7 @@
         android:layout_gravity="center"
         android:textSize="13dp"
         android:id="@+id/btn_facebookLogin"
-        android:text="Log in med Facebook"
+        android:text="@string/signInFacebook"
         android:textColor="@color/colorWhite"
         android:background="@color/com_facebook_blue"
  />

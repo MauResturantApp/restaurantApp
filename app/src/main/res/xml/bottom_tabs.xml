@@ -4,13 +4,13 @@
         <tab
             id="@+id/botbar_home"
             icon="@drawable/ic_action_home"
-            title="Hjem" />
+            title="@string/bottomMenuHome" />
         <tab
             id="@+id/botbar_food"
             icon="@drawable/ic_action_food"
-            title="Se Menu" />
+            title="@string/bottomMenuMenu" />
         <tab
             id="@+id/botbar_contact"
             icon="@drawable/ic_action_contact"
-            title="Kontakt" />
+            title="@string/bottomMenuContact" />
     </tabs>

@@ -7,7 +7,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Brugernavn"
+        android:text="@string/signupUsername"
         android:textSize="17dp"
         android:id="@+id/txt_dialog_signup_username"/>
     <EditText
@@ -21,7 +21,7 @@
         android:id="@+id/txt_dialog_signup_password"
         android:textSize="17dp"
         android:layout_gravity="center"
-        android:text="Password"/>
+        android:text="@string/signupPassword"/>
 
 
     <EditText
@@ -36,7 +36,7 @@
         android:id="@+id/txt_dialog_passwordCheck"
         android:textSize="17dp"
         android:layout_gravity="center"
-        android:text="Password"/>
+        android:text="@string/signupConfirmPassword"/>
 
 
     <EditText
