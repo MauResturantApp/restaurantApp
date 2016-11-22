@@ -16,4 +16,5 @@
     <string name="action_logout">Logout</string>
     <string name="sign_up_click">Or click here to sign up!</string>
     <string name="btnDirDirection">Get directions</string>
+    <string name="facebook_app_id">1738385356483264</string>
 </resources>
