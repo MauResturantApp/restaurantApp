@@ -32,6 +32,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import mau.resturantapp.R;
 import mau.resturantapp.data.Product;
+import mau.resturantapp.data.ShoppingCartItem;
 import mau.resturantapp.data.appData;
 import mau.resturantapp.event.events.OnSuccesfullLogInEvent;
 import mau.resturantapp.event.events.SignOutEvent;
@@ -54,7 +55,7 @@ public class CartContentFirebase_frag extends Fragment {
     private DatabaseReference ref;
     private RecyclerView cartContent;
     private LinearLayoutManager manager;
-    private FirebaseRecyclerAdapter<Product, CartContentHolder> recyclerViewAdapter;
+    private FirebaseRecyclerAdapter<ShoppingCartItem, CartContentHolder> recyclerViewAdapter;
 
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -143,14 +144,12 @@ public class CartContentFirebase_frag extends Fragment {
     private void startRecyclerViewAdapter() {
         Log.d("recyclerViewAdapter", ""+ref);
         Query query = ref;
-        recyclerViewAdapter = new FirebaseRecyclerAdapter<Product, CartContentHolder>(
-                Product.class, R.layout.kurv_list, CartContentHolder.class, query) {
+        recyclerViewAdapter = new FirebaseRecyclerAdapter<ShoppingCartItem, CartContentHolder>(
+                ShoppingCartItem.class, R.layout.kurv_list, CartContentHolder.class, query) {
 
             @Override
-            protected void populateViewHolder(CartContentHolder CartContentHolder, Product product, int position) {
-                Log.d("recyclerViewAdapter", ""+position);
-                final int mPosition = position;
-                CartContentHolder.setItemtxt(product.getName(), product.getPrice());
+            protected void populateViewHolder(CartContentHolder CartContentHolder, final ShoppingCartItem shoppingCartItem, int position) {
+                CartContentHolder.setItemtxt(shoppingCartItem.getName(), shoppingCartItem.getPrice());
                 if(position%2 != 0){
                     CartContentHolder.listItemtxt.setBackgroundResource(R.color.colorSecondary);
                     CartContentHolder.relativeLayout.setBackgroundResource(R.color.colorSecondary);
@@ -159,8 +158,7 @@ public class CartContentFirebase_frag extends Fragment {
                     @Override
                     public void onClick(View v) {
                         //remove from cart representation in firebase
-                        Log.d("Remove item cart", ""+mPosition);
-                        ref.child(mPosition+"").removeValue();
+                        appData.removeProductFromCart(shoppingCartItem.getKey());
                     }
                 });
             }
