@@ -109,48 +109,6 @@ public class appData extends Application {
         return null;
     }
 
-
-    public static void validLogin(String userEmail, String userPassword) {
-        event.logUserIn();
-        String email = userEmail;
-        String password = userPassword;
-        email = email.trim();
-        password = password.trim();
-
-        appData.firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-
-                        if (task.isSuccessful()) {
-                            onSuccesfullLogin();
-                        } else {
-                            event.failedLogin();
-                        }
-
-                    }
-                });
-
-
-    }
-
-    public static void newUser(final String email, final String password) {
-        event.logUserIn();
-        appData.firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    currentUser = new LoggedInUser(email, password, 0);
-                    event.newUserSuccesfull();
-
-                } else {
-                    event.newUserFailed();
-                }
-            }
-        });
-
-    }
-
     private static void onSuccesfullLogin() {
         String name = firebaseAuth.getCurrentUser().getDisplayName();
         String email = firebaseAuth.getCurrentUser().getEmail();
@@ -198,29 +156,6 @@ public class appData extends Application {
     public static void updateTab(MenuTab menuTab) {
         DatabaseReference ref = firebaseDatabase.getReference("menutabs/");
         ref.child(menuTab.getKey()).setValue(menuTab);
-    }
-
-    public static void transferAnonymousData() {
-        final DatabaseReference ref = firebaseDatabase.getReference();
-        final DatabaseReference refAnonymous = firebaseDatabase.getReference("shoppingcart/" + anonymousAuth.getCurrentUser().getUid());
-        final DatabaseReference refKnownUser = firebaseDatabase.getReference("shoppingcart/" + firebaseAuth.getCurrentUser().getUid());
-        refAnonymous.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    CartContent cartContent = snapshot.getValue(CartContent.class);
-                    Map childUpdates = new HashMap();
-                    childUpdates.put(refKnownUser, cartContent);
-                    childUpdates.put(refAnonymous, null);
-                    ref.updateChildren(childUpdates);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d("Transfer Anonymous Data", databaseError.getMessage());
-            }
-        });
     }
 
     public static void testNewUser(String email, String password) {
