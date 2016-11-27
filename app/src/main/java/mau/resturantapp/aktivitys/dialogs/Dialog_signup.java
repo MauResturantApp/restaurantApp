@@ -76,7 +76,7 @@ public class Dialog_signup extends DialogFragment {
             appData.event.showSignupDialog();
 
         } else {
-            appData.newUser(email,password);
+            appData.testNewUser(email,password);
         }
     }
 }

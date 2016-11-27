@@ -4,6 +4,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import mau.resturantapp.event.events.FragContainerChangedEvent;
 import mau.resturantapp.event.events.GuestUserCheckoutEvent;
+import mau.resturantapp.event.events.IsAdminEvent;
 import mau.resturantapp.event.events.LogUserInEvent;
 import mau.resturantapp.event.events.NewItemToCartEvent;
 import mau.resturantapp.event.events.NewUserFailedEvent;
@@ -81,6 +82,11 @@ public class EventCreator {
     }
     public void showAskForLoginDialog(){
         ShowAskforLoginDialogEvent event = new ShowAskforLoginDialogEvent();
+        bus.post(event);
+    }
+
+    public void isAdmin(){
+        IsAdminEvent event = new IsAdminEvent();
         bus.post(event);
     }
 

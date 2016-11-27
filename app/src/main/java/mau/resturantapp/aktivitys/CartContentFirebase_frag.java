@@ -182,6 +182,7 @@ public class CartContentFirebase_frag extends Fragment {
                     Log.d("Authstate", "onAuthStateChanged:signed_in:" + user.getUid());
                     if(user.isAnonymous()){
                         //Save logged in as anonymous Reference to later transfer data
+                        appData.loggingIn = false;
                     } else {
                         // User is logged in as a known user
                         appData.loggingIn = false;
@@ -191,6 +192,7 @@ public class CartContentFirebase_frag extends Fragment {
                     recyclerViewAdapterCleanUp();
                     if(!appData.loggingIn) {
                         // User is signed out
+                        appData.loggingIn = true;
                         appData.logInAnonymously();
                     }
                 }

@@ -8,11 +8,14 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -158,9 +161,10 @@ public class appData extends Application {
                 if (snapshot.exists()) {
                     currentUser.setAdmin(true);
                     Log.d("Logged in as admin : ", "" + currentUser.isAdmin());
+                    event.isAdmin();
                 }
-                event.succesfullLogin();
-
+                  //Succesfull Login used to clean up recyclerviewAdapter in CartContentFirebase
+                  event.succesfullLogin();
             }
 
             @Override
@@ -216,49 +220,16 @@ public class appData extends Application {
 
     public static void testNewUser(String email, String password) {
         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
-
-        firebaseAuth.getCurrentUser().linkWithCredential(credential)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            event.newUserSuccesfull();
-                        } else {
-                            event.newUserFailed();
-                        }
-                    }
-                });
-
+        linkWithCredential(credential);
     }
 
     public static void testValidLogin(final String userEmail, final String userPassword) {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null && user.isAnonymous()) {
-            final DatabaseReference ref = firebaseDatabase.getReference("shoppingcart/" + firebaseAuth.getCurrentUser().getUid());
-            ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        Map<String, Product> cartContent = new HashMap<>();
-                        for(DataSnapshot productSnapshot: snapshot.getChildren()){
-                            String key = productSnapshot.getKey();
-                            Product product = productSnapshot.getValue(Product.class);
-                            Log.d("CartContent: ", "key " + key + " name " + product.getName() + " price " + product.getPrice());
-                            cartContent.put(key,product);
-                        }
-                        shoppingCart = new CartContent(cartContent);
-                        ref.removeValue();
-                        loggingIn = true;
-                        logOutUser();
-                    }
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Log.d("Transfer Anonymous Data", databaseError.getMessage());
-                }
-            });
+            saveShoppingCart();
+        } else {
+            Log.d("prepare", "for login");
+            prepareForLogin();
         }
 
         testLoginAndTransfer(userEmail, userPassword);
@@ -278,11 +249,7 @@ public class appData extends Application {
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         if (task.isSuccessful()) {
-                            if (shoppingCart != null) {
-                                DatabaseReference ref = firebaseDatabase.getReference("shoppingcart/" + getUID());
-                                ref.setValue(shoppingCart.getCartContent());
-                                shoppingCart = null;
-                            }
+                            transferShoppingCart();
                             onSuccesfullLogin();
                         } else {
                             Log.d("Fail Login Exception ", ""+task.getException());
@@ -307,6 +274,9 @@ public class appData extends Application {
     }
 
     public static void logOutUser() {
+        if(!loggingIn) {
+            LoginManager.getInstance().logOut();
+        }
         firebaseAuth.signOut();
         currentUser = null;
         Log.d("Appdata", "Logged out user");
@@ -321,9 +291,6 @@ public class appData extends Application {
                         if (!task.isSuccessful()) {
                             Log.w("AuthState", "signInAnonymously", task.getException());
                             event.failedLogin();
-
-                            // Toast.makeText(getContext(), "Authentication failed.",
-                            //       Toast.LENGTH_SHORT).show();
                         } else {
                             currentUser = new LoggedInUser();
                             event.succesfullLogin();
@@ -332,4 +299,88 @@ public class appData extends Application {
                 });
     }
 
+    public static void loginFacebook(AccessToken token) {
+        Log.d("appData", "handleFacebookAccessToken:" + token);
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        linkWithCredential(credential);
+    }
+
+    private static void linkWithCredential(final AuthCredential credential){
+        firebaseAuth.getCurrentUser().linkWithCredential(credential)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("LinkWithCredential", "SUCCESS");
+                            event.newUserSuccesfull();
+                        } else {
+                            loginWithCredential(credential);
+                        }
+                    }
+                });
+    }
+
+    private static void loginWithCredential(AuthCredential credential){
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user != null && user.isAnonymous()) {
+            saveShoppingCart();
+        } else {
+            prepareForLogin();
+        }
+
+        firebaseAuth.signInWithCredential(credential)
+                   .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                           Log.d("appData", "signInWithCredential:onComplete:" + task.isSuccessful());
+                           if (!task.isSuccessful()) {
+                               Log.w("appData", "signInWithCredential", task.getException());
+                               event.failedLogin();
+                           } else {
+                               transferShoppingCart();
+                               onSuccesfullLogin();
+                           }
+                      }
+                    });
+
+    }
+
+    private static void saveShoppingCart(){
+            final DatabaseReference ref = firebaseDatabase.getReference("shoppingcart/" + firebaseAuth.getCurrentUser().getUid());
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        Map<String, Product> cartContent = new HashMap<>();
+                        for (DataSnapshot productSnapshot : snapshot.getChildren()) {
+                            String key = productSnapshot.getKey();
+                            Product product = productSnapshot.getValue(Product.class);
+                            Log.d("CartContent: ", "key " + key + " name " + product.getName() + " price " + product.getPrice());
+                            cartContent.put(key, product);
+                        }
+                        shoppingCart = new CartContent(cartContent);
+                        ref.removeValue();
+                    }
+                    prepareForLogin();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.d("save shoppingCart error", databaseError.getMessage());
+                }
+            });
+    }
+
+    private static void transferShoppingCart(){
+        if (shoppingCart != null) {
+            DatabaseReference ref = firebaseDatabase.getReference("shoppingcart/" + getUID());
+            ref.setValue(shoppingCart.getCartContent());
+            shoppingCart = null;
+        }
+    }
+
+    private static void prepareForLogin(){
+        loggingIn = true;
+        logOutUser();
+    }
 }

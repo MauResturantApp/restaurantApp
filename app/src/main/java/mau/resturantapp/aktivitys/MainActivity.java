@@ -27,6 +27,9 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
@@ -46,6 +49,7 @@ import mau.resturantapp.aktivitys.mainFragments.menufrag.MenuTabs_frag;
 import mau.resturantapp.aktivitys.mainFragments.Settings_frag;
 import mau.resturantapp.data.appData;
 import mau.resturantapp.event.events.GuestUserCheckoutEvent;
+import mau.resturantapp.event.events.IsAdminEvent;
 import mau.resturantapp.event.events.LogUserInEvent;
 import mau.resturantapp.event.events.NewUserFailedEvent;
 import mau.resturantapp.event.events.NewUserSuccesfullEvent;
@@ -70,10 +74,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     private NavigationView sideMenu;
     private View fadeView;
     private ProgressBar progBar;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.hovedakt_akt);
         EventBus.getDefault().register(this);
         fadeView = findViewById(R.id.fadeView);
@@ -297,12 +303,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                 showSignupDialog();
                 break;
             case R.id.menu_logout:
-                appData.cartContent.clear();
-                appData.event.newItemToCart();
-                appData.currentUser = null;
-                userLoggedOut();
+                //appData.cartContent.clear();
+                //appData.event.newItemToCart();
+                //appData.currentUser = null;
+                //userLoggedOut();
 
-                //firebase logout
+                //firebase+facebook logout
                 appData.logOutUser();
 
                 showHomeScreen();
@@ -334,7 +340,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         navMenu.findItem(R.id.menu_signin).setVisible(false);
         navMenu.findItem(R.id.menu_logout).setVisible(true);
 
-        if(appData.currentUser.isAdmin()){
+        if(appData.currentUser != null && appData.currentUser.isAdmin()){
             navMenu.findItem(R.id.menu_qrCamera).setVisible(true);
             navMenu.findItem(R.id.menu_qrTest).setVisible(true);
         }
@@ -426,17 +432,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     }
 
     @Subscribe
-    public void userlogedInEvent(OnSuccesfullLogInEvent event) {
-        Toast.makeText(this,"Du er nu logget ind", Toast.LENGTH_LONG).show();
-        fadeView.animate().alpha(0.0f);
-        fadeView.setVisibility(View.GONE);
-        progBar.setVisibility(View.GONE);
-        showHomeScreen();
-        if(appData.currentUser.isAnonymous()){
-            anonymousLoggedIn();
-        } else {
-            userLoggedIn();
-        }
+    public void isAdminEvent(IsAdminEvent event){
+        userLoggedIn();
     }
 
     @Subscribe
@@ -487,4 +484,50 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        startAuthStateListener();
+        appData.firebaseAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        appData.firebaseAuth.removeAuthStateListener(mAuthListener);
+    }
+
+    private void startAuthStateListener(){
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    if(user.isAnonymous()){
+                        anonymousLoggedIn();
+                    } else {
+                        // User is logged in as a known user
+                        userLoginText();
+                        userLoggedIn();
+                    }
+                } else {
+                    if(!appData.loggingIn){
+                        userLoggedOut();
+                    }
+                }
+            }
+        };
+
+    }
+
+    private void userLoginText(){
+        Toast.makeText(this,"Du er nu logget ind", Toast.LENGTH_LONG).show();
+        fadeView.animate().alpha(0.0f);
+        fadeView.setVisibility(View.GONE);
+        progBar.setVisibility(View.GONE);
+        showHomeScreen();
+    }
 }
