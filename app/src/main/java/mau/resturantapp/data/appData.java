@@ -55,6 +55,11 @@ public class appData extends Application {
     public static FirebaseAuth anonymousAuth;
     public static SharedPreferences appPrefs;
 
+    public static int OPENHOUR = 11; //dette laves om senere til at admin kan skifte, men for now tester jeg bare.
+    public static int OPENMINUT = 00;
+    public static int CLOSEHOUR = 21;
+    public static int CLOSEMINUT = 00;
+
     //New Cart in progress
     public static CartContent shoppingCart;
     public static boolean loggingIn = false;

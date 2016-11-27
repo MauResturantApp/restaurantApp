@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                     fadeView.setVisibility(View.VISIBLE);
                 }
                 if(newState == STATE_COLLAPSED || newState == STATE_HIDDEN){
-                    fadeView.animate().alpha(0.1f);
+                    fadeView.animate().setDuration(300).alpha(0.0f);
                     fadeView.setVisibility(View.GONE);
                 }
             }
@@ -192,9 +192,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
 
     private void showHomeScreen() {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Fragment frag = new Home_frag();
-        ft.replace(R.id.mainFrameFrag, frag).commit();
         bottomBar.selectTabAtPosition(0);
     }
 
@@ -379,7 +376,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                 hideCart();
         }
 
-        return false;
+        return true;
     }
 
     private void showSignupDialog(){
@@ -477,10 +474,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                         bottomBar.selectTabAtPosition(2);
 
         }
-        else {
 
-            bottomBar.setActiveTabColor(ContextCompat.getColor(this,R.color.colorPrimary));
-        }
 
     }
 
