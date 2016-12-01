@@ -385,6 +385,16 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         return true;
     }
 
+    private void hideCartAndBtn(){
+        actBtn.setVisibility(View.GONE);
+        bottomSheetBehavior.setState(STATE_HIDDEN);
+    }
+
+    private void showCartAndBtn(){
+        actBtn.setVisibility(View.VISIBLE);
+        bottomSheetBehavior.setState(STATE_COLLAPSED);
+    }
+
     private void showSignupDialog(){
         Dialog_signup d = new Dialog_signup();
         d.show(getSupportFragmentManager(),null);
@@ -393,6 +403,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     private void showLoginDialog(){
         Dialog_login d = new Dialog_login();
         d.show(getSupportFragmentManager(),null);
+
+
     }
 
     private void showAskForLoginDialog(){

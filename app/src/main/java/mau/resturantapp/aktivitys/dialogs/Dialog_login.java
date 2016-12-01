@@ -76,6 +76,7 @@ public class Dialog_login extends DialogFragment {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 appData.loginFacebook(loginResult.getAccessToken());
+                dismiss();
             }
 
             @Override
