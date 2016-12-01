@@ -41,6 +41,7 @@ import mau.resturantapp.R;
 import mau.resturantapp.aktivitys.dialogs.Dialog_askForLogin;
 import mau.resturantapp.aktivitys.dialogs.Dialog_login;
 import mau.resturantapp.aktivitys.dialogs.Dialog_signup;
+import mau.resturantapp.aktivitys.mainFragments.Checkout_frag;
 import mau.resturantapp.aktivitys.mainFragments.guestLogin_frag;
 import mau.resturantapp.aktivitys.mainFragments.Contact_frag;
 import mau.resturantapp.aktivitys.mainFragments.FindWay_frag;
@@ -362,10 +363,15 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     }
 
     private void goToCheckout(){
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+       /* FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment frag = new guestLogin_frag();
         ft.addToBackStack(null);
+        ft.replace(R.id.mainFrameFrag, frag).commit();*/
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment frag = new Checkout_frag();
+        ft.addToBackStack(null);
         ft.replace(R.id.mainFrameFrag, frag).commit();
+
     }
 
     @Override
