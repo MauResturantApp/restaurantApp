@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import mau.resturantapp.adapters.Cartcontent_adapter;
 import mau.resturantapp.event.EventCreator;
 import mau.resturantapp.event.events.NewUserFailedEvent;
 import mau.resturantapp.event.events.NewUserSuccesfullEvent;
@@ -54,6 +55,10 @@ public class appData extends Application {
     public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     public static FirebaseAuth anonymousAuth;
     public static SharedPreferences appPrefs;
+    public static List<Runnable> priceObservers = new ArrayList<Runnable>();
+    public static int totalPrice = 0;
+
+    public static Cartcontent_adapter adapter = new Cartcontent_adapter();
 
     public static int OPENHOUR = 11; //dette laves om senere til at admin kan skifte, men for now tester jeg bare.
     public static int OPENMINUT = 00;
@@ -64,10 +69,15 @@ public class appData extends Application {
     public static CartContent shoppingCart;
     public static boolean loggingIn = false;
 
+    private static void setNewPrices(){
+        for(int i = 0; i<priceObservers.size();i++){
+            priceObservers.get(i).run();
+        }
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
-
         appPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         setPrefs();
     }
@@ -89,6 +99,7 @@ public class appData extends Application {
 
         return totalprice;
     }
+
 
     //These functions can potentially be moved to a Firebase related singleton.
 
@@ -309,6 +320,11 @@ public class appData extends Application {
                     Log.d("save shoppingCart error", databaseError.getMessage());
                 }
             });
+    }
+
+    public static void setNewPrice(int newItemPrice){
+        totalPrice += newItemPrice;
+        setNewPrices();
     }
 
     private static void transferShoppingCart(){

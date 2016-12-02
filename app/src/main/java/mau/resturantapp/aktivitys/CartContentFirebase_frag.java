@@ -51,12 +51,11 @@ import static mau.resturantapp.data.appData.loggingIn;
  *
  */
 
-public class CartContentFirebase_frag extends Fragment {
+public class CartContentFirebase_frag extends Fragment implements Runnable {
 
     private RecyclerView cartContent;
     private LinearLayoutManager manager;
-    private Cartcontent_adapter adapter = new Cartcontent_adapter();
-
+    private TextView totalPriceTxt;
 
 
 
@@ -69,6 +68,7 @@ public class CartContentFirebase_frag extends Fragment {
         manager = new LinearLayoutManager(getActivity().getApplicationContext());
         cartContent.setHasFixedSize(false);
         cartContent.setLayoutManager(manager);
+        totalPriceTxt = (TextView) rod.findViewById(R.id.txt_cart_total);
 
 
         return rod;
@@ -84,13 +84,13 @@ public class CartContentFirebase_frag extends Fragment {
 
     @Subscribe
     public void OnSuccesfullLoginEvent(OnSuccesfullLogInEvent event) {
-        adapter.recyclerViewAdapterCleanUp();
-        adapter.startRecyclerViewAdapter();
+        appData.adapter.recyclerViewAdapterCleanUp();
+        appData.adapter.startRecyclerViewAdapter();
     }
 
     @Subscribe
     public void SignOutEvent(SignOutEvent event) {
-        adapter.recyclerViewAdapterCleanUp();
+        appData.adapter.recyclerViewAdapterCleanUp();
     }
 
 
@@ -98,13 +98,16 @@ public class CartContentFirebase_frag extends Fragment {
     public void onStart() {
         super.onStart();
 
-        adapter.setRef(appData.firebaseDatabase.getReference("shoppingcart/" + appData.getUID())
-        );
-        adapter.startAuthStateListener();
-        appData.firebaseAuth.addAuthStateListener(adapter.getmAuthListener());
+        appData.priceObservers.add(this);
 
-        adapter.startRecyclerViewAdapter();
-        cartContent.setAdapter(adapter.getRecyclerViewAdapter());
+        appData.adapter.setRef(appData.firebaseDatabase.getReference("shoppingcart/" + appData.getUID())
+        );
+        appData.adapter.startAuthStateListener();
+        appData.firebaseAuth.addAuthStateListener(appData.adapter.getmAuthListener());
+
+        appData.adapter.startRecyclerViewAdapter();
+
+        cartContent.setAdapter(appData.adapter.getRecyclerViewAdapter());
 
     }
 
@@ -112,14 +115,17 @@ public class CartContentFirebase_frag extends Fragment {
     public void onStop() {
         super.onStop();
 
-        appData.firebaseAuth.removeAuthStateListener(adapter.getmAuthListener());
+        appData.priceObservers.remove(this);
 
-        adapter.recyclerViewAdapterCleanUp();
+        appData.firebaseAuth.removeAuthStateListener(appData.adapter.getmAuthListener());
+
+        appData.adapter.recyclerViewAdapterCleanUp();
 
     }
 
 
-
-
-
+    @Override
+    public void run() {
+        totalPriceTxt.setText("Totalprice :" + appData.totalPrice);
+    }
 }

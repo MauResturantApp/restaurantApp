@@ -267,6 +267,7 @@ public class MenuList_frag extends Fragment {
                     public void onClick(View v) {
                         //appData.cartContent.add(recyclerViewAdapter.getItem(mPosition));
                         appData.addProductToCart(product);
+                        appData.setNewPrice(product.getPrice());
                         Toast.makeText(getContext(), recyclerViewAdapter.getItem(mPosition).getName() + "er tilføget til kurv", Toast.LENGTH_SHORT).show();
                         appData.event.newItemToCart();
                         succesfullAddItem(productHolder,mPosition);

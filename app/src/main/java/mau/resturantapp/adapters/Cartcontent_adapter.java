@@ -44,7 +44,7 @@ public class Cartcontent_adapter {
 
     public void setRef(DatabaseReference ref) {
         this.ref = ref;
-    }
+}
 
     public void startRecyclerViewAdapter() {
         Query query = ref;
@@ -115,6 +115,7 @@ public class Cartcontent_adapter {
 
     }
 
+
     public FirebaseRecyclerAdapter<ShoppingCartItem, CartContentHolder> getRecyclerViewAdapter() {
         return recyclerViewAdapter;
     }
@@ -122,9 +123,9 @@ public class Cartcontent_adapter {
     private static class CartContentHolder extends RecyclerView.ViewHolder{
 
         View rod;
-        ImageButton listImgBtn;
-        TextView listItemtxt;
-        RelativeLayout relativeLayout;
+        private ImageButton listImgBtn;
+        private TextView listItemtxt;
+        private RelativeLayout relativeLayout;
 
         public CartContentHolder(View rod){
             super(rod);
