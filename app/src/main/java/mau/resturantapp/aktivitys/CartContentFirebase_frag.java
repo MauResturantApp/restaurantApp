@@ -31,6 +31,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import mau.resturantapp.R;
+import mau.resturantapp.adapters.Cartcontent_adapter;
 import mau.resturantapp.data.Product;
 import mau.resturantapp.data.ShoppingCartItem;
 import mau.resturantapp.data.appData;
@@ -52,33 +53,12 @@ import static mau.resturantapp.data.appData.loggingIn;
 
 public class CartContentFirebase_frag extends Fragment {
 
-    private DatabaseReference ref;
     private RecyclerView cartContent;
     private LinearLayoutManager manager;
-    private FirebaseRecyclerAdapter<ShoppingCartItem, CartContentHolder> recyclerViewAdapter;
+    private Cartcontent_adapter adapter = new Cartcontent_adapter();
 
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
-    public static class CartContentHolder extends RecyclerView.ViewHolder{
 
-        View rod;
-        ImageButton listImgBtn;
-        TextView listItemtxt;
-        RelativeLayout relativeLayout;
-
-        public CartContentHolder(View rod){
-            super(rod);
-            this.rod = rod;
-
-            listImgBtn = (ImageButton) rod.findViewById(R.id.imgBtn_cartContent_removeItem);
-            relativeLayout = (RelativeLayout) rod.findViewById(R.id.relativLayout_cartContent);
-        }
-
-        public void setItemtxt(String name, int price){
-            listItemtxt = (TextView) rod.findViewById(R.id.txt_cartContent_mainItemtext);
-            listItemtxt.setText(name + " x 1   " + price);
-        }
-    }
 
 
     @Override
@@ -89,6 +69,7 @@ public class CartContentFirebase_frag extends Fragment {
         manager = new LinearLayoutManager(getActivity().getApplicationContext());
         cartContent.setHasFixedSize(false);
         cartContent.setLayoutManager(manager);
+
 
         return rod;
     }
@@ -103,13 +84,13 @@ public class CartContentFirebase_frag extends Fragment {
 
     @Subscribe
     public void OnSuccesfullLoginEvent(OnSuccesfullLogInEvent event) {
-        recyclerViewAdapterCleanUp();
-        startRecyclerViewAdapter();
+        adapter.recyclerViewAdapterCleanUp();
+        adapter.startRecyclerViewAdapter();
     }
 
     @Subscribe
     public void SignOutEvent(SignOutEvent event) {
-        recyclerViewAdapterCleanUp();
+        adapter.recyclerViewAdapterCleanUp();
     }
 
 
@@ -117,87 +98,28 @@ public class CartContentFirebase_frag extends Fragment {
     public void onStart() {
         super.onStart();
 
-        ref = appData.firebaseDatabase.getReference("shoppingcart/" + appData.getUID());
-        Log.d("CartContent on start", ""+ref);
-        startAuthStateListener();
-        appData.firebaseAuth.addAuthStateListener(mAuthListener);
+        adapter.setRef(appData.firebaseDatabase.getReference("shoppingcart/" + appData.getUID())
+        );
+        adapter.startAuthStateListener();
+        appData.firebaseAuth.addAuthStateListener(adapter.getmAuthListener());
 
-        startRecyclerViewAdapter();
+        adapter.startRecyclerViewAdapter();
+        cartContent.setAdapter(adapter.getRecyclerViewAdapter());
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
 
-        appData.firebaseAuth.removeAuthStateListener(mAuthListener);
+        appData.firebaseAuth.removeAuthStateListener(adapter.getmAuthListener());
 
-        recyclerViewAdapterCleanUp();
-
-    }
-
-    private void recyclerViewAdapterCleanUp() {
-        if(recyclerViewAdapter != null){
-            recyclerViewAdapter.cleanup();
-        }
-    }
-
-    private void startRecyclerViewAdapter() {
-        Log.d("recyclerViewAdapter", ""+ref);
-        Query query = ref;
-        recyclerViewAdapter = new FirebaseRecyclerAdapter<ShoppingCartItem, CartContentHolder>(
-                ShoppingCartItem.class, R.layout.kurv_list, CartContentHolder.class, query) {
-
-            @Override
-            protected void populateViewHolder(CartContentHolder CartContentHolder, final ShoppingCartItem shoppingCartItem, int position) {
-                CartContentHolder.setItemtxt(shoppingCartItem.getName(), shoppingCartItem.getPrice());
-                if(position%2 != 0){
-                    CartContentHolder.listItemtxt.setBackgroundResource(R.color.colorSecondary);
-                    CartContentHolder.relativeLayout.setBackgroundResource(R.color.colorSecondary);
-                }
-                CartContentHolder.listImgBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //remove from cart representation in firebase
-                        appData.removeProductFromCart(shoppingCartItem.getKey());
-                    }
-                });
-            }
-        };
-
-        recyclerViewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-        });
-
-        cartContent.setAdapter(recyclerViewAdapter);
-    }
-
-    private void startAuthStateListener(){
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Log.d("Current user", ""+user.getUid());
-                    // User is signed in
-                    ref = appData.firebaseDatabase.getReference("shoppingcart/" + user.getUid() /*appData.getUID()*/);
-                    Log.d("Authstate", "onAuthStateChanged:signed_in:" + user.getUid());
-                    if(user.isAnonymous()){
-                        //Save logged in as anonymous Reference to later transfer data
-                        appData.loggingIn = false;
-                    } else {
-                        // User is logged in as a known user
-                        appData.loggingIn = false;
-                    }
-                } else {
-                    Log.d("Current user", "Null");
-                    recyclerViewAdapterCleanUp();
-                    if(!appData.loggingIn) {
-                        // User is signed out
-                        appData.loggingIn = true;
-                        appData.logInAnonymously();
-                    }
-                }
-            }
-        };
+        adapter.recyclerViewAdapterCleanUp();
 
     }
+
+
+
+
+
 }
