@@ -41,6 +41,7 @@ import mau.resturantapp.R;
 import mau.resturantapp.aktivitys.dialogs.Dialog_askForLogin;
 import mau.resturantapp.aktivitys.dialogs.Dialog_login;
 import mau.resturantapp.aktivitys.dialogs.Dialog_signup;
+import mau.resturantapp.aktivitys.mainFragments.Checkout_frag;
 import mau.resturantapp.aktivitys.mainFragments.guestLogin_frag;
 import mau.resturantapp.aktivitys.mainFragments.Contact_frag;
 import mau.resturantapp.aktivitys.mainFragments.FindWay_frag;
@@ -371,10 +372,15 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     }
 
     private void goToCheckout(){
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+       /* FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment frag = new guestLogin_frag();
         ft.addToBackStack(null);
+        ft.replace(R.id.mainFrameFrag, frag).commit();*/
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment frag = new Checkout_frag();
+        ft.addToBackStack(null);
         ft.replace(R.id.mainFrameFrag, frag).commit();
+
     }
 
     @Override
@@ -388,6 +394,16 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         return true;
     }
 
+    private void hideCartAndBtn(){
+        actBtn.setVisibility(View.GONE);
+        bottomSheetBehavior.setState(STATE_HIDDEN);
+    }
+
+    private void showCartAndBtn(){
+        actBtn.setVisibility(View.VISIBLE);
+        bottomSheetBehavior.setState(STATE_COLLAPSED);
+    }
+
     private void showSignupDialog(){
         Dialog_signup d = new Dialog_signup();
         d.show(getSupportFragmentManager(),null);
@@ -396,6 +412,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     private void showLoginDialog(){
         Dialog_login d = new Dialog_login();
         d.show(getSupportFragmentManager(),null);
+
+
     }
 
     private void showAskForLoginDialog(){

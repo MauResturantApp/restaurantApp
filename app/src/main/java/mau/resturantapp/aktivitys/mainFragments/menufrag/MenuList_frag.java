@@ -216,7 +216,7 @@ public class MenuList_frag extends Fragment {
                 holder.addNewItemBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        appData.cartContent.add(recyclerViewAdapter.getItem(position));
+                        appData.addProductToCart(recyclerViewAdapter.getItem(position));
                         Toast.makeText(getContext(), recyclerViewAdapter.getItem(position).getName() + "er tilføget til kurv", Toast.LENGTH_SHORT).show();
                         appData.event.newItemToCart();
                         succesfullAddItem(holder,position);
@@ -271,6 +271,7 @@ public class MenuList_frag extends Fragment {
                     public void onClick(View v) {
                         //appData.cartContent.add(recyclerViewAdapter.getItem(mPosition));
                         appData.addProductToCart(product);
+                        appData.setNewPrice(product.getPrice());
                         Toast.makeText(getContext(), recyclerViewAdapter.getItem(mPosition).getName() + "er tilføget til kurv", Toast.LENGTH_SHORT).show();
                         appData.event.newItemToCart();
                         succesfullAddItem(productHolder,mPosition);
