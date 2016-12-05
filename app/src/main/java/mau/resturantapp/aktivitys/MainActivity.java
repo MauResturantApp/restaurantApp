@@ -42,13 +42,12 @@ import mau.resturantapp.aktivitys.dialogs.Dialog_askForLogin;
 import mau.resturantapp.aktivitys.dialogs.Dialog_login;
 import mau.resturantapp.aktivitys.dialogs.Dialog_signup;
 import mau.resturantapp.aktivitys.mainFragments.Checkout_frag;
-import mau.resturantapp.aktivitys.mainFragments.guestLogin_frag;
 import mau.resturantapp.aktivitys.mainFragments.Contact_frag;
 import mau.resturantapp.aktivitys.mainFragments.FindWay_frag;
 import mau.resturantapp.aktivitys.mainFragments.Home_frag;
 import mau.resturantapp.aktivitys.mainFragments.menufrag.MenuHandler_frag;
 import mau.resturantapp.aktivitys.mainFragments.menufrag.MenuTabs_frag;
-import mau.resturantapp.aktivitys.mainFragments.Settings_frag;
+import mau.resturantapp.aktivitys.mainFragments.Admincontrol_frag;
 import mau.resturantapp.data.appData;
 import mau.resturantapp.event.events.GuestUserCheckoutEvent;
 import mau.resturantapp.event.events.IsAdminEvent;
@@ -56,7 +55,6 @@ import mau.resturantapp.event.events.LogUserInEvent;
 import mau.resturantapp.event.events.NewUserFailedEvent;
 import mau.resturantapp.event.events.NewUserSuccesfullEvent;
 import mau.resturantapp.event.events.OnFailedLogIn;
-import mau.resturantapp.event.events.OnSuccesfullLogInEvent;
 import mau.resturantapp.event.events.ShowAskforLoginDialogEvent;
 import mau.resturantapp.event.events.ShowLogInDialogEvent;
 import mau.resturantapp.event.events.ShowSignupDialogEvent;
@@ -287,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                 break;
 
             case R.id.menu_indstillinger:
-                frag = new Settings_frag();
+                frag = new Admincontrol_frag();
                 ft.addToBackStack(null);
                 ft.replace(R.id.mainFrameFrag, frag).commit();
                 break;

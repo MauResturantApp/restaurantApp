@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">ResturantApp</string>
-
     <string name="password_hint">Password</string>
     <string name="email_hint">Email</string>
     <string name="sign_up_button_label">Sign Up</string>
@@ -47,4 +46,20 @@
     <string name="checkoutBtnCheckout">Send Order!</string>
     <string name="menuHandler">Menu Handler</string>
     <string name="homeWelcomeHeader">Restaurant DTU App</string>
+
+
+        <string-array name="admincontrols">
+            <item>Add new menu</item>
+            <item>Add new item</item>
+            <item>Accounting</item>
+            <item>Pending orders</item>
+            <item>Order history</item>
+            <item>Messages</item>
+            <item>Shop settings</item>
+        </string-array>
+
+
+
 </resources>
+
+
