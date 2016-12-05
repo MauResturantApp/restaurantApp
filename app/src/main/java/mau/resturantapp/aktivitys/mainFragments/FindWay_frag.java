@@ -1,74 +1,114 @@
 package mau.resturantapp.aktivitys.mainFragments;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.graphics.Color;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import mau.resturantapp.R;
+import mau.resturantapp.utils.JSONPathBuilder;
 
-public class FindWay_frag extends Fragment implements LocationListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
-    private Button btnGetDirections;
+public class FindWay_frag extends Fragment implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        OnMapReadyCallback,
+        GoogleMap.OnMarkerClickListener {
+
+    // Google Services
+    GoogleApiClient googleApiClient;
+    GoogleMap gMap;
+    SupportMapFragment mFrag;
+    Location lastLocation;
+    Marker restLocation;
+    double lastLatitude;
+    double lastLongitude;
+    boolean pathDrawn = false;
+
+    // View
     private View rod;
+    private ImageButton btnGetDirectionsDriving;
+    private ImageButton btnGetDirectionsTransit;
+    private ImageButton btnGetDirectionsWalking;
+    private ImageButton btnGetDirectionsBicycling;
 
-    // Information variables
-    private Location location;
-    private double latitude = 0.0;
-    private double longitude = 0.0;
-    private boolean canGetLocation = false;
+    // Default values for Google Maps
+    private static final String MAPS_UNITS = "&units=metric";
+    private static final String MAPS_REGION = "&region=da";
+    private static final String MAPS_ALTERNATIVES = "&alternatives=false";
+    private static final String MAPS_AVOID = "&avoid=indoor";
+    private static long REQUEST_INTERVAL = 30000l;
+    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
 
-    // Final variables
-    private static final long UPDATE_DISTANCE = 10;         // In meters
-    private static final long UPDATE_TIME_INTERVAL = 5000;  // In milliseconds
-
-    private static final double RESTAURANT_LATITUDE = 12.396593;
-    private static final double RESTAURANT_LONGITUDE = 55.731068;
-    private static final LatLng RESTAURANT_COORDINATE = new LatLng(RESTAURANT_LONGITUDE, RESTAURANT_LATITUDE);
+    // Restaurant info (move to resources?)
+    private static final double RESTAURANT_LONGITUDE = 12.396593;
+    private static final double RESTAURANT_LATITUDE = 55.731068;
+    private static final LatLng RESTAURANT_COORDINATE = new LatLng(RESTAURANT_LATITUDE, RESTAURANT_LONGITUDE);
     private static final String RESTAURANT_NAME = "Restaurant DTU";
     private static final String RESTAURANT_ADDRESS = "Lautrupvang 15, 2750 Ballerup";
-
-    // Manager
-    private LocationManager lm;
-
-    // Google Map
-    SupportMapFragment mFrag;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rod = inflater.inflate(R.layout.findos_frag, container, false);
 
-        // Location control started
-        geoLocation();
+        // Build GoogleApiClient
+        if(googleApiClient == null) {
+            googleApiClient = new GoogleApiClient.Builder(getActivity())
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
 
-        // Button for directions
-        // Button for directions
-        btnGetDirections = (Button) rod.findViewById(R.id.btnGetDirections);
-        btnGetDirections.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getDirections();
-            }
-        });
+        // Check current state of the location setting (and prompt user to enable if disabled)
+        checkLocationSetting();
 
         // Google map
         mFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -78,62 +118,98 @@ public class FindWay_frag extends Fragment implements LocationListener, OnMapRea
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        stopGeoLocation();
+    public void onStart() {
+        if(googleApiClient != null)
+            if(!googleApiClient.isConnected())
+                googleApiClient.connect();
+
+        super.onStart();
     }
 
     @Override
     public void onResume() {
-        super.onResume();
+        if(googleApiClient != null)
+            if(!googleApiClient.isConnected())
+                googleApiClient.connect();
 
-        geoLocation();
+        super.onResume();
+    }
+
+    @Override
+    public void onStop() {
+        if(googleApiClient != null)
+            if(googleApiClient.isConnected())
+                googleApiClient.disconnect();
+
+        super.onStop();
     }
 
     @Override
     public void onPause() {
+        if(googleApiClient != null)
+            if(googleApiClient.isConnected())
+                googleApiClient.disconnect();
+
         super.onPause();
-
-        stopGeoLocation();
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
+    /**
+     * Used to calculate the current direction to the restaurant from current location (via GPS).<br>
+     * Available modes:<br>
+     *     <ul>
+     *         <li>driving - Instructions for cars</li>
+     *         <li>transit - Instructions for public transportation</li>
+     *         <li>walking - Instructions for walking</li>
+     *         <li>bicycling - Instructions for bicycles</li>
+     *     </ul>
+     *
+     *     @param mode Desired transportation mode
+     */
+    private void getDirections(String mode) {
+        if(pathDrawn) {
+            gMap.clear();
 
-        System.out.println("Lat: " + latitude + " || Long: " + longitude);
-    }
+            // As we've cleared the map, we need to add restaurant's location again
+            gMap.addMarker(new MarkerOptions().position(RESTAURANT_COORDINATE).title(RESTAURANT_NAME).snippet(RESTAURANT_ADDRESS));
+        }
 
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        // TODO
-    }
+        String directions = "https://maps.googleapis.com/maps/api/directions/";
+        String apiKey = "AIzaSyAJSLBYERt3rGk01l3-2QNvwpUnDwsV-XM";
 
-    @Override
-    public void onProviderEnabled(String provider) {
-        System.out.println("Provider has been disabled");
-        geoLocation();
-    }
+        // Setting up parameters (input/output format)
+        String origin = this.lastLatitude + "," + this.lastLongitude;
+        String destination = RESTAURANT_LATITUDE + "," + RESTAURANT_LONGITUDE;
 
-    @Override
-    public void onProviderDisabled(String provider) {
-        System.out.println("Provider has been disabled");
-        stopGeoLocation();
-    }
+        directions += "json?origin=" + origin + "&destination=" + destination + "&key=" + apiKey + "&mode=" + mode;
+        directions += MAPS_ALTERNATIVES + MAPS_AVOID + MAPS_REGION + MAPS_UNITS;
 
-    @Override
-    public void onMapReady(GoogleMap map) {
-        map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        map.getUiSettings().setAllGesturesEnabled(false);
+        // Build a marker for current location
+        MarkerOptions options = new MarkerOptions();
+        LatLng currentPos = new LatLng(this.lastLatitude, this.lastLongitude);
 
-        map.addMarker(new MarkerOptions().position(new LatLng(RESTAURANT_LONGITUDE, RESTAURANT_LATITUDE)).title(RESTAURANT_NAME).snippet(RESTAURANT_ADDRESS)).showInfoWindow();
+        options.position(currentPos);
+        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
-        map.setOnMarkerClickListener(this);
+        Marker currentMarker = gMap.addMarker(options);
 
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(RESTAURANT_COORDINATE, 15));
-        map.animateCamera(CameraUpdateFactory.zoomIn());
-        map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+        // Move camera
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+        builder.include(restLocation.getPosition());
+        builder.include(currentMarker.getPosition());
+
+        LatLngBounds bounds = builder.build();
+
+        int padding = 0; // offset from edges of the map in pixels
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+
+        gMap.animateCamera(cu);
+
+        // Build route
+        new JSONPathDownloader(gMap).execute(directions);
+
+        // Now that path has been drawn, next time make sure to delete previous
+        pathDrawn = true;
     }
 
     @Override
@@ -141,132 +217,307 @@ public class FindWay_frag extends Fragment implements LocationListener, OnMapRea
         return false;
     }
 
-    /**
-     *
-     */
-    private void getDirections() {
-        // TODO Either make a route on the map with the help of geoLocation or
-        // just make new intent with Google Maps and set location
+    @Override
+    public void onMapReady(GoogleMap map) {
+        this.gMap = map;
 
-        System.out.println("Longi: " + longitude);
-        System.out.println("Lati: " + latitude);
+        map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        map.getUiSettings().setAllGesturesEnabled(true);
+
+        map.setOnMarkerClickListener(this);
+
+        restLocation = map.addMarker(new MarkerOptions().position(RESTAURANT_COORDINATE).title(RESTAURANT_NAME).snippet(RESTAURANT_ADDRESS));
+
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(RESTAURANT_COORDINATE, 15));
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(
+                new CameraPosition.Builder()
+                .target(restLocation.getPosition())
+                .zoom(17)
+                .build()
+        ));
+
+        restLocation.showInfoWindow();
+
+        // Button for driving directions
+        btnGetDirectionsDriving = (ImageButton) rod.findViewById(R.id.btnGetDirectionsCar);
+        btnGetDirectionsDriving.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDirections("driving");
+            }
+        });
+
+        // Button for transit directions
+        btnGetDirectionsTransit = (ImageButton) rod.findViewById(R.id.btnGetDirectionsTransit);
+        btnGetDirectionsTransit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDirections("transit");
+            }
+        });
+
+        // Button for walking directions
+        btnGetDirectionsWalking = (ImageButton) rod.findViewById(R.id.btnGetDirectionsWalk);
+        btnGetDirectionsWalking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDirections("walking");
+            }
+        });
+
+        // Button for bicycling directions
+        btnGetDirectionsBicycling = (ImageButton) rod.findViewById(R.id.btnGetDirectionsBicycle);
+        btnGetDirectionsBicycling.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDirections("bicycling");
+            }
+        });
     }
 
-    /**
-     * Gets location from GPS. If GPS isn't available network is used.<br>
-     * To avoid draining batteries, use {@link #stopGeoLocation()} to stop the tracker when the
-     * app's lifecycle is "onPause".
-     *
-     * @return Returns the current location (as {@link Location})
-     */
-    private Location geoLocation() {
-        // TODO Implement hasPermissions!
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
         try {
-            // Set LocationManager from given Context
-            if(lm == null)
-                lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
 
-            // Get location from network
-            if(lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                // Update location
-                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_TIME_INTERVAL, UPDATE_DISTANCE, this);
-
-                // Apply new location
-                location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-                // Apply latitude and longitude from update
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
-
-                this.canGetLocation = true;
+            if (lastLocation != null) {
+                lastLatitude = lastLocation.getLatitude();
+                lastLongitude = lastLocation.getLongitude();
             }
-            // If this part of the code is reached throw Exception - we assume GPS is unavailable.
-            // Run method to enable location in settings here instead of exception
-            else
-                promptUserNoGPS();
-            // throw new Exception("GPS/Location not available."); // Old code
-
         } catch(SecurityException e) {
-            // TODO If insufficient permissions are granted, this code should be executed. Stacktrace included for now.
-            //System.out.println(e.getMessage());
-            e.getStackTrace();
-        } catch(Exception e) {
-            // TODO "Unknown" error handling code goes here. Stacktrace included for now.
-            //System.out.println(e.getMessage());
-            e.getStackTrace();
-        }
-
-        return location;
-    }
-
-    /**
-     * Stop updating location.
-     */
-    private void stopGeoLocation() {
-        try {
-            if (lm != null)
-                lm.removeUpdates(this);
-        } catch (SecurityException e) {
-            // TODO Should probably handle this as well.
-            System.out.println(e.getMessage());
-            e.getStackTrace();
+            // If a SecurityException is thrown, it is due to the fact, that the user is not
+            // allowing the app to use current location. This should've been resolved already,
+            // but might've been overlooked upon an app-resume or whatever. Anyway, redo the
+            // entire please-change-your-settings-dialog check
+            checkLocationSetting();
         }
     }
 
+    @Override
+    public void onConnectionSuspended(int i) {
+        // Not needed atm, but has be be implemented for the sake of the interface
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        // For now we set the latitude and longitude to 0 - if the map shows a location in the
+        // ocean west of Africa, connection basically failed
+
+        lastLatitude = 0;
+        lastLongitude = 0;
+    }
+
     /**
-     * Prompts the user to turn on GPS.
+     * This will allow us to control how to react to the user's choice in regard of either accepting
+     * or declining to turn on location service for the app.
      */
-    private void promptUserNoGPS() {
-        // Build alert dialog
-        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+    public void checkLocationSetting() {
+        LocationRequest request = LocationRequest.create();
 
-        // Set title and message for user
-        alert.setTitle("GPS turned off");
-        alert.setMessage("GPS is currently turned off. Turn it on in settings.");
+        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        request.setInterval(REQUEST_INTERVAL);
+        request.setFastestInterval(REQUEST_INTERVAL/6);
 
-        // Go to settings...
-        alert.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+        LocationSettingsRequest.Builder b = new LocationSettingsRequest.Builder()
+                .addLocationRequest(request);
+
+        // This disables the "Never"-option in the dialog)
+        b.setAlwaysShow(true);
+
+        PendingResult<LocationSettingsResult> r = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, b.build());
+
+        r.setResultCallback(new ResultCallback<LocationSettingsResult>() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+            public void onResult(@NonNull LocationSettingsResult lResult) {
+                final Status status = lResult.getStatus();
+                //final LocationSettingsStates state = lResult.getLocationSettingsStates();
+
+                switch (status.getStatusCode()) {
+                    case LocationSettingsStatusCodes.SUCCESS:
+                        // All good
+                        break;
+
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        try {
+                            status.startResolutionForResult(getActivity(), REQUEST_CHECK_SETTINGS);
+                        } catch (IntentSender.SendIntentException e) {
+                            // Could build an "unknown error"-dialog here, and return to previous
+                            // fragment to get away from the now non-functioning map-feature
+                            // as we know by this error, that something is not working - and we
+                            // can't really know what went wrong at this point)
+                        }
+                        break;
+
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        // This time we know what's wrong - we're not able to change the settings,
+                        // so we could create a "You need to manually enable location settings"-error
+                        // and then return to previous fragment, away from the maps-feature.
+                        break;
+
+                    default:
+                        // We should never reach this part of the code, but IF something strange
+                        // should happen, it could be handled with a "Something went terribly wrong
+                        // so we'll send you back"-error dialog, and then return to previous
+                        // fragment, as we can't be sure that the maps-feature will work properly
+                }
             }
         });
+    }
 
-        // Or fuck off...
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+    /**
+     * Will trigger IF a required action from user has been taken, after being prompted for
+     * changing settings/enabling location.
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            // Check for the integer request code originally supplied to startResolutionForResult().
+            case REQUEST_CHECK_SETTINGS:
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+                        // If this part of the code is reached, we know the settings have been
+                        // enabled, and we can continue with no further implications (as if...)
+                        break;
+
+                    case Activity.RESULT_CANCELED:
+                        // This part of the code is reached if the user says "no" to enabling the
+                        // location-settings. Should just return to previous fragment, away from
+                        // the maps-feature, which won't work without locations enabled.
+                        break;
+                }
+                break;
+        }
+    }
+
+    /**
+     * Inner Class for Path Downloader
+     */
+    private class JSONPathDownloader extends AsyncTask<String, Void, String> {
+        private GoogleMap map;
+
+        public JSONPathDownloader(GoogleMap map) {
+            this.map = map;
+        }
+
+        @Override
+        protected String doInBackground(String... url) {
+            String data = "";
+
+            try{
+                // Fetching the data from web service
+                data = downloadUrl(url[0]);
+            } catch(Exception e){
+                Log.d("Background Task",e.toString());
             }
-        });
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            JSONPathTask pathTask = new JSONPathTask(map);
+
+            // Invokes the thread for parsing the JSON data
+            pathTask.execute(result);
+        }
+
+        private String downloadUrl(String strUrl) throws IOException {
+            String data = "";
+            InputStream iStream = null;
+            HttpURLConnection urlConnection = null;
+
+            try {
+                URL url = new URL(strUrl);
+
+                urlConnection = (HttpURLConnection) url.openConnection();
+
+                urlConnection.connect();
+
+                iStream = urlConnection.getInputStream();
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
+
+                StringBuilder sb  = new StringBuilder();
+
+                String line;
+
+                while((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+
+                data = sb.toString();
+
+                br.close();
+            } catch(Exception e) {
+                e.printStackTrace();
+            } finally {
+                iStream.close();
+                urlConnection.disconnect();
+            }
+
+            return data;
+        }
     }
 
     /**
-     * Will return the current latitude. Will return 0.0 if no location is set. This will only
-     * be a "problem" if the person is in the Gulf of Guinea, which is the actual
-     * intersection of the Equator and Prime Meridian [0.0;0.0].
-     *
-     * @return Current latitude.
+     * Inner Class for Path Task.
+     * This will add lines on GoogleMap in a non-UI thread.
      */
-    public double getLatitude() {
-        return latitude;
-    }
+    private class JSONPathTask extends AsyncTask<String, Integer, List<List<HashMap<String,String>>>> {
+        private GoogleMap map;
 
-    /**
-     * Will return the current longitude. Will return 0.0 if no location is set. This will only
-     * be a "problem" if the person is in the Gulf of Guinea, which is the actual
-     * intersection of the Equator and Prime Meridian [0.0;0.0].
-     *
-     * @return Current longitude.
-     */
-    public double getLongitude() {
-        return longitude;
-    }
+        public JSONPathTask(GoogleMap map) {
+            this.map = map;
+        }
 
-    /**
-     * @return True if either network or GPS is available.
-     */
-    public boolean canGetLocation() {
-        return canGetLocation;
+        @Override
+        protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
+            JSONObject jObject;
+            List<List<HashMap<String, String>>> routes = null;
+
+            try {
+                jObject = new JSONObject(jsonData[0]);
+                routes = JSONPathBuilder.parse(jObject);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return routes;
+        }
+
+        @Override
+        protected void onPostExecute(List<List<HashMap<String, String>>> result) {
+            ArrayList<LatLng> points;
+            PolylineOptions lineOptions = null;
+
+            // Traversing through all the routes
+            for (int i = 0; i < result.size(); i++) {
+                points = new ArrayList<>();
+                lineOptions = new PolylineOptions();
+
+                // Fetching i-th route
+                List<HashMap<String, String>> path = result.get(i);
+
+                // Fetching all the points in i-th route
+                for (int j = 0; j < path.size(); j++) {
+                    HashMap<String, String> point = path.get(j);
+
+                    double lat = Double.parseDouble(point.get("lat"));
+                    double lng = Double.parseDouble(point.get("lng"));
+                    LatLng position = new LatLng(lat, lng);
+
+                    points.add(position);
+                }
+
+                // Adding all the points in the route to LineOptions
+                lineOptions.addAll(points);
+                lineOptions.width(2);
+                lineOptions.color(Color.RED);
+            }
+
+            // Drawing polyline in the Google Map for the i-th route
+            map.addPolyline(lineOptions);
+        }
     }
 }

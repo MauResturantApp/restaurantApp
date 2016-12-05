@@ -8,7 +8,6 @@
     android:weightSum="1">
 
     <ScrollView
-
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -19,25 +18,46 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="109dp"
-                app:srcCompat="@android:drawable/btn_star"
-                android:id="@+id/imageView" />
+                android:layout_height="150dp"
+                android:src="@drawable/dtu_logo"
+                android:id="@+id/homeDtuLogo" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"
+                android:textStyle="bold"
+                android:id="@+id/homeWelcomeHeader"
+                android:text="@string/homeWelcomeHeader" />
 
             <TextView
-                android:text="Her skrives der velkomst/intro besked"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:id="@+id/textView" />
+                android:layout_height="wrap_content"
+                android:id="@+id/homeWelcomeText"
+                android:layout_marginBottom="25px" />
 
-
-            <ImageButton
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="175dp"
-                android:id="@+id/imageButton8" />
+                android:layout_height="wrap_content"
+                android:id="@+id/homeOpeningHours"
+                android:padding="12dp"
+                android:background="@drawable/rounded_corners"
+                android:layout_marginBottom="25px" />
 
-            <ImageButton
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="175dp" />
+                android:layout_height="wrap_content"
+                android:id="@+id/homeTestBox_1"
+                android:padding="12dp"
+                android:background="@drawable/rounded_corners"
+                android:layout_marginBottom="25px" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/homeTestBox_2"
+                android:padding="12dp"
+                android:background="@drawable/rounded_corners"
+                android:layout_marginBottom="90px" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
