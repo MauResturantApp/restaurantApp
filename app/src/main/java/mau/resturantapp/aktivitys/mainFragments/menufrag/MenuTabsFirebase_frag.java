@@ -29,7 +29,7 @@ import mau.resturantapp.data.MenuTab;
 import mau.resturantapp.data.appData;
 import mau.resturantapp.event.events.TabsChangedEvent;
 
-public class MenuTabs_frag extends Fragment implements OnTabSelectedListener {
+public class MenuTabsFirebase_frag extends Fragment implements OnTabSelectedListener {
 
     private View rod;
     private TabLayout tableLayout;
@@ -198,7 +198,7 @@ public class MenuTabs_frag extends Fragment implements OnTabSelectedListener {
         public Fragment getItem(int position) {
             Log.d("getitem funktion" , "position : " + position);
 
-            return MenuList_frag.newInstance(position + 1, tabs.get(position).getName());
+            return MenuList_frag.newInstance(position + 1, tabs.get(position).getName()/*, tabs.get(position).isActive(), tabs.get(position).getKey()*/);
         }
 
         @Override

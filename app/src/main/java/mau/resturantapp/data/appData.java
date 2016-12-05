@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -64,12 +65,18 @@ public class appData extends Application {
     public static CartContent shoppingCart;
     public static boolean loggingIn = false;
 
+    //MenuTabs in progress
+    public static ArrayList<MenuTab> tabs = new ArrayList<>();
+
     @Override
     public void onCreate() {
         super.onCreate();
 
         appPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         setPrefs();
+
+        //Maybe move this depending on how we structure the security rules in firebase
+        getTabs();
     }
 
 
@@ -137,8 +144,9 @@ public class appData extends Application {
         });
     }
 
-    public static void addTab(MenuTab menuTab) {
+    public static void addTab(String name, int position, boolean active) {
         DatabaseReference ref = firebaseDatabase.getReference("menutabs/");
+        MenuTab menuTab = new MenuTab(name, position, active);
         ref.push().setValue(menuTab);
     }
 
@@ -156,6 +164,31 @@ public class appData extends Application {
     public static void updateTab(MenuTab menuTab) {
         DatabaseReference ref = firebaseDatabase.getReference("menutabs/");
         ref.child(menuTab.getKey()).setValue(menuTab);
+    }
+
+    public static void getTabs(){
+        DatabaseReference ref = firebaseDatabase.getReference("menutabs/");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                ArrayList<MenuTab> newTabs = new ArrayList<>();
+                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    MenuTab menuTab = dataSnapshot.getValue(MenuTab.class);
+
+                    Log.d("getTabs", menuTab.getName() + menuTab.getPosition() + menuTab.isActive());
+                    newTabs.add(menuTab);
+                }
+                tabs = newTabs;
+                Collections.sort(tabs);
+                Log.d("getTabs", "Tabs Added");
+                event.tabsChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("Get tabs", "Exception " + databaseError);
+            }
+        });
     }
 
     public static void testNewUser(String email, String password) {
@@ -323,4 +356,5 @@ public class appData extends Application {
         loggingIn = true;
         logOutUser();
     }
+
 }

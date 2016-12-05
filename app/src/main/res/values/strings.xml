@@ -44,4 +44,5 @@
     <string name="checkoutTimepicker">Choose a Time for pickup</string>
     <string name="checkoutExtraText">If you have any special request or comments, type it in the textbox below</string>
     <string name="checkoutBtnCheckout">Send Order!</string>
+    <string name="menuHandler">Menu Handler</string>
 </resources>

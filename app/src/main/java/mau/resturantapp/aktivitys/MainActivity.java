@@ -45,6 +45,7 @@ import mau.resturantapp.aktivitys.mainFragments.guestLogin_frag;
 import mau.resturantapp.aktivitys.mainFragments.Contact_frag;
 import mau.resturantapp.aktivitys.mainFragments.FindWay_frag;
 import mau.resturantapp.aktivitys.mainFragments.Home_frag;
+import mau.resturantapp.aktivitys.mainFragments.menufrag.MenuHandler_frag;
 import mau.resturantapp.aktivitys.mainFragments.menufrag.MenuTabs_frag;
 import mau.resturantapp.aktivitys.mainFragments.Settings_frag;
 import mau.resturantapp.data.appData;
@@ -309,6 +310,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                 appData.logOutUser();
 
                 showHomeScreen();
+            case R.id.menu_menuHandler:
+                frag = new MenuHandler_frag();
+                ft.addToBackStack(null);
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+                break;
             default:
 
 
@@ -328,6 +334,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         navMenu.findItem(R.id.menu_logout).setVisible(false);
         navMenu.findItem(R.id.menu_qrCamera).setVisible(false);
         navMenu.findItem(R.id.menu_qrTest).setVisible(false);
+        navMenu.findItem(R.id.menu_menuHandler).setVisible(false);
     }
 
     private void userLoggedIn(){
@@ -340,6 +347,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         if(appData.currentUser != null && appData.currentUser.isAdmin()){
             navMenu.findItem(R.id.menu_qrCamera).setVisible(true);
             navMenu.findItem(R.id.menu_qrTest).setVisible(true);
+            navMenu.findItem(R.id.menu_menuHandler).setVisible(true);
         }
     }
     private void userLoggedOut(){
@@ -350,6 +358,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         navMenu.findItem(R.id.menu_logout).setVisible(false);
         navMenu.findItem(R.id.menu_qrCamera).setVisible(false);
         navMenu.findItem(R.id.menu_qrTest).setVisible(false);
+        navMenu.findItem(R.id.menu_menuHandler).setVisible(false);
     }
 
     public void Btn_Checkout_clicked(View v){

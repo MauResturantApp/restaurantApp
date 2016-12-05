@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -24,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 
 import mau.resturantapp.R;
+import mau.resturantapp.data.MenuTab;
 import mau.resturantapp.data.appData;
 
 import mau.resturantapp.data.Product;
@@ -32,13 +34,21 @@ import mau.resturantapp.data.Product;
  * Created by anwar on 10/17/16.
  */
 
-public class MenuList_frag extends Fragment {
+public class MenuListFirebase_frag extends Fragment implements View.OnClickListener {
     private static final String argPage = "Arg_Page";
     private static final String argPageTitle = "Arg_PageTitle";
+
+    private View rod;
 
     private int pageNumber;
     private String pageTitle;
     private ListView menuList;
+
+    private EditText name;
+    private EditText position;
+    private EditText active;
+    private Button updateTab;
+    private Button addTab;
 
     private DatabaseReference ref;
 
@@ -46,7 +56,17 @@ public class MenuList_frag extends Fragment {
     private LinearLayoutManager manager;
     private FirebaseRecyclerAdapter<Product, ProductHolder> recyclerViewAdapter;
 
-    public static class ProductHolder extends RecyclerView.ViewHolder{
+    @Override
+    public void onClick(View v) {
+        if(v == rod.findViewById(R.id.updateTab_button)){
+          //  appData.updateTab(name, position, active);
+        }
+        if(v == rod.findViewById(R.id.addTab_button)){
+           // appData.addTab(name, position, active);
+        }
+    }
+
+    public static class ProductHolder extends RecyclerView.ViewHolder {
 
         View rod;
         ImageView itemIcon;
@@ -60,23 +80,23 @@ public class MenuList_frag extends Fragment {
         FrameLayout multipleItemLayout;
         Button addMultiBtn;
 
-        public ProductHolder(View rod){
+        public ProductHolder(View rod) {
             super(rod);
             this.rod = rod;
 
         }
 
-        public void setProductName(String name){
+        public void setProductName(String name) {
             mainItemTxt = (TextView) rod.findViewById(R.id.txt_menu_mainItemtext);
             mainItemTxt.setText(name);
         }
 
-        public void setPrice(int price){
+        public void setPrice(int price) {
             extraItemTxt = (TextView) rod.findViewById(R.id.txt_menu_extraItemText);
             extraItemTxt.setText(Integer.toString(price));
         }
 
-        public void setItemIcon(){
+        public void setItemIcon() {
             itemIcon = (ImageView) rod.findViewById(R.id.icon_menu_itemIcon);
         }
 
@@ -85,7 +105,7 @@ public class MenuList_frag extends Fragment {
             addNewItemBtn = (ImageButton) rod.findViewById(R.id.imgBtn_menu_removeItem);
         }
 
-        public void setmultipleLayout(){
+        public void setmultipleLayout() {
             plusItemBtn = (ImageButton) rod.findViewById(R.id.imgBtn_menuList_plus);
             minusItemBtn = (ImageButton) rod.findViewById(R.id.imgBtn_menuList_minus);
             multipleItemLayout = (FrameLayout) rod.findViewById(R.id.frameL_multipleItems);
@@ -94,7 +114,7 @@ public class MenuList_frag extends Fragment {
         }
     }
 
-    public static MenuList_frag newInstance(int page, String pageTitle) {
+    public static MenuList_frag newInstance(int page, String pageTitle, MenuTab menuTab) {
         Bundle args = new Bundle();
         args.putInt(argPage, page);
         args.putString(argPageTitle, pageTitle);
@@ -109,14 +129,14 @@ public class MenuList_frag extends Fragment {
         super.onCreate(savedInstanceState);
         pageNumber = getArguments().getInt(argPage);
         pageTitle = getArguments().getString(argPageTitle);
-        Log.d("oncreate" , "pagenumber" + pageNumber);
+        Log.d("oncreate", "pagenumber" + pageNumber);
 
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Log.d("start" , "pagenumber" + pageNumber);
+        Log.d("start", "pagenumber" + pageNumber);
 
         startRecyclerViewAdapter();
     }
@@ -124,9 +144,9 @@ public class MenuList_frag extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        Log.d("stop" , "pagenumber" + pageNumber);
+        Log.d("stop", "pagenumber" + pageNumber);
 
-        if(recyclerViewAdapter != null){
+        if (recyclerViewAdapter != null) {
             recyclerViewAdapter.cleanup();
         }
     }
@@ -134,21 +154,30 @@ public class MenuList_frag extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.d("pause" , "pagenumber" + pageNumber);
+        Log.d("pause", "pagenumber" + pageNumber);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d("destroy" , "pagenumber" + pageNumber);
+        Log.d("destroy", "pagenumber" + pageNumber);
 
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rod = inflater.inflate(R.layout.tabcontent_recyclerlist, container, false);
+        rod = inflater.inflate(R.layout.menuhandler_tabs_and_products, container, false);
         Log.d("creater inhold", "page number: " + pageNumber);
+
+        name = (EditText) rod.findViewById(R.id.tab_name_input);
+        position = (EditText) rod.findViewById(R.id.tab_position_input);
+        active = (EditText) rod.findViewById(R.id.tab_active_input);
+        updateTab = (Button) rod.findViewById(R.id.updateTab_button);
+        addTab = (Button) rod.findViewById(R.id.addTab_button);
+        updateTab.setOnClickListener(this);
+        addTab.setOnClickListener(this);
+
         products = (RecyclerView) rod.findViewById(R.id.recyclerview_tabcontent);
         manager = new LinearLayoutManager(getActivity().getApplicationContext());
 
@@ -179,12 +208,11 @@ public class MenuList_frag extends Fragment {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 int totalItems = products.getAdapter().getItemCount();
 
-                for(int i = 0; i<totalItems; i++){
-                    try{
+                for (int i = 0; i < totalItems; i++) {
+                    try {
                         ProductHolder tempholder = (ProductHolder) products.findViewHolderForLayoutPosition(i);
                         tempholder.multipleItemLayout.setAlpha(0f);
-                    }
-                    catch (NullPointerException notAvailableYet){
+                    } catch (NullPointerException notAvailableYet) {
 
                     }
 
@@ -198,11 +226,12 @@ public class MenuList_frag extends Fragment {
 
         return rod;
     }
-    private void succesfullAddItem(final ProductHolder holder, final int position){
+
+    private void succesfullAddItem(final ProductHolder holder, final int position) {
         holder.addNewItemBtn.setImageResource(R.drawable.add_item_icon);
         holder.addNewItemBtn.setOnClickListener(null);
 
-        class lockOnClick extends AsyncTask{
+        class lockOnClick extends AsyncTask {
 
             @Override
             protected Object doInBackground(Object[] objects) {
@@ -219,7 +248,7 @@ public class MenuList_frag extends Fragment {
                         appData.cartContent.add(recyclerViewAdapter.getItem(position));
                         Toast.makeText(getContext(), recyclerViewAdapter.getItem(position).getName() + "er tilføget til kurv", Toast.LENGTH_SHORT).show();
                         appData.event.newItemToCart();
-                        succesfullAddItem(holder,position);
+                        succesfullAddItem(holder, position);
 
                     }
                 });
@@ -230,16 +259,15 @@ public class MenuList_frag extends Fragment {
 
     }
 
-    private void changeAmount(int btn, ProductHolder productHolder){
-        if( btn == 1){
-            if(productHolder.amount <99){
+    private void changeAmount(int btn, ProductHolder productHolder) {
+        if (btn == 1) {
+            if (productHolder.amount < 99) {
                 productHolder.amount++;
                 productHolder.amountTxt.setText(Integer.toString(productHolder.amount));
             }
 
-        }
-        else if (btn == 0){
-            if(productHolder.amount > 0){
+        } else if (btn == 0) {
+            if (productHolder.amount > 0) {
 
                 productHolder.amount--;
                 productHolder.amountTxt.setText(Integer.toString(productHolder.amount));
@@ -248,7 +276,6 @@ public class MenuList_frag extends Fragment {
         }
 
     }
-
 
 
     private void startRecyclerViewAdapter() {
@@ -273,7 +300,7 @@ public class MenuList_frag extends Fragment {
                         appData.addProductToCart(product);
                         Toast.makeText(getContext(), recyclerViewAdapter.getItem(mPosition).getName() + "er tilføget til kurv", Toast.LENGTH_SHORT).show();
                         appData.event.newItemToCart();
-                        succesfullAddItem(productHolder,mPosition);
+                        succesfullAddItem(productHolder, mPosition);
 
 
                     }
@@ -282,21 +309,21 @@ public class MenuList_frag extends Fragment {
                 productHolder.plusItemBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        changeAmount(1,productHolder);
+                        changeAmount(1, productHolder);
                     }
                 });
 
                 productHolder.minusItemBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        changeAmount(0,productHolder);
+                        changeAmount(0, productHolder);
                     }
                 });
 
                 productHolder.addMultiBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        for(int i = 0; i<productHolder.amount;i++){
+                        for (int i = 0; i < productHolder.amount; i++) {
                             appData.addProductToCart(product);
                             productHolder.multipleItemLayout.setAlpha(0f);
                         }
@@ -325,71 +352,11 @@ public class MenuList_frag extends Fragment {
 
     }
 
-    public int getPageNumber(){
+    public int getPageNumber() {
         return pageNumber;
     }
 
-    public String getPageTitle(){
+    public String getPageTitle() {
         return pageTitle;
     }
-
-/*    public class FoodMenuAdapter extends ArrayAdapter<MenuItem> {
-        private int rod;
-        private List<MenuItem> tempVare;
-
-
-        public FoodMenuAdapter(Context context, int resource, List<MenuItem> objects) {
-            super(context, resource, objects);
-            tempVare = objects;
-            rod = resource;
-
-        }
-
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            ViewHolder mainViewH = null;
-            if (convertView == null) {
-                LayoutInflater inflater = LayoutInflater.from(getContext());
-                convertView = inflater.inflate(rod, parent, false);
-                ViewHolder viewer = new ViewHolder();
-                viewer.itemIcon = (ImageView) convertView.findViewById(R.id.icon_menu_itemIcon);
-                viewer.addNewItemBtn = (ImageButton) convertView.findViewById(R.id.imgBtn_menu_removeItem);
-                viewer.mainItemTxt = (TextView) convertView.findViewById(R.id.txt_menu_mainItemtext);
-                viewer.extraItemTxt = (TextView) convertView.findViewById(R.id.txt_menu_extraItemText);
-                viewer.addNewItemBtn.setImageResource(R.drawable.add_item_icon);
-                viewer.mainItemTxt.setText(tempVare.get(position).getNavn() + "" + tempVare.get(position).getPris() + "DKK");
-                convertView.setTag(viewer);
-                viewer.addNewItemBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        appData.cartContent.add(tempVare.get(position));
-                        Toast.makeText(getContext(), tempVare.get(position).getNavn() + "er tilføget til kurv", Toast.LENGTH_SHORT).show();
-                        NewItemToCartEvent event = new NewItemToCartEvent();
-                        EventBus.getDefault().post(event);
-
-                    }
-                });
-
-
-            } else {
-                mainViewH = (ViewHolder) convertView.getTag();
-                mainViewH.mainItemTxt.setText(tempVare.get(position).getNavn() + "" + tempVare.get(position).getPris() + "DKK");
-            }
-
-
-            return convertView;
-        }
-
-        private class ViewHolder {
-            ImageView itemIcon;
-            TextView mainItemTxt;
-            TextView extraItemTxt;
-            ImageButton addNewItemBtn;
-
-
-        }
-
-
-    }*/
 }

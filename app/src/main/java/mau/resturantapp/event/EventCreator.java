@@ -17,6 +17,7 @@ import mau.resturantapp.event.events.ShowLogInDialogEvent;
 import mau.resturantapp.event.events.ShowSignupDialogEvent;
 import mau.resturantapp.event.events.SignOutEvent;
 import mau.resturantapp.event.events.SignUpBtnClicked;
+import mau.resturantapp.event.events.TabsChangedEvent;
 
 /**
  * Created by AnwarC on 15/11/2016.
@@ -90,5 +91,8 @@ public class EventCreator {
         bus.post(event);
     }
 
-
+    public void tabsChanged(){
+        TabsChangedEvent event = new TabsChangedEvent();
+        bus.post(event);
+    }
 }
