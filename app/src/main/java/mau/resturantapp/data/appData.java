@@ -22,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import org.greenrobot.eventbus.EventBus;
@@ -374,4 +375,35 @@ public class appData extends Application {
         logOutUser();
     }
 
+    public static void placeOrder(final String comment, final String timeToPickup){
+        final DatabaseReference ref = firebaseDatabase.getReference("shoppingcart/" + firebaseAuth.getCurrentUser().getUid());
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Map<String, Product> cartContent = new HashMap<>();
+                    for (DataSnapshot productSnapshot : snapshot.getChildren()) {
+                        String key = productSnapshot.getKey();
+                        Product product = productSnapshot.getValue(Product.class);
+                        Log.d("CartContent: ", "key " + key + " name " + product.getName() + " price " + product.getPrice());
+                        cartContent.put(key, product);
+                    }
+                    ref.removeValue();
+                    Order order = new Order(cartContent, totalPrice, comment, timeToPickup, ServerValue.TIMESTAMP);
+                    placeOrderInFirebase(order);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("place order error", databaseError.getMessage());
+            }
+        });
+    }
+
+    private static void placeOrderInFirebase(Order order){
+        DatabaseReference ref = firebaseDatabase.getReference("orders/" + firebaseAuth.getCurrentUser().getUid());
+        ref.push().setValue(order);
+        event.orderSuccessful();
+    }
 }

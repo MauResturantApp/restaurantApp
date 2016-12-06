@@ -11,6 +11,7 @@ import mau.resturantapp.event.events.NewUserFailedEvent;
 import mau.resturantapp.event.events.NewUserSuccesfullEvent;
 import mau.resturantapp.event.events.OnFailedLogIn;
 import mau.resturantapp.event.events.OnSuccesfullLogInEvent;
+import mau.resturantapp.event.events.OrderSuccessfulEvent;
 import mau.resturantapp.event.events.ResumeTabsEvent;
 import mau.resturantapp.event.events.ShowAskforLoginDialogEvent;
 import mau.resturantapp.event.events.ShowLogInDialogEvent;
@@ -93,6 +94,11 @@ public class EventCreator {
 
     public void tabsChanged(){
         TabsChangedEvent event = new TabsChangedEvent();
+        bus.post(event);
+    }
+
+    public void orderSuccessful(){
+        OrderSuccessfulEvent event = new OrderSuccessfulEvent();
         bus.post(event);
     }
 }

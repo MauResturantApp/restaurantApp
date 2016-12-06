@@ -55,6 +55,7 @@ import mau.resturantapp.event.events.LogUserInEvent;
 import mau.resturantapp.event.events.NewUserFailedEvent;
 import mau.resturantapp.event.events.NewUserSuccesfullEvent;
 import mau.resturantapp.event.events.OnFailedLogIn;
+import mau.resturantapp.event.events.OrderSuccessfulEvent;
 import mau.resturantapp.event.events.ShowAskforLoginDialogEvent;
 import mau.resturantapp.event.events.ShowLogInDialogEvent;
 import mau.resturantapp.event.events.ShowSignupDialogEvent;
@@ -461,7 +462,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     @Subscribe
     public void guestCheckout(GuestUserCheckoutEvent event){
         goToCheckout();
+    }
 
+    @Subscribe
+    public void orderSuccessful(OrderSuccessfulEvent event){
+        Toast.makeText(this, "Din ordre er modtaget", Toast.LENGTH_LONG).show();
+        showHomeScreen();
     }
 
     @Subscribe

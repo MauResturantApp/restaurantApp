@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Yoouughurt on 05-11-2016.
@@ -13,26 +14,22 @@ import java.util.List;
 
 public class Order {
 
-    private List<Product> products = new ArrayList<>();
+    private Map<String, Product> cartContent;
     private int totalPrice;
+    private String comment;
+    private String timeToPickup;
     private Object timestamp;
 
     public Order(){
 
     }
 
-    public Order(ArrayList<Product> products, int totalPrice, Object timestamp){
-        this.products = products;
+    public Order(Map<String, Product> cartContent, int totalPrice, String comment, String timeToPickup, Object timestamp){
+        this.cartContent = cartContent;
         this.totalPrice = totalPrice;
+        this.comment = comment;
+        this.timeToPickup = timeToPickup;
         this.timestamp = timestamp;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
     }
 
     public int getTotalPrice() {
@@ -58,5 +55,29 @@ public class Order {
         SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         sfd.format(date);
         return date;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Map<String, Product> getCartContent() {
+        return cartContent;
+    }
+
+    public void setCartContent(Map<String, Product> cartContent) {
+        this.cartContent = cartContent;
+    }
+
+    public String getTimeToPickup() {
+        return timeToPickup;
+    }
+
+    public void setTimeToPickup(String timeToPickup) {
+        this.timeToPickup = timeToPickup;
     }
 }
