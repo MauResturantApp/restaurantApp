@@ -81,7 +81,7 @@ public class Checkout_frag extends Fragment implements View.OnClickListener,Runn
             appData.placeOrder(comment, timeToPickup);
         } else {
             Log.w("Checkout" , "Shop is closed");
-            //lav en "shopClosed dialog"?
+            appData.event.shopCLosed();
         }
 
     }

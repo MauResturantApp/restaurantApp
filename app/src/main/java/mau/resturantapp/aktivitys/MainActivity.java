@@ -40,6 +40,7 @@ import org.greenrobot.eventbus.Subscribe;
 import mau.resturantapp.R;
 import mau.resturantapp.aktivitys.dialogs.Dialog_askForLogin;
 import mau.resturantapp.aktivitys.dialogs.Dialog_login;
+import mau.resturantapp.aktivitys.dialogs.Dialog_shopClosed;
 import mau.resturantapp.aktivitys.dialogs.Dialog_signup;
 import mau.resturantapp.aktivitys.mainFragments.Checkout_frag;
 import mau.resturantapp.aktivitys.mainFragments.Contact_frag;
@@ -56,6 +57,7 @@ import mau.resturantapp.event.events.NewUserFailedEvent;
 import mau.resturantapp.event.events.NewUserSuccesfullEvent;
 import mau.resturantapp.event.events.OnFailedLogIn;
 import mau.resturantapp.event.events.OrderSuccessfulEvent;
+import mau.resturantapp.event.events.ShopClosedEvent;
 import mau.resturantapp.event.events.ShowAskforLoginDialogEvent;
 import mau.resturantapp.event.events.ShowLogInDialogEvent;
 import mau.resturantapp.event.events.ShowSignupDialogEvent;
@@ -442,6 +444,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     @Subscribe
     public void askForLoginDialogEvent(ShowAskforLoginDialogEvent event){
         showAskForLoginDialog();
+    }
+
+    @Subscribe
+    public void shopClosedDialogEvent(ShopClosedEvent event){
+        Dialog_shopClosed d = new Dialog_shopClosed();
+        d.show(getSupportFragmentManager(),null);
     }
 
     @Subscribe

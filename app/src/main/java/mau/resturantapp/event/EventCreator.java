@@ -13,6 +13,7 @@ import mau.resturantapp.event.events.OnFailedLogIn;
 import mau.resturantapp.event.events.OnSuccesfullLogInEvent;
 import mau.resturantapp.event.events.OrderSuccessfulEvent;
 import mau.resturantapp.event.events.ResumeTabsEvent;
+import mau.resturantapp.event.events.ShopClosedEvent;
 import mau.resturantapp.event.events.ShowAskforLoginDialogEvent;
 import mau.resturantapp.event.events.ShowLogInDialogEvent;
 import mau.resturantapp.event.events.ShowSignupDialogEvent;
@@ -58,6 +59,11 @@ public class EventCreator {
     }
     public void signOut(){
         SignOutEvent event = new SignOutEvent();
+        bus.post(event);
+    }
+
+    public void shopCLosed(){
+        ShopClosedEvent event = new ShopClosedEvent();
         bus.post(event);
     }
 
