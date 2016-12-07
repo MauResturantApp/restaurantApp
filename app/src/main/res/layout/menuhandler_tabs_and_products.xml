@@ -5,55 +5,62 @@
     android:layout_height="match_parent"
     android:weightSum="1">
 
-
     <TextView
-        android:text="name"
+        android:textSize="16sp"
+        android:text="@string/tabproperty_name"
         android:layout_height="wrap_content"
         android:id="@+id/tab_name"
         android:layout_width="wrap_content" />
     <EditText
+        android:textSize="16sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tab_name_input"/>
     <TextView
-        android:text="position"
+        android:textSize="16sp"
+        android:text="@string/tabproperty_position"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tab_position" />
     <EditText
+        android:textSize="16sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tab_position_input"/>
     <TextView
-        android:text="active"
+        android:textSize="16sp"
+        android:text="@string/tabproperty_active"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tab_active" />
     <EditText
+        android:textSize="16sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tab_active_input"/>
-<LinearLayout
+
+    <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
     <Button
-        android:text="Button"
+        android:text="@string/updateTab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/updateTab_button"
         android:layout_weight="1"/>
 
     <Button
-        android:text="Button1"
+        android:text="@string/addTab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/addTab_button"
         android:layout_weight="1"/>
+    <Button
+        android:text="@string/removeTab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/removeTab_button"
+        android:layout_weight="1"/>
 </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview_tabcontent"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 </LinearLayout>

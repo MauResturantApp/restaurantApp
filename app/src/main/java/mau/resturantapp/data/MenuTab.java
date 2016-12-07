@@ -10,7 +10,6 @@ public class MenuTab implements Comparable<MenuTab> {
     private String name;
     private int position;
     private boolean active;
-    @Exclude
     private String key;
 
     public MenuTab(){
@@ -48,12 +47,10 @@ public class MenuTab implements Comparable<MenuTab> {
         this.active = active;
     }
 
-    @Exclude
     public String getKey() {
         return key;
     }
 
-    @Exclude
     public void setKey(String key) {
         this.key = key;
     }

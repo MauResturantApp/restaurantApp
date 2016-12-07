@@ -46,9 +46,17 @@
     <string name="checkoutBtnCheckout">Send Order!</string>
     <string name="menuHandler">Menu Handler</string>
     <string name="homeWelcomeHeader">Restaurant DTU App</string>
+    <string name="addTab">Add New Tab</string>
+    <string name="updateTab">Update Tab</string>
+    <string name="removeTab">Remove Tab</string>
+    <string name="tabproperty_name">Name</string>
+    <string name="tabproperty_position">Position</string>
+    <string name="tabproperty_active">Active</string>
 
 
-        <string-array name="admincontrols">
+
+
+    <string-array name="admincontrols">
             <item>Add new menu</item>
             <item>Add new item</item>
             <item>Accounting</item>

@@ -157,26 +157,38 @@ public class appData extends Application {
         });
     }
 
-    public static void addTab(String name, int position, boolean active) {
+    public static void addTab(String name, int position, String active) {
         DatabaseReference ref = firebaseDatabase.getReference("menutabs/");
-        MenuTab menuTab = new MenuTab(name, position, active);
-        ref.push().setValue(menuTab);
+        MenuTab menuTab = new MenuTab(name, position, stringToBoolean(active));
+        String key = ref.push().getKey();
+        menuTab.setKey(key);
+        ref.child(key).setValue(menuTab);
     }
 
     //Consider if transactions needed
-    public static void removeTab(MenuTab menuTab) {
+    public static void removeTab(String key) {
         DatabaseReference ref = firebaseDatabase.getReference();
 
         Map removeTab = new HashMap();
-        removeTab.put("menutabs/" + menuTab.getKey(), null);
-        removeTab.put("product/" + menuTab.getKey(), null);
+        removeTab.put("menutabs/" + key, null);
+        removeTab.put("product/" + key, null);
 
         ref.updateChildren(removeTab);
     }
 
-    public static void updateTab(MenuTab menuTab) {
-        DatabaseReference ref = firebaseDatabase.getReference("menutabs/");
-        ref.child(menuTab.getKey()).setValue(menuTab);
+    public static void updateTab(String name, int position, String active, String key) {
+        DatabaseReference ref = firebaseDatabase.getReference("menutabs/" + key);
+        MenuTab menuTab = new MenuTab(name, position, stringToBoolean(active));
+        menuTab.setKey(key);
+        ref.setValue(menuTab);
+    }
+
+    public static boolean stringToBoolean(String string){
+        boolean convertedString = false;
+        if(string.equals("true")){
+            convertedString = true;
+        }
+        return convertedString;
     }
 
     public static void getTabs(){

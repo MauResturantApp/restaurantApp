@@ -178,8 +178,7 @@ public class MenuTabs_frag extends Fragment implements OnTabSelectedListener {
 
         @Override
         public int getItemPosition(Object object){
-            //We can avoid full view recreation like this, but it might change the look on the overall tablayout
-            //when changes occur compared to full view recreation.
+            //This is used to avoid full view recreation when changes to the data occur
 
             MenuList_frag item = (MenuList_frag) object;
             int pageNumber = item.getPageNumber();
