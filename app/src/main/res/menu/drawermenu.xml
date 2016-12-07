@@ -7,33 +7,37 @@
         android:id="@+id/menu_findos"
         android:orderInCategory="1"
         android:title="@string/draweMenuFindWay"
-        android:icon="@drawable/findos_icon"
-        ></item>
-
+        android:icon="@drawable/findos_icon">
+    </item>
     <item
         android:id="@+id/menu_indstillinger"
         android:orderInCategory="5"
         android:title="@string/draweMenuSettings"
-        android:icon="@drawable/indstilling_icon"
-        ></item>
-
-
+        android:icon="@drawable/indstilling_icon">
+    </item>
     <item
         android:id="@+id/menu_qrTest"
         android:orderInCategory="7"
         android:title="@string/draweMenuQRcode"
-        android:icon="@drawable/ic_action_qrcode"
-        ></item>
+        android:icon="@drawable/ic_action_qrcode">
+    </item>
     <item
         android:id="@+id/menu_qrCamera"
         android:orderInCategory="8"
         android:title="@string/draweMenuQrCamera"
-        android:icon="@drawable/ic_action_camera"
-        ></item>
+        android:icon="@drawable/ic_action_camera">
+    </item>
         <item
             android:id="@+id/menu_menuHandler"
             android:orderInCategory="9"
             android:title="@string/menuHandler"
+            android:icon="@drawable/ic_action_signout"
+            android:visible="false">
+        </item>
+        <item
+            android:id="@+id/menu_userProfile"
+            android:orderInCategory="10"
+            android:title="@string/drawerMenu_userProfile"
             android:icon="@drawable/ic_action_signout"
             android:visible="false">
         </item>
@@ -52,7 +56,8 @@
         android:id="@+id/menu_signin"
         android:orderInCategory="20"
         android:title="@string/draweMenuSignup"
-        android:icon="@drawable/ic_action_newuser"></item>
+        android:icon="@drawable/ic_action_newuser">
+    </item>
     <item
         android:id="@+id/menu_logout"
         android:orderInCategory="30"

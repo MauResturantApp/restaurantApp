@@ -74,6 +74,8 @@ public class appData extends Application {
     //MenuTabs in progress
     public static ArrayList<MenuTab> tabs = new ArrayList<>();
 
+    public static UserProfile userProfile;
+
 
     private static void setNewPrices(){
         for(int i = 0; i<priceObservers.size();i++){
@@ -133,10 +135,11 @@ public class appData extends Application {
         String name = firebaseAuth.getCurrentUser().getDisplayName();
         String email = firebaseAuth.getCurrentUser().getEmail();
         currentUser = new LoggedInUser(name, email, 0);
+        getUserProfile();
         isAdmin();
     }
 
-    private static void isAdmin() {
+    public static void isAdmin() {
         DatabaseReference ref = firebaseDatabase.getReference("permissions/" + getUID());
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -417,5 +420,40 @@ public class appData extends Application {
         DatabaseReference ref = firebaseDatabase.getReference("orders/" + firebaseAuth.getCurrentUser().getUid());
         ref.push().setValue(order);
         event.orderSuccessful();
+    }
+
+    public static void getUserProfile(){
+        DatabaseReference ref = firebaseDatabase.getReference("users/" + firebaseAuth.getCurrentUser().getUid());
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    userProfile = snapshot.getValue(UserProfile.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("GetUserProfile error", databaseError.getMessage());
+            }
+        });
+    }
+
+    public static void updateUserProfile(String name, String phoneNumber){
+        DatabaseReference ref = firebaseDatabase.getReference("users/" + firebaseAuth.getCurrentUser().getUid());
+        if(userProfile != null){
+            userProfile.setName(name);
+            userProfile.setPhoneNumber(phoneNumber);
+        } else {
+            userProfile = new UserProfile(firebaseAuth.getCurrentUser().getEmail(), name, phoneNumber);
+        }
+
+        ref.setValue(userProfile);
+    }
+
+    public static void checkIfAutoLogIn(){
+        if(currentUser == null){
+            onSuccesfullLogin();
+        }
     }
 }

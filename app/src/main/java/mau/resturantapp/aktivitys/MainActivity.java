@@ -49,6 +49,7 @@ import mau.resturantapp.aktivitys.mainFragments.Home_frag;
 import mau.resturantapp.aktivitys.mainFragments.menufrag.MenuHandler_frag;
 import mau.resturantapp.aktivitys.mainFragments.menufrag.MenuTabs_frag;
 import mau.resturantapp.aktivitys.mainFragments.Admincontrol_frag;
+import mau.resturantapp.aktivitys.mainFragments.userControls.userProfile_frag;
 import mau.resturantapp.data.appData;
 import mau.resturantapp.event.events.GuestUserCheckoutEvent;
 import mau.resturantapp.event.events.IsAdminEvent;
@@ -312,8 +313,14 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                 appData.logOutUser();
 
                 showHomeScreen();
+                break;
             case R.id.menu_menuHandler:
                 frag = new MenuHandler_frag();
+                ft.addToBackStack(null);
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+                break;
+            case R.id.menu_userProfile:
+                frag = new userProfile_frag();
                 ft.addToBackStack(null);
                 ft.replace(R.id.mainFrameFrag, frag).commit();
                 break;
@@ -337,6 +344,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         navMenu.findItem(R.id.menu_qrCamera).setVisible(false);
         navMenu.findItem(R.id.menu_qrTest).setVisible(false);
         navMenu.findItem(R.id.menu_menuHandler).setVisible(false);
+        navMenu.findItem(R.id.menu_userProfile).setVisible(false);
     }
 
     private void userLoggedIn(){
@@ -345,6 +353,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         navMenu.findItem(R.id.menu_login).setVisible(false);
         navMenu.findItem(R.id.menu_signin).setVisible(false);
         navMenu.findItem(R.id.menu_logout).setVisible(true);
+        navMenu.findItem(R.id.menu_userProfile).setVisible(true);
 
         if(appData.currentUser != null && appData.currentUser.isAdmin()){
             navMenu.findItem(R.id.menu_qrCamera).setVisible(true);
@@ -361,6 +370,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         navMenu.findItem(R.id.menu_qrCamera).setVisible(false);
         navMenu.findItem(R.id.menu_qrTest).setVisible(false);
         navMenu.findItem(R.id.menu_menuHandler).setVisible(false);
+        navMenu.findItem(R.id.menu_userProfile).setVisible(false);
     }
 
     public void Btn_Checkout_clicked(View v){
@@ -543,6 +553,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                         anonymousLoggedIn();
                     } else {
                         // User is logged in as a known user
+                        appData.loggingIn = false;
                         userLoginText();
                         userLoggedIn();
                     }

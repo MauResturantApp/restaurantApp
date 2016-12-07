@@ -13,6 +13,7 @@ import mau.resturantapp.data.Product;
 public class LoggedInUser {
     private String name;
     private String email;
+    private String phoneNumber;
     private boolean admin = false;
     private ArrayList<Order> oldOrders = new ArrayList<>();
     private ArrayList<Product> cart = new ArrayList<>();

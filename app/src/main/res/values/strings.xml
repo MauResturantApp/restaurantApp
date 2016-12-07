@@ -52,19 +52,27 @@
     <string name="tabproperty_name">Name</string>
     <string name="tabproperty_position">Position</string>
     <string name="tabproperty_active">Active</string>
+    <string name="drawerMenu_userProfile">Profile</string>
+
+    <string name="profile_headline">Profile</string>
+    <string name="userProfile_email">Email Address</string>
+    <string name="userProfile_phoneNumber">Phone Number</string>
+    <string name="userProfile_name">Name</string>
+    <string name="userProfile_updateProfile">Update profile</string>
+
 
 
 
 
     <string-array name="admincontrols">
-            <item>Add new menu</item>
-            <item>Add new item</item>
-            <item>Accounting</item>
-            <item>Pending orders</item>
-            <item>Order history</item>
-            <item>Messages</item>
-            <item>Shop settings</item>
-        </string-array>
+        <item>Add new menu</item>
+        <item>Add new item</item>
+        <item>Accounting</item>
+        <item>Pending orders</item>
+        <item>Order history</item>
+        <item>Messages</item>
+        <item>Shop settings</item>
+    </string-array>
 
 
 
