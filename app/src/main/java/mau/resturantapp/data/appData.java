@@ -41,6 +41,7 @@ import mau.resturantapp.event.events.NewUserSuccesfullEvent;
 import mau.resturantapp.event.events.OnFailedLogIn;
 import mau.resturantapp.event.events.OnSuccesfullLogInEvent;
 import mau.resturantapp.user.LoggedInUser;
+import mau.resturantapp.utils.LanguageContextWrapper;
 
 /**
  * Created by anwar on 10/15/16.

@@ -1,5 +1,6 @@
 package mau.resturantapp.aktivitys;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -22,9 +23,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
@@ -64,11 +67,13 @@ import mau.resturantapp.event.events.ShowLogInDialogEvent;
 import mau.resturantapp.event.events.ShowSignupDialogEvent;
 import mau.resturantapp.test.QRCamera;
 import mau.resturantapp.test.QRTest;
+import mau.resturantapp.utils.LanguageContextWrapper;
+import mau.resturantapp.utils.LanguageHandler;
 
 
 import static android.support.design.widget.BottomSheetBehavior.*;
 
-public class MainActivity extends AppCompatActivity implements OnClickListener, OnTabSelectListener, OnNavigationItemSelectedListener,OnTouchListener {
+public class MainActivity extends AppCompatActivity implements OnClickListener, OnTabSelectListener, OnNavigationItemSelectedListener,OnTouchListener, CompoundButton.OnCheckedChangeListener {
 
     private FloatingActionButton actBtn;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -78,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     private NavigationView sideMenu;
     private View fadeView;
     private ProgressBar progBar;
+    private Switch languageSwitch;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
@@ -110,6 +116,15 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
             sideMenu.setNavigationItemSelectedListener(this);
         }
 
+        //HVORFOR ER DEN NULL!?!?!
+        languageSwitch = (Switch) findViewById(R.id.header_languageSwitch);
+        if(languageSwitch != null) {
+            Log.d("LanguageSwitch", "NON NULL");
+            languageSwitch.setChecked(LanguageHandler.isChecked(this));
+            languageSwitch.setOnCheckedChangeListener(this);
+        } else {
+            Log.d("LanguageSwitch", "NULL");
+        }
 
 
         int dp = DPtoPixels(39f); // husk f efter tallet
@@ -573,5 +588,25 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         fadeView.setVisibility(View.GONE);
         progBar.setVisibility(View.GONE);
         showHomeScreen();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LanguageContextWrapper.wrap(newBase, LanguageHandler.getLanguage(newBase)));
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        Log.d("Switch outside", "OnCheckedChanged " + isChecked);
+        if(buttonView == languageSwitch){
+            Log.d("Switch", "OnCheckedChanged " + isChecked);
+            if(isChecked){
+                LanguageHandler.saveLanguage(this, "en");
+                //attachBaseContext(this);
+            } else {
+                LanguageHandler.saveLanguage(this, "dk");
+                //attachBaseContext(this);
+            }
+        }
     }
 }
