@@ -22,11 +22,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -39,6 +41,7 @@ import mau.resturantapp.event.events.NewUserSuccesfullEvent;
 import mau.resturantapp.event.events.OnFailedLogIn;
 import mau.resturantapp.event.events.OnSuccesfullLogInEvent;
 import mau.resturantapp.user.LoggedInUser;
+import mau.resturantapp.utils.LanguageContextWrapper;
 
 /**
  * Created by anwar on 10/15/16.
@@ -69,17 +72,26 @@ public class appData extends Application {
     public static CartContent shoppingCart;
     public static boolean loggingIn = false;
 
+    //MenuTabs in progress
+    public static ArrayList<MenuTab> tabs = new ArrayList<>();
+
+    public static UserProfile userProfile;
+
+
     private static void setNewPrices(){
         for(int i = 0; i<priceObservers.size();i++){
             priceObservers.get(i).run();
         }
     }
-
     @Override
     public void onCreate() {
         super.onCreate();
+
         appPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         setPrefs();
+
+        //Maybe move this depending on how we structure the security rules in firebase
+        getTabs();
     }
 
 
@@ -124,10 +136,11 @@ public class appData extends Application {
         String name = firebaseAuth.getCurrentUser().getDisplayName();
         String email = firebaseAuth.getCurrentUser().getEmail();
         currentUser = new LoggedInUser(name, email, 0);
+        getUserProfile();
         isAdmin();
     }
 
-    private static void isAdmin() {
+    public static void isAdmin() {
         DatabaseReference ref = firebaseDatabase.getReference("permissions/" + getUID());
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -148,25 +161,63 @@ public class appData extends Application {
         });
     }
 
-    public static void addTab(MenuTab menuTab) {
+    public static void addTab(String name, int position, String active) {
         DatabaseReference ref = firebaseDatabase.getReference("menutabs/");
-        ref.push().setValue(menuTab);
+        MenuTab menuTab = new MenuTab(name, position, stringToBoolean(active));
+        String key = ref.push().getKey();
+        menuTab.setKey(key);
+        ref.child(key).setValue(menuTab);
     }
 
     //Consider if transactions needed
-    public static void removeTab(MenuTab menuTab) {
+    public static void removeTab(String key) {
         DatabaseReference ref = firebaseDatabase.getReference();
 
         Map removeTab = new HashMap();
-        removeTab.put("menutabs/" + menuTab.getKey(), null);
-        removeTab.put("product/" + menuTab.getKey(), null);
+        removeTab.put("menutabs/" + key, null);
+        removeTab.put("product/" + key, null);
 
         ref.updateChildren(removeTab);
     }
 
-    public static void updateTab(MenuTab menuTab) {
+    public static void updateTab(String name, int position, String active, String key) {
+        DatabaseReference ref = firebaseDatabase.getReference("menutabs/" + key);
+        MenuTab menuTab = new MenuTab(name, position, stringToBoolean(active));
+        menuTab.setKey(key);
+        ref.setValue(menuTab);
+    }
+
+    public static boolean stringToBoolean(String string){
+        boolean convertedString = false;
+        if(string.equals("true")){
+            convertedString = true;
+        }
+        return convertedString;
+    }
+
+    public static void getTabs(){
         DatabaseReference ref = firebaseDatabase.getReference("menutabs/");
-        ref.child(menuTab.getKey()).setValue(menuTab);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                ArrayList<MenuTab> newTabs = new ArrayList<>();
+                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    MenuTab menuTab = dataSnapshot.getValue(MenuTab.class);
+
+                    Log.d("getTabs", menuTab.getName() + menuTab.getPosition() + menuTab.isActive());
+                    newTabs.add(menuTab);
+                }
+                tabs = newTabs;
+                Collections.sort(tabs);
+                Log.d("getTabs", "Tabs Added");
+                event.tabsChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("Get tabs", "Exception " + databaseError);
+            }
+        });
     }
 
     public static void testNewUser(String email, String password) {
@@ -338,5 +389,72 @@ public class appData extends Application {
     private static void prepareForLogin(){
         loggingIn = true;
         logOutUser();
+    }
+
+    public static void placeOrder(final String comment, final String timeToPickup){
+        final DatabaseReference ref = firebaseDatabase.getReference("shoppingcart/" + firebaseAuth.getCurrentUser().getUid());
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Map<String, Product> cartContent = new HashMap<>();
+                    for (DataSnapshot productSnapshot : snapshot.getChildren()) {
+                        String key = productSnapshot.getKey();
+                        Product product = productSnapshot.getValue(Product.class);
+                        Log.d("CartContent: ", "key " + key + " name " + product.getName() + " price " + product.getPrice());
+                        cartContent.put(key, product);
+                    }
+                    ref.removeValue();
+                    Order order = new Order(cartContent, totalPrice, comment, timeToPickup, ServerValue.TIMESTAMP);
+                    placeOrderInFirebase(order);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("place order error", databaseError.getMessage());
+            }
+        });
+    }
+
+    private static void placeOrderInFirebase(Order order){
+        DatabaseReference ref = firebaseDatabase.getReference("orders/" + firebaseAuth.getCurrentUser().getUid());
+        ref.push().setValue(order);
+        event.orderSuccessful();
+    }
+
+    public static void getUserProfile(){
+        DatabaseReference ref = firebaseDatabase.getReference("users/" + firebaseAuth.getCurrentUser().getUid());
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    userProfile = snapshot.getValue(UserProfile.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("GetUserProfile error", databaseError.getMessage());
+            }
+        });
+    }
+
+    public static void updateUserProfile(String name, String phoneNumber){
+        DatabaseReference ref = firebaseDatabase.getReference("users/" + firebaseAuth.getCurrentUser().getUid());
+        if(userProfile != null){
+            userProfile.setName(name);
+            userProfile.setPhoneNumber(phoneNumber);
+        } else {
+            userProfile = new UserProfile(firebaseAuth.getCurrentUser().getEmail(), name, phoneNumber);
+        }
+
+        ref.setValue(userProfile);
+    }
+
+    public static void checkIfAutoLogIn(){
+        if(currentUser == null){
+            onSuccesfullLogin();
+        }
     }
 }

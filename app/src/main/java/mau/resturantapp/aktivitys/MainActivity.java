@@ -1,5 +1,6 @@
 package mau.resturantapp.aktivitys;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -16,15 +17,19 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
@@ -40,14 +45,16 @@ import org.greenrobot.eventbus.Subscribe;
 import mau.resturantapp.R;
 import mau.resturantapp.aktivitys.dialogs.Dialog_askForLogin;
 import mau.resturantapp.aktivitys.dialogs.Dialog_login;
+import mau.resturantapp.aktivitys.dialogs.Dialog_shopClosed;
 import mau.resturantapp.aktivitys.dialogs.Dialog_signup;
 import mau.resturantapp.aktivitys.mainFragments.Checkout_frag;
-import mau.resturantapp.aktivitys.mainFragments.guestLogin_frag;
 import mau.resturantapp.aktivitys.mainFragments.Contact_frag;
 import mau.resturantapp.aktivitys.mainFragments.FindWay_frag;
 import mau.resturantapp.aktivitys.mainFragments.Home_frag;
+import mau.resturantapp.aktivitys.mainFragments.menufrag.MenuHandler_frag;
 import mau.resturantapp.aktivitys.mainFragments.menufrag.MenuTabs_frag;
-import mau.resturantapp.aktivitys.mainFragments.Settings_frag;
+import mau.resturantapp.aktivitys.mainFragments.Admincontrol_frag;
+import mau.resturantapp.aktivitys.mainFragments.userControls.userProfile_frag;
 import mau.resturantapp.data.appData;
 import mau.resturantapp.event.events.GuestUserCheckoutEvent;
 import mau.resturantapp.event.events.IsAdminEvent;
@@ -55,17 +62,20 @@ import mau.resturantapp.event.events.LogUserInEvent;
 import mau.resturantapp.event.events.NewUserFailedEvent;
 import mau.resturantapp.event.events.NewUserSuccesfullEvent;
 import mau.resturantapp.event.events.OnFailedLogIn;
-import mau.resturantapp.event.events.OnSuccesfullLogInEvent;
+import mau.resturantapp.event.events.OrderSuccessfulEvent;
+import mau.resturantapp.event.events.ShopClosedEvent;
 import mau.resturantapp.event.events.ShowAskforLoginDialogEvent;
 import mau.resturantapp.event.events.ShowLogInDialogEvent;
 import mau.resturantapp.event.events.ShowSignupDialogEvent;
 import mau.resturantapp.test.QRCamera;
 import mau.resturantapp.test.QRTest;
+import mau.resturantapp.utils.LanguageContextWrapper;
+import mau.resturantapp.utils.LanguageHandler;
 
 
 import static android.support.design.widget.BottomSheetBehavior.*;
 
-public class MainActivity extends AppCompatActivity implements OnClickListener, OnTabSelectListener, OnNavigationItemSelectedListener,OnTouchListener {
+public class MainActivity extends AppCompatActivity implements OnClickListener, OnTabSelectListener, OnNavigationItemSelectedListener,OnTouchListener, CompoundButton.OnCheckedChangeListener {
 
     private FloatingActionButton actBtn;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -75,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     private NavigationView sideMenu;
     private View fadeView;
     private ProgressBar progBar;
+    private Switch languageSwitch;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
@@ -107,6 +118,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
             sideMenu.setNavigationItemSelectedListener(this);
         }
 
+
+        View headerLayout = sideMenu.getHeaderView(0);
+        languageSwitch = (Switch) headerLayout.findViewById(R.id.header_languageSwitch);
+        languageSwitch.setChecked(LanguageHandler.isChecked(this));
+        languageSwitch.setOnCheckedChangeListener(this);
 
 
         int dp = DPtoPixels(39f); // husk f efter tallet
@@ -286,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                 break;
 
             case R.id.menu_indstillinger:
-                frag = new Settings_frag();
+                frag = new Admincontrol_frag();
                 ft.addToBackStack(null);
                 ft.replace(R.id.mainFrameFrag, frag).commit();
                 break;
@@ -310,6 +326,17 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                 appData.logOutUser();
 
                 showHomeScreen();
+                break;
+            case R.id.menu_menuHandler:
+                frag = new MenuHandler_frag();
+                ft.addToBackStack(null);
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+                break;
+            case R.id.menu_userProfile:
+                frag = new userProfile_frag();
+                ft.addToBackStack(null);
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+                break;
             default:
 
 
@@ -329,6 +356,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         navMenu.findItem(R.id.menu_logout).setVisible(false);
         navMenu.findItem(R.id.menu_qrCamera).setVisible(false);
         navMenu.findItem(R.id.menu_qrTest).setVisible(false);
+        navMenu.findItem(R.id.menu_menuHandler).setVisible(false);
+        navMenu.findItem(R.id.menu_userProfile).setVisible(false);
     }
 
     private void userLoggedIn(){
@@ -337,10 +366,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         navMenu.findItem(R.id.menu_login).setVisible(false);
         navMenu.findItem(R.id.menu_signin).setVisible(false);
         navMenu.findItem(R.id.menu_logout).setVisible(true);
+        navMenu.findItem(R.id.menu_userProfile).setVisible(true);
 
         if(appData.currentUser != null && appData.currentUser.isAdmin()){
             navMenu.findItem(R.id.menu_qrCamera).setVisible(true);
             navMenu.findItem(R.id.menu_qrTest).setVisible(true);
+            navMenu.findItem(R.id.menu_menuHandler).setVisible(true);
         }
     }
     private void userLoggedOut(){
@@ -351,6 +382,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         navMenu.findItem(R.id.menu_logout).setVisible(false);
         navMenu.findItem(R.id.menu_qrCamera).setVisible(false);
         navMenu.findItem(R.id.menu_qrTest).setVisible(false);
+        navMenu.findItem(R.id.menu_menuHandler).setVisible(false);
+        navMenu.findItem(R.id.menu_userProfile).setVisible(false);
     }
 
     public void Btn_Checkout_clicked(View v){
@@ -437,6 +470,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     }
 
     @Subscribe
+    public void shopClosedDialogEvent(ShopClosedEvent event){
+        Dialog_shopClosed d = new Dialog_shopClosed();
+        d.show(getSupportFragmentManager(),null);
+    }
+
+    @Subscribe
     public void signupDialogEvent(ShowSignupDialogEvent event){
         showSignupDialog();
     }
@@ -454,7 +493,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     @Subscribe
     public void guestCheckout(GuestUserCheckoutEvent event){
         goToCheckout();
+    }
 
+    @Subscribe
+    public void orderSuccessful(OrderSuccessfulEvent event){
+        Toast.makeText(this, "Din ordre er modtaget", Toast.LENGTH_LONG).show();
+        showHomeScreen();
     }
 
     @Subscribe
@@ -522,6 +566,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                         anonymousLoggedIn();
                     } else {
                         // User is logged in as a known user
+                        appData.loggingIn = false;
                         userLoginText();
                         userLoggedIn();
                     }
@@ -541,5 +586,22 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         fadeView.setVisibility(View.GONE);
         progBar.setVisibility(View.GONE);
         showHomeScreen();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LanguageContextWrapper.wrap(newBase, LanguageHandler.getLanguage(newBase)));
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(buttonView == languageSwitch){
+            if(isChecked){
+                LanguageHandler.saveLanguage(this, "en");
+            } else {
+                LanguageHandler.saveLanguage(this, "dk");
+            }
+            super.recreate();
+        }
     }
 }

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">ResturantApp</string>
-
     <string name="password_hint">Password</string>
     <string name="email_hint">Email</string>
     <string name="sign_up_button_label">Sign Up</string>
@@ -45,6 +44,38 @@
     <string name="checkoutExtraText">If you have any special request or comments, type it in the textbox below</string>
     <string name="checkoutTotalPrice">Total price for your items: </string>
     <string name="checkoutBtnCheckout">Send Order!</string>
+    <string name="menuHandler">Menu Handler</string>
     <string name="homeWelcomeHeader">Restaurant DTU App</string>
+    <string name="addTab">Add New Tab</string>
+    <string name="updateTab">Update Tab</string>
+    <string name="removeTab">Remove Tab</string>
+    <string name="tabproperty_name">Name</string>
+    <string name="tabproperty_position">Position</string>
+    <string name="tabproperty_active">Active</string>
+    <string name="drawerMenu_userProfile">Profile</string>
+
+    <string name="profile_headline">Profile</string>
+    <string name="userProfile_email">Email Address</string>
+    <string name="userProfile_phoneNumber">Phone Number</string>
+    <string name="userProfile_name">Name</string>
+    <string name="userProfile_updateProfile">Update profile</string>
+
+
+
+
+
+    <string-array name="admincontrols">
+        <item>Add new menu</item>
+        <item>Add new item</item>
+        <item>Accounting</item>
+        <item>Pending orders</item>
+        <item>Order history</item>
+        <item>Messages</item>
+        <item>Shop settings</item>
+    </string-array>
+
+
 
 </resources>
+
+

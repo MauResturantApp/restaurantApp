@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,9 @@ public class Checkout_frag extends Fragment implements View.OnClickListener,Runn
 
     @Override
     public void onClick(View view) {
-
+        if(view == finishBtn){
+            finishCheckOut();
+        }
     }
 
 
@@ -73,7 +76,12 @@ public class Checkout_frag extends Fragment implements View.OnClickListener,Runn
 
     private void finishCheckOut(){
         if(shopIsOpen()){
-
+            String comment = UIcomment.getText().toString();
+            String timeToPickup = "" + UITimepick.getCurrentHour() + ":" + UITimepick.getCurrentMinute();
+            appData.placeOrder(comment, timeToPickup);
+        } else {
+            Log.w("Checkout" , "Shop is closed");
+            appData.event.shopCLosed();
         }
 
     }

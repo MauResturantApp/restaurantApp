@@ -33,9 +33,11 @@ import mau.resturantapp.data.Product;
  */
 
 public class MenuList_frag extends Fragment {
-    public static final String argPage = "Arg_Page";
+    private static final String argPage = "Arg_Page";
+    private static final String argPageTitle = "Arg_PageTitle";
 
     private int pageNumber;
+    private String pageTitle;
     private ListView menuList;
 
     private DatabaseReference ref;
@@ -92,9 +94,10 @@ public class MenuList_frag extends Fragment {
         }
     }
 
-    public static MenuList_frag newInstance(int page) {
+    public static MenuList_frag newInstance(int page, String pageTitle) {
         Bundle args = new Bundle();
         args.putInt(argPage, page);
+        args.putString(argPageTitle, pageTitle);
         Log.d("recyclerViewAdapter", "imagebutton" + page);
         MenuList_frag frag = new MenuList_frag();
         frag.setArguments(args);
@@ -105,6 +108,7 @@ public class MenuList_frag extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pageNumber = getArguments().getInt(argPage);
+        pageTitle = getArguments().getString(argPageTitle);
         Log.d("oncreate" , "pagenumber" + pageNumber);
 
     }
@@ -320,6 +324,14 @@ public class MenuList_frag extends Fragment {
         products.setAdapter(recyclerViewAdapter);
 
 
+    }
+
+    public int getPageNumber(){
+        return pageNumber;
+    }
+
+    public String getPageTitle(){
+        return pageTitle;
     }
 
 /*    public class FoodMenuAdapter extends ArrayAdapter<MenuItem> {

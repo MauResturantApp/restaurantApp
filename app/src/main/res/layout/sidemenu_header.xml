@@ -25,6 +25,7 @@
             android:src="@mipmap/ic_flags_denmark"
             android:id="@+id/ic_flag_dk"/>
     <Switch
+        android:id="@+id/header_languageSwitch"
         android:layout_width="wrap_content"
         android:layout_gravity="center"
         android:switchMinWidth="60dp"

@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="mau.resturantapp">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="mau.resturantapp"
+    >
+    <uses-sdk
+        android:minSdkVersion="15"
+        tools:overrideLibrary="com.firebase.ui.auth, com.firebase.ui"
+        />
 
     <permission
         android:name="mau.resturantapp.permission.MAPS_RECEIVE"

@@ -6,11 +6,10 @@ import com.google.firebase.database.Exclude;
  * Created by Yoouughurt on 14-11-2016.
  */
 
-public class MenuTab {
+public class MenuTab implements Comparable<MenuTab> {
     private String name;
     private int position;
     private boolean active;
-    @Exclude
     private String key;
 
     public MenuTab(){
@@ -48,13 +47,17 @@ public class MenuTab {
         this.active = active;
     }
 
-    @Exclude
     public String getKey() {
         return key;
     }
 
-    @Exclude
     public void setKey(String key) {
         this.key = key;
+    }
+
+    @Exclude
+    @Override
+    public int compareTo(MenuTab menuTab) {
+        return position > menuTab.getPosition() ? 1 : (position < menuTab.getPosition() ) ? -1 : 0;
     }
 }

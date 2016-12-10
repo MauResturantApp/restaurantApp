@@ -29,7 +29,7 @@ import mau.resturantapp.data.MenuTab;
 import mau.resturantapp.data.appData;
 import mau.resturantapp.event.events.TabsChangedEvent;
 
-public class MenuTabs_frag extends Fragment implements OnTabSelectedListener {
+public class MenuTabsFirebase_frag extends Fragment implements OnTabSelectedListener {
 
     private View rod;
     private TabLayout tableLayout;
@@ -180,13 +180,16 @@ public class MenuTabs_frag extends Fragment implements OnTabSelectedListener {
         public int getItemPosition(Object object){
             //This is used to avoid full view recreation when changes to the data occur
 
-            MenuList_frag item = (MenuList_frag) object;
+            MenuListFirebase_frag item = (MenuListFirebase_frag) object;
             int pageNumber = item.getPageNumber();
-            String pageTitle = item.getPageTitle();
-            MenuTab menuTab = tabs.get(pageNumber);
-            if(menuTab != null){
-                if(menuTab.getPosition() == pageNumber && menuTab.getName().equals(pageTitle)){
-                    return POSITION_UNCHANGED;
+            pageNumber--;
+            if(tabs.size() > pageNumber) {
+                String pageTitle = item.getPageTitle();
+                MenuTab menuTab = tabs.get(pageNumber);
+                if (menuTab != null) {
+                    if (menuTab.getPosition() == pageNumber && menuTab.getName().equals(pageTitle) && menuTab.isActive() == item.isActive()) {
+                        return POSITION_UNCHANGED;
+                    }
                 }
             }
 
@@ -197,7 +200,7 @@ public class MenuTabs_frag extends Fragment implements OnTabSelectedListener {
         public Fragment getItem(int position) {
             Log.d("getitem funktion" , "position : " + position);
 
-            return MenuList_frag.newInstance(position + 1, tabs.get(position).getName());
+            return MenuListFirebase_frag.newInstance(position + 1, tabs.get(position).getName(), tabs.get(position).getPosition(), ""+tabs.get(position).isActive(), tabs.get(position).getKey());
         }
 
         @Override
