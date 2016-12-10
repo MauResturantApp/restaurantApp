@@ -17,6 +17,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -26,6 +27,7 @@ import android.view.View.OnTouchListener;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -116,15 +118,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
             sideMenu.setNavigationItemSelectedListener(this);
         }
 
-        //HVORFOR ER DEN NULL!?!?!
-        languageSwitch = (Switch) findViewById(R.id.header_languageSwitch);
-        if(languageSwitch != null) {
-            Log.d("LanguageSwitch", "NON NULL");
-            languageSwitch.setChecked(LanguageHandler.isChecked(this));
-            languageSwitch.setOnCheckedChangeListener(this);
-        } else {
-            Log.d("LanguageSwitch", "NULL");
-        }
+
+        View headerLayout = sideMenu.getHeaderView(0);
+        languageSwitch = (Switch) headerLayout.findViewById(R.id.header_languageSwitch);
+        languageSwitch.setChecked(LanguageHandler.isChecked(this));
+        languageSwitch.setOnCheckedChangeListener(this);
 
 
         int dp = DPtoPixels(39f); // husk f efter tallet
@@ -597,16 +595,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        Log.d("Switch outside", "OnCheckedChanged " + isChecked);
         if(buttonView == languageSwitch){
-            Log.d("Switch", "OnCheckedChanged " + isChecked);
             if(isChecked){
                 LanguageHandler.saveLanguage(this, "en");
-                //attachBaseContext(this);
             } else {
                 LanguageHandler.saveLanguage(this, "dk");
-                //attachBaseContext(this);
             }
+            super.recreate();
         }
     }
 }
