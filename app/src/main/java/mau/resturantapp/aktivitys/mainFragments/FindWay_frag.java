@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.PendingResult;
@@ -55,6 +56,8 @@ import java.util.List;
 import mau.resturantapp.R;
 import mau.resturantapp.utils.JSONPathBuilder;
 
+import static mau.resturantapp.R.id.map;
+
 public class FindWay_frag extends Fragment implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -77,6 +80,8 @@ public class FindWay_frag extends Fragment implements
     private ImageButton btnGetDirectionsTransit;
     private ImageButton btnGetDirectionsWalking;
     private ImageButton btnGetDirectionsBicycling;
+    private TextView directionRouteHeader;
+    private TextView directionRoute;
 
     // Default values for Google Maps
     private static final String MAPS_UNITS = "&units=metric";
@@ -110,8 +115,12 @@ public class FindWay_frag extends Fragment implements
         // Check current state of the location setting (and prompt user to enable if disabled)
         checkLocationSetting();
 
+        // View setup
+        directionRouteHeader = (TextView) rod.findViewById(R.id.directionRouteHeader);
+        directionRoute = (TextView) rod.findViewById(R.id.directionRoute);
+
         // Google map
-        mFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(map);
         mFrag.getMapAsync(this);
 
         return rod;
@@ -206,7 +215,11 @@ public class FindWay_frag extends Fragment implements
         gMap.animateCamera(cu);
 
         // Build route
-        new JSONPathDownloader(gMap).execute(directions);
+        new JSONPathDownloader().execute(directions);
+
+        // Build route description
+        directionRouteHeader.setVisibility(View.VISIBLE);
+        directionRoute.setVisibility(View.VISIBLE);
 
         // Now that path has been drawn, next time make sure to delete previous
         pathDrawn = true;
@@ -393,12 +406,6 @@ public class FindWay_frag extends Fragment implements
      * Inner Class for Path Downloader
      */
     private class JSONPathDownloader extends AsyncTask<String, Void, String> {
-        private GoogleMap map;
-
-        public JSONPathDownloader(GoogleMap map) {
-            this.map = map;
-        }
-
         @Override
         protected String doInBackground(String... url) {
             String data = "";
@@ -416,7 +423,7 @@ public class FindWay_frag extends Fragment implements
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            JSONPathTask pathTask = new JSONPathTask(map);
+            JSONPathTask pathTask = new JSONPathTask();
 
             // Invokes the thread for parsing the JSON data
             pathTask.execute(result);
@@ -465,12 +472,6 @@ public class FindWay_frag extends Fragment implements
      * This will add lines on GoogleMap in a non-UI thread.
      */
     private class JSONPathTask extends AsyncTask<String, Integer, List<List<HashMap<String,String>>>> {
-        private GoogleMap map;
-
-        public JSONPathTask(GoogleMap map) {
-            this.map = map;
-        }
-
         @Override
         protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
             JSONObject jObject;
@@ -491,15 +492,12 @@ public class FindWay_frag extends Fragment implements
             ArrayList<LatLng> points;
             PolylineOptions lineOptions = null;
 
-            // Traversing through all the routes
             for (int i = 0; i < result.size(); i++) {
                 points = new ArrayList<>();
                 lineOptions = new PolylineOptions();
 
-                // Fetching i-th route
                 List<HashMap<String, String>> path = result.get(i);
 
-                // Fetching all the points in i-th route
                 for (int j = 0; j < path.size(); j++) {
                     HashMap<String, String> point = path.get(j);
 
@@ -510,14 +508,12 @@ public class FindWay_frag extends Fragment implements
                     points.add(position);
                 }
 
-                // Adding all the points in the route to LineOptions
                 lineOptions.addAll(points);
                 lineOptions.width(2);
                 lineOptions.color(Color.RED);
             }
 
-            // Drawing polyline in the Google Map for the i-th route
-            map.addPolyline(lineOptions);
+            gMap.addPolyline(lineOptions);
         }
     }
 }
