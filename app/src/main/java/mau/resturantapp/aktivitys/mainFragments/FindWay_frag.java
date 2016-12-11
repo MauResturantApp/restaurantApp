@@ -196,13 +196,16 @@ public class FindWay_frag extends Fragment implements
 
         // Setting up parameters (input/output format)
         String origin = this.lastLatitude + "," + this.lastLongitude;
-        String destination = RESTAURANT_LATITUDE + "," + RESTAURANT_LONGITUDE;
+
+        String destination = getRestAddress();
+        if(destination == null)
+            destination = RESTAURANT_LATITUDE + "," + RESTAURANT_LONGITUDE;
 
         directions += "json?origin=" + origin + "&destination=" + destination + "&key=" + apiKey + "&mode=" + mode;
         directions += MAPS_ALTERNATIVES + MAPS_AVOID + MAPS_REGION + MAPS_UNITS;
 
         // DEBUG
-        System.out.println(":::::::DIRECTIONS::::::: " + directions);
+        // System.out.println(":::::::DIRECTIONS::::::: " + directions);
 
         // Build a marker for current location
         MarkerOptions options = new MarkerOptions();
@@ -274,6 +277,31 @@ public class FindWay_frag extends Fragment implements
 
         // "ListView inside ScrollView"-fix
         ListUtil.setListViewHeightBasedOnChildren(lw);
+    }
+
+    /**
+     * Receives the address from FireBase. If no address is given null will be returned.
+     *
+     * @return Address for restaurant, null if non exist
+     */
+    private String getRestAddress() {
+        String adr = null;
+
+        // TODO Get address from database
+        // NOTE: THE ADDRESS MUST BE IN LATITUDE AND LONGITUDE, NOT PLAIN TEXT
+        // http://www.latlong.net/convert-address-to-lat-long.html
+        // Inserting "Lautrupvej 15" on this site returns Lat: 55.729394 and Lon: 12.395340
+        // IT IS IMPORTANT YOU INCLUDE _ALL_ DECIMALS, OR YOU'LL BE REFERRING TO SOMEWHERE ELSE
+        // THAN WHAT YOU INTENDED:
+        // Lat::55.729394 != Lat::55 - actually FAR from the same.
+        // Remember, LatLng only goes from 0-120. The Earth's circumference is ~40.000 km, so any
+        // deviation from the actual coordinate means you'll have an error margin
+        // of 10's if not 100's of km's. This is very important to remember.
+        //
+        // EXAMPLE OF CORRECT FORMAT TO RETURN:
+        // String adr = "55.729394,12.395340"
+
+        return adr;
     }
 
     @Override
