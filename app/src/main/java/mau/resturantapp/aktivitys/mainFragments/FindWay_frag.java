@@ -299,7 +299,7 @@ public class FindWay_frag extends Fragment implements
         // of 10's if not 100's of km's. This is very important to remember.
         //
         // EXAMPLE OF CORRECT FORMAT TO RETURN:
-        // String adr = "55.729394,12.395340"
+        // String adr = "55.729394,12.395340" (55.72... = latitude, 12.39... = longitude)
 
         return adr;
     }
