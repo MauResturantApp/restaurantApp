@@ -58,14 +58,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import mau.resturantapp.R;
-import mau.resturantapp.utils.HtmlUtils;
 import mau.resturantapp.utils.JSONPathBuilder;
 import mau.resturantapp.utils.ListUtil;
 
-import static android.R.attr.direction;
-import static android.R.attr.path;
 import static mau.resturantapp.R.id.map;
-import static mau.resturantapp.R.id.start;
 
 public class FindWay_frag extends Fragment implements
         GoogleApiClient.ConnectionCallbacks,
@@ -97,7 +93,7 @@ public class FindWay_frag extends Fragment implements
     private static final String MAPS_REGION = "&region=da";
     private static final String MAPS_ALTERNATIVES = "&alternatives=false";
     private static final String MAPS_AVOID = "&avoid=indoor";
-    private static long REQUEST_INTERVAL = 30000l;
+    private static long REQUEST_INTERVAL = 30000L;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
 
     // Restaurant info (move to resources?)
@@ -599,7 +595,7 @@ public class FindWay_frag extends Fragment implements
             try {
                 gMap.addPolyline(lineOptions);
             } catch(NullPointerException e) {
-                // If this exception is thrown, something's wrong with the JSON builder
+                // If this exception is thrown, something's MOST LIKELY wrong with the JSONPathBuilder
                 e.printStackTrace();
             }
 
