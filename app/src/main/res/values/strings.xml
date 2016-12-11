@@ -60,7 +60,8 @@
     <string name="userProfile_name">Name</string>
     <string name="userProfile_updateProfile">Update profile</string>
 
-
+    <string name="addNewProduct">Add Product</string>
+    <string name="removeProduct">Remove Product</string>
 
 
 
