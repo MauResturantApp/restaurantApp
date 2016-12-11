@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/directionsHeader"
-            android:layout_marginBottom="25dp"
+            android:layout_marginBottom="10dp"
             android:textStyle="bold"
             android:textSize="8pt" />
         <fragment
@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="330dp"
             android:layout_weight="5"
-            android:layout_marginBottom="35dp"/>
+            android:layout_marginBottom="10dp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:layout_marginBottom="25dp">
+            android:layout_marginBottom="10dp">
 
             <ImageButton
                 android:id="@+id/btnGetDirectionsCar"
@@ -71,20 +71,29 @@
                 app:srcCompat="@drawable/directions_bike" />
         </LinearLayout>
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/directionRouteHeader"
-            android:visibility="invisible"
-            android:text="@string/directionRouteHeader" />
+            android:id="@+id/directionRoutes"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginBottom="65dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/directionRouteHeader"
+                android:text="@string/directionRouteHeader"
+                android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/directionRoute"
-            android:visibility="invisible"
-            android:text=""
-            android:textStyle="bold"
-            android:layout_marginBottom="95dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/directionRoute" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/directionsInstructionsList" />
+        </LinearLayout>
     </TableLayout>
 </ScrollView>
