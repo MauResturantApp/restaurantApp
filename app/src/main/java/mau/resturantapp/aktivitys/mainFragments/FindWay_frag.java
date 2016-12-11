@@ -192,6 +192,9 @@ public class FindWay_frag extends Fragment implements
         directions += "json?origin=" + origin + "&destination=" + destination + "&key=" + apiKey + "&mode=" + mode;
         directions += MAPS_ALTERNATIVES + MAPS_AVOID + MAPS_REGION + MAPS_UNITS;
 
+        // DEBUG
+        System.out.println(":::::::DIRECTIONS::::::: " + directions);
+
         // Build a marker for current location
         MarkerOptions options = new MarkerOptions();
         LatLng currentPos = new LatLng(this.lastLatitude, this.lastLongitude);

@@ -46,7 +46,6 @@
     <string name="checkoutTotalPrice">Total pris for dine elementer:</string>
     <string name="checkoutBtnCheckout">Send Ordre!</string>
     <string name="menuHandler">Menu Handler</string>
-    <string name="homeWelcomeHeader">Restaurant DTU App</string>
     <string name="addTab">Tilføj Ny Tab</string>
     <string name="updateTab">Opdater Tab</string>
     <string name="removeTab">Fjern Tab</string>
@@ -61,9 +60,23 @@
     <string name="userProfile_name">Navn</string>
     <string name="userProfile_updateProfile">Opdater profil</string>
 
+    <string name="directionsHeader">Find restaurant</string>
+    <string name="directionsDescription">Vælg hvilken type transport du vil bruge, og en rute vil blive tegnet på kortet, samt en liste rutebeskrivelse.</string>
+    <string name="directionRouteHeader">Rutebeskrivelse</string>
+    <string name="directionsCarImgDescription">Rutebeskrivelse i bil</string>
+    <string name="directionsWalkImgDescription">Rutebeskrivelse til fods</string>
+    <string name="directionsTransitImgDescription">Rutebeskrivelse for offentlig transport</string>
+    <string name="directionsBikeImgDescription">Rutebeskrivelse for cyklister</string>
 
+    <string name="homeWelcomeHeader">Restaurant DTU</string>
+    <string name="homeWelcomeText">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec bibendum enim sit amet mauris varius eleifend\n\nSed ultricies lobortis lorem, sed mattis mi. Aenean vulputate purus et accumsan gravida. Interdum et malesuada fames ac ante ipsum primis in faucibus.\n\nUt nec mollis orci, in bibendum urna. Pellentesque et nulla et tortor laoreet hendrerit.</string>
+    <string name="homeOpeningHours">Åbningstider</string>
+    <string name="homeOpeningHoursDesc">Man-torsdag: 9.00-17.00\nFre- &amp; lørdag: 9.00-21.00\nSøn- &amp; helligdag: lukket</string>
+    <string name="homeNewsHeader">Seneste nyheder</string>
 
-
+    <string name="settingsLogo">Restaurant DTU</string>
+    <string name="settingsUkFlagDesc">Language: English</string>
+    <string name="settingsDkFlagDesc">Sprog: dansk</string>
 
     <string-array name="admincontrols">
         <item>Tilføj ny Menu</item>
@@ -74,9 +87,4 @@
         <item>Beskeder</item>
         <item>Butik indstillinger</item>
     </string-array>
-
-
-
 </resources>
-
-

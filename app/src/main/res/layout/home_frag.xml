@@ -1,63 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="5dp"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:layout_marginBottom="35dp">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/homeMainLayout"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:src="@drawable/dtu_logo"
+            android:id="@+id/homeDtuLogo" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="9pt"
+            android:textStyle="bold"
+            android:id="@+id/homeWelcomeHeader"
+            android:text="@string/homeWelcomeHeader" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/homeWelcomeText"
+            android:layout_marginBottom="25dp"
+            android:text="@string/homeWelcomeText" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:src="@drawable/dtu_logo"
-                android:id="@+id/homeDtuLogo" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="9pt"
-                android:textStyle="bold"
-                android:id="@+id/homeWelcomeHeader"
-                android:text="@string/homeWelcomeHeader" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/homeWelcomeText"
-                android:layout_marginBottom="25px" />
-
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_corners"
+            android:padding="12dp"
+            android:layout_marginBottom="25dp">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/homeOpeningHours"
-                android:padding="12dp"
-                android:background="@drawable/rounded_corners"
-                android:layout_marginBottom="25px" />
-
+                android:text="@string/homeOpeningHours"
+                android:textStyle="bold"
+                android:textSize="9pt"
+                android:layout_marginBottom="10dp" />
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/homeTestBox_1"
-                android:padding="12dp"
-                android:background="@drawable/rounded_corners"
-                android:layout_marginBottom="25px" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/homeTestBox_2"
-                android:padding="12dp"
-                android:background="@drawable/rounded_corners"
-                android:layout_marginBottom="90px" />
+                android:id="@+id/homeOpeningHoursDescription"
+                android:text="@string/homeOpeningHoursDesc" />
         </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/homeNewsBox"
+            android:background="@drawable/rounded_corners"
+            android:padding="12dp"
+            android:layout_marginBottom="25dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/homeNewsHeader"
+                android:textStyle="bold"
+                android:textSize="9pt"
+                android:layout_marginBottom="10dp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

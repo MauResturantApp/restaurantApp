@@ -1,55 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/findos_frag"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TableLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:weightSum="1">
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/directionsHeader"
+            android:layout_marginBottom="25dp"
+            android:textStyle="bold"
+            android:textSize="8pt" />
         <fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="252dp"
-            android:layout_weight="5" />
+            android:layout_height="330dp"
+            android:layout_weight="5"
+            android:layout_marginBottom="35dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/directionsDescription"
+            android:layout_marginBottom="10dp" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_marginBottom="25dp">
 
             <ImageButton
                 android:id="@+id/btnGetDirectionsCar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/directions_car" />
+                android:contentDescription="@string/directionsCarImgDescription"
+                app:srcCompat="@drawable/directions_car" />
 
             <ImageButton
                 android:id="@+id/btnGetDirectionsTransit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/directions_transit" />
+                android:contentDescription="@string/directionsTransitImgDescription"
+                app:srcCompat="@drawable/directions_transit" />
 
             <ImageButton
                 android:id="@+id/btnGetDirectionsWalk"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/directions_walk" />
+                android:contentDescription="@string/directionsWalkImgDescription"
+                app:srcCompat="@drawable/directions_walk" />
 
             <ImageButton
                 android:id="@+id/btnGetDirectionsBicycle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/directions_bike" />
+                android:contentDescription="@string/directionsBikeImgDescription"
+                app:srcCompat="@drawable/directions_bike" />
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/directionRouteHeader"
+            android:visibility="invisible"
+            android:text="@string/directionRouteHeader" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/directionRoute"
+            android:visibility="invisible"
+            android:text=""
+            android:textStyle="bold"
+            android:layout_marginBottom="95dp" />
     </TableLayout>
 </ScrollView>
-
