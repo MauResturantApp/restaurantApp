@@ -129,4 +129,25 @@ public class Home_frag extends Fragment {
 
         return t;
     }
+
+    /**
+     * This method will delete the introduction-text in the app's home screen.
+     * Use "\n" when doing line breaks. Use "\n\n" when you need to imitate a paragraph.
+     *
+     * @param s The new text for the home screen
+     */
+    private void setHomeText(String s) {
+        TextView t = (TextView) rod.findViewById(R.id.homeWelcomeText);
+        t.setText(s);
+    }
+
+    /**
+     * This methid will delete the current header and replace it with given String s.
+     *
+     * @param s New header
+     */
+    private void setHomeHeader(String s) {
+        TextView t = (TextView) rod.findViewById(R.id.homeWelcomeHeader);
+        t.setText(s);
+    }
 }
