@@ -243,11 +243,11 @@ public class FindWay_frag extends Fragment implements
         // Build instruction list proper
         List<String> instructions = new ArrayList<>();
 
-        String[] totals = directions.get(0).split("\\|-\\|");
-        String totalDistance = totals[0];
-        String totalDuration = totals[1];
-        String endLocation = totals[2];
-        String startLocation = totals[3];
+        String[] basics = directions.get(0).split("\\|-\\|");
+        String totalDistance = basics[0];
+        String totalDuration = basics[1];
+        String endLocation = basics[2];
+        String startLocation = basics[3];
 
         directionRoute.setText("The trip from " + startLocation.split(",")[0] + " to " + endLocation.split(",")[0] + " will take " + totalDuration + ". The trip is " + totalDistance + ".\n\n");
 
