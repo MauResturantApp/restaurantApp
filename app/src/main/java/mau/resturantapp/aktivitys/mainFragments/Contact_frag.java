@@ -23,8 +23,6 @@ import mau.resturantapp.utils.EmailIntent;
 public class Contact_frag extends Fragment {
     private View rod;
 
-    static final int MAIL_REQUEST_CODE = 1;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,6 +45,15 @@ public class Contact_frag extends Fragment {
             }
         });
 
+        Button reset = (Button) rod.findViewById(R.id.contactResetBtn);
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((EditText) rod.findViewById(R.id.contactMailSubject)).setText("");
+                ((EditText) rod.findViewById(R.id.contactMailContent)).setText("");
+            }
+        });
+
         return rod;
     }
 
@@ -58,7 +65,7 @@ public class Contact_frag extends Fragment {
     }
 
     /**
-     * Returns a list of departments with a contact email.
+     * Returns a list of departments.
      *
      * @return List of departments
      */
@@ -84,7 +91,11 @@ public class Contact_frag extends Fragment {
     }
 
     /**
-     * Will send an email to the chosen email with the given content.
+     * Will send an email to the chosen department's email with the given content.
+     * Achieved by creating an intent and starting this intent's activity.
+     * The intent will prompt user to choose their favorite email client (or pick
+     * the default email client). Will return to this page upon "send email" has been prssed
+     * in the email client (or if some sort of abort-action is done).
      *
      * @param department destination email
      * @param content content of email

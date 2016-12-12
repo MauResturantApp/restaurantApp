@@ -91,6 +91,8 @@
     <string name="contactWho">Department</string>
     <string name="contactResetButton">Reset</string>
     <string name="contactMailSubject">Subject</string>
+    <string name="contactContentHint">Your inquiry...</string>
+    <string name="contactFormalDescription">Contact information</string>
     <string-array name="contactMailList">
         <item>General inquiries</item>
         <item>Technical department</item>

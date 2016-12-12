@@ -87,6 +87,8 @@
     <string name="contactWho">Afdeling</string>
     <string name="contactMailSubject">Emne</string>
     <string name="contactResetButton">Nulstil</string>
+    <string name="contactContentHint">Din forespørgsel...</string>
+    <string name="contactFormalDescription">Kontakt information</string>
     <string-array name="contactMailList">
         <item>Generelt</item>
         <item>Teknisk afdeling</item>
