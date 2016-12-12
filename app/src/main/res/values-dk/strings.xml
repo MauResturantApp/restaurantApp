@@ -67,6 +67,7 @@
     <string name="directionsWalkImgDescription">Rutebeskrivelse til fods</string>
     <string name="directionsTransitImgDescription">Rutebeskrivelse for offentlig transport</string>
     <string name="directionsBikeImgDescription">Rutebeskrivelse for cyklister</string>
+    <string name="directionRouteDescription">Turen fra %1$s til %2$s tager %3$s. Turen er %4$s lang.</string>
 
     <string name="homeWelcomeHeader">Restaurant DTU</string>
     <string name="homeWelcomeText">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec bibendum enim sit amet mauris varius eleifend\n\nSed ultricies lobortis lorem, sed mattis mi. Aenean vulputate purus et accumsan gravida. Interdum et malesuada fames ac ante ipsum primis in faucibus.\n\nUt nec mollis orci, in bibendum urna. Pellentesque et nulla et tortor laoreet hendrerit.</string>
@@ -77,6 +78,18 @@
     <string name="settingsLogo">Restaurant DTU</string>
     <string name="settingsUkFlagDesc">Language: English</string>
     <string name="settingsDkFlagDesc">Sprog: dansk</string>
+
+    <string name="contactHeader">Kontakt os</string>
+    <string name="contactDescription">Hvis du har et spørgsmål til os, kan du stille det her. Hvis du er i tvivl om hvem du skal henvende dig hos fra, brug da venligst \"Generelt\" fra mail-listen.</string>
+    <string name="contactWho">Afdeling</string>
+    <string name="contactMailSubject">Emne</string>
+    <string name="contactResetButton">Nulstil</string>
+    <string-array name="contactMailList">
+        <item>Generelt</item>
+        <item>Teknisk afdeling</item>
+        <item>Bogholder</item>
+        <item>Ledelsen</item>
+    </string-array>
 
     <string-array name="admincontrols">
         <item>Tilføj ny Menu</item>

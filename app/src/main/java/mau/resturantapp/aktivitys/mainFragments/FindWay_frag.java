@@ -59,6 +59,7 @@ import java.util.List;
 
 import mau.resturantapp.R;
 import mau.resturantapp.utils.JSONPathBuilder;
+import mau.resturantapp.utils.LanguageHandler;
 import mau.resturantapp.utils.ListUtil;
 
 import static mau.resturantapp.R.id.map;
@@ -197,7 +198,11 @@ public class FindWay_frag extends Fragment implements
         if(destination == null)
             destination = RESTAURANT_LATITUDE + "," + RESTAURANT_LONGITUDE;
 
-        directions += "json?origin=" + origin + "&destination=" + destination + "&key=" + apiKey + "&mode=" + mode;
+        String lang = LanguageHandler.getLanguage(getContext());
+        if(lang.equals("dk"))
+            lang = "da";
+
+        directions += "json?origin=" + origin + "&destination=" + destination + "&key=" + apiKey + "&mode=" + mode + "&language=" + lang;
         directions += MAPS_ALTERNATIVES + MAPS_AVOID + MAPS_REGION + MAPS_UNITS;
 
         // DEBUG
@@ -249,7 +254,7 @@ public class FindWay_frag extends Fragment implements
         String endLocation = basics[2];
         String startLocation = basics[3];
 
-        directionRoute.setText("The trip from " + startLocation.split(",")[0] + " to " + endLocation.split(",")[0] + " will take " + totalDuration + ". The trip is " + totalDistance + ".\n\n");
+        directionRoute.setText(String.format(getResources().getString(R.string.directionRouteDescription), startLocation.split(",")[0], endLocation.split(",")[0], totalDuration, totalDistance));
 
         // Note: the fromHtml-deprecation can be avoided with adding a 2nd parameter
         // The 2nd parameter is an int describing the HTML-version.

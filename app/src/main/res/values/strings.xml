@@ -66,6 +66,7 @@
     <string name="directionsWalkImgDescription">Get walking directions</string>
     <string name="directionsTransitImgDescription">Get directions for public transportation</string>
     <string name="directionsBikeImgDescription">Get biking directions</string>
+    <string name="directionRouteDescription">The trip from %1$s to %2$s will take %3$s. The trip is %4$s.</string>
 
     <string name="homeWelcomeHeader">Restaurant DTU</string>
     <string name="homeWelcomeText">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec bibendum enim sit amet mauris varius eleifend\n\nSed ultricies lobortis lorem, sed mattis mi. Aenean vulputate purus et accumsan gravida. Interdum et malesuada fames ac ante ipsum primis in faucibus.\n\nUt nec mollis orci, in bibendum urna. Pellentesque et nulla et tortor laoreet hendrerit.</string>
@@ -76,6 +77,18 @@
     <string name="settingsLogo">Restaurant DTU</string>
     <string name="settingsUkFlagDesc">Language: English</string>
     <string name="settingsDkFlagDesc">Sprog: dansk</string>
+
+    <string name="contactHeader">Contact us</string>
+    <string name="contactDescription">You can contact us via this form if you have any questions for us. If you\'re in doubt who to write, please choose \"General inquiries\" from the mail list.</string>
+    <string name="contactWho">Department</string>
+    <string name="contactResetButton">Reset</string>
+    <string name="contactMailSubject">Subject</string>
+    <string-array name="contactMailList">
+        <item>General inquiries</item>
+        <item>Technical department</item>
+        <item>Accounting</item>
+        <item>Management</item>
+    </string-array>
 
     <string-array name="admincontrols">
         <item>Add new menu</item>
