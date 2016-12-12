@@ -67,17 +67,6 @@
     <string name="addNewProduct_price">Pris</string>
     <string name="addNewProduct_tab">Tilføj til menu</string>
 
-    <string name="contactHeader">Kontakt os</string>
-    <string name="contactDescription">Hvis du har et spørgsmål til os, kan du stille det her. Hvis du er i tvivl om hvem du skal henvende dig hos fra, brug da venligst \"Generelt\" fra mail-listen.</string>
-    <string name="contactWho">Afdeling</string>
-    <string name="contactMailSubject">Emne</string>
-    <string name="contactResetButton">Nulstil</string>
-    <string-array name="contactMailList">
-        <item>Generelt</item>
-        <item>Teknisk afdeling</item>
-        <item>Bogholder</item>
-        <item>Ledelsen</item>
-    </string-array>
     <string name="directionsHeader">Find restaurant</string>
     <string name="directionsDescription">Vælg hvilken type transport du vil bruge, og en rute vil blive tegnet på kortet, samt en liste rutebeskrivelse.</string>
     <string name="directionRouteHeader">Rutebeskrivelse</string>
@@ -92,6 +81,19 @@
     <string name="homeOpeningHours">Åbningstider</string>
     <string name="homeOpeningHoursDesc">Man-torsdag: 9.00-17.00\nFre- &amp; lørdag: 9.00-21.00\nSøn- &amp; helligdag: lukket</string>
     <string name="homeNewsHeader">Seneste nyheder</string>
+
+    <string name="contactHeader">Kontakt os</string>
+    <string name="contactDescription">Hvis du har et spørgsmål til os, kan du stille det her. Hvis du er i tvivl om hvem du skal henvende dig hos fra, brug da venligst \"Generelt\" fra mail-listen.</string>
+    <string name="contactWho">Afdeling</string>
+    <string name="contactMailSubject">Emne</string>
+    <string name="contactResetButton">Nulstil</string>
+    <string-array name="contactMailList">
+        <item>Generelt</item>
+        <item>Teknisk afdeling</item>
+        <item>Bogholder</item>
+        <item>Ledelsen</item>
+    </string-array>
+
 
     <string name="settingsLogo">Restaurant DTU</string>
     <string name="settingsUkFlagDesc">Language: English</string>

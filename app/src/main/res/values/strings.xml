@@ -69,6 +69,7 @@
     <string name="settingsLogo">Restaurant DTU</string>
     <string name="settingsUkFlagDesc">Language: English</string>
     <string name="settingsDkFlagDesc">Sprog: dansk</string>
+
     <string name="directionsHeader">Find restaurant</string>
     <string name="directionsDescription">Pick what type of transportation you\'ll use, and a route from your current location will be drawn on map, along with what directions to take.</string>
     <string name="directionRouteHeader">Directions</string>
@@ -83,6 +84,8 @@
     <string name="homeOpeningHours">Opening hours</string>
     <string name="homeOpeningHoursDesc">Mon-Thursday: 9.00-17.00\nFri- &amp; Saturday: 9.00-21.00\nSunday &amp; holidays: closed</string>
     <string name="homeNewsHeader">Latest news</string>
+
+
     <string name="contactHeader">Contact us</string>
     <string name="contactDescription">You can contact us via this form if you have any questions for us. If you\'re in doubt who to write, please choose \"General inquiries\" from the mail list.</string>
     <string name="contactWho">Department</string>
