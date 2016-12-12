@@ -6,42 +6,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
-    tools:context="mau.resturantapp.aktivitys.MainActivity"
-    >
+    tools:context="mau.resturantapp.aktivitys.MainActivity">
 
-<android.support.design.widget.CoordinatorLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/mainCord"
-    android:layout_marginBottom="57dp"
-    android:fitsSystemWindows="true">
-
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/mainFrameFrag">
-
-
-            </FrameLayout>
-    <View
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fadeView"
-        android:layerType="hardware"
-        android:alpha="0"
-        android:fitsSystemWindows="true"
-        android:visibility="gone"
-        android:background="@color/colorBlack">
+        android:id="@+id/mainCord"
+        android:layout_marginBottom="57dp"
+        android:fitsSystemWindows="true">
 
-    </View>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/mainFrameFrag">
+        </FrameLayout>
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                app:layout_behavior="@string/bottom_sheet_behavior"
-                android:id="@+id/frameLayout_bottomSheet">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/fadeView"
+            android:layerType="hardware"
+            android:alpha="0"
+            android:fitsSystemWindows="true"
+            android:visibility="gone"
+            android:background="@color/colorBlack">
+        </View>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:layout_behavior="@string/bottom_sheet_behavior"
+            android:id="@+id/frameLayout_bottomSheet">
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="145dp"
@@ -49,49 +45,40 @@
                 android:transitionName="kurv"
                 tools:layout="@layout/kurv_frag"
                 android:id="@+id/cartContentShowHide_frag" />
-
-            </FrameLayout>
+        </FrameLayout>
 
         <ImageButton
-        android:layout_width="45dp"
-        android:src="@drawable/ic_action_opendrawer"
-            android:rotation="90"
-        android:background="#80ffffff"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="-15dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_sidemenu" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/half_circle_right_arrow_large"
+            android:background="@null"
+            android:layout_marginTop="50dp"
+            android:id="@+id/btn_sidemenu" />
 
-            <android.support.design.widget.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:src="@drawable/kurv_icon"
-                android:tint="@color/colorWhite"
-                android:id="@+id/floatActBtn_cartContent"
-                app:backgroundTint="@color/colorSecondaryDark"
-                app:layout_anchor="@id/cartContentShowHide_frag"
-                app:layout_anchorGravity="clip_horizontal"/>
-
-
-        </android.support.design.widget.CoordinatorLayout>
-
-
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/kurv_icon"
+            android:tint="@color/colorWhite"
+            android:id="@+id/floatActBtn_cartContent"
+            app:backgroundTint="@color/colorSecondaryDark"
+            app:layout_anchor="@id/cartContentShowHide_frag"
+            app:layout_anchorGravity="clip_horizontal" />
+    </android.support.design.widget.CoordinatorLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-    <com.roughike.bottombar.BottomBar
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:id="@+id/bottomBar_main"
-        android:layout_alignParentBottom="true"
-        app:bb_tabXmlResource="@xml/bottom_tabs"
-        android:background="@color/colorPrimaryDark"
-        app:bb_inActiveTabColor="@color/colorPrimary"
-        app:bb_activeTabColor="@color/colorSecondaryDark"
-        ></com.roughike.bottombar.BottomBar>
+        <com.roughike.bottombar.BottomBar
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/bottomBar_main"
+            android:layout_alignParentBottom="true"
+            app:bb_tabXmlResource="@xml/bottom_tabs"
+            android:background="@color/colorPrimaryDark"
+            app:bb_inActiveTabColor="@color/colorPrimary"
+            app:bb_activeTabColor="@color/colorSecondaryDark" />
 
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"
@@ -102,6 +89,7 @@
             android:layout_marginTop="202dp"
             android:id="@+id/progBar_main" />
     </RelativeLayout>
+
     <android.support.design.widget.NavigationView
         android:layout_width="250dp"
         android:layout_height="match_parent"
@@ -109,10 +97,5 @@
         android:fitsSystemWindows="true"
         android:layout_gravity="start"
         app:headerLayout="@layout/sidemenu_header"
-        app:menu="@menu/drawermenu"
-        >
-
-    </android.support.design.widget.NavigationView>
-
-
+        app:menu="@menu/drawermenu" />
 </android.support.v4.widget.DrawerLayout>

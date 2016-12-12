@@ -1,7 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="12dp"
+    android:columnCount="3">
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/contactHeader"
+        android:text="@string/contactHeader"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_columnSpan="3" />
+
+    <TextView
+        android:id="@+id/contactDescription"
+        android:text="@string/contactDescription"
+        android:layout_columnSpan="3"
+        android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:text="@string/contactWho"
+        android:layout_column="0"
+        android:layout_columnSpan="1"/>
+
+    <Spinner
+        android:id="@+id/contactMailListSpinner"
+        android:layout_column="1"
+        android:layout_columnSpan="2"
+        android:gravity="right|center_vertical|end" />
+
+    <TextView
+        android:text="@string/contactMailSubject"
+        android:layout_column="0"
+        android:layout_columnSpan="1" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/contactMailSubject"
+        android:layout_column="1"
+        android:layout_columnSpan="2"
+        android:isScrollContainer="false" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/contactMailContent"
+        android:layout_columnSpan="3"
+        android:isScrollContainer="true"
+        android:textSize="18sp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/contactResetBtn"
+        android:text="@string/contactResetButton"
+        android:layout_column="1" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/contactSendEmail"
+        android:text="Send email"
+        android:layout_column="2" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_columnSpan="3" />
+
+    <TextView
+        android:id="@+id/contactCompanyName"
+        android:text="Name"
+        android:layout_columnSpan="3" />
+
+    <TextView
+        android:id="@+id/contactCompanyAddress"
+        android:text="Address"
+        android:layout_column="0"
+        android:layout_columnSpan="2" />
+
+    <TextView
+        android:id="@+id/contactCompanyCountry"
+        android:text="Country"
+        android:layout_column="2"/>
+
+    <TextView
+        android:id="@+id/contactPhone"
+        android:text="Phone" />
+
+</GridLayout>

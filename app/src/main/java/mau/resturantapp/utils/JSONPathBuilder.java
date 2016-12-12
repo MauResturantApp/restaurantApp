@@ -6,9 +6,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static android.R.attr.duration;
 
 public class JSONPathBuilder {
     /**
@@ -17,8 +20,9 @@ public class JSONPathBuilder {
      * @param jObject JSON received from Google's directional service
      * @return List of routes
      */
-    public static List<List<HashMap<String, String>>> parse(JSONObject jObject) {
+    public static List<List> parse(JSONObject jObject) {
         List<List<HashMap<String, String>>> routes = new ArrayList<>();
+        List<String> directions = new ArrayList<>();
         JSONArray jRoutes;
         JSONArray jLegs;
         JSONArray jSteps;
@@ -32,8 +36,17 @@ public class JSONPathBuilder {
 
                 for (int j = 0; j < jLegs.length(); j++) {
                     jSteps = ((JSONObject) jLegs.get(j)).getJSONArray("steps");
+                    String o = ((JSONObject) ((JSONObject) jLegs.get(j)).get("distance")).get("text")  + "|-|";
+                    o += ((JSONObject) ((JSONObject) jLegs.get(j)).get("duration")).get("text") + "|-|";
+                    o += ((JSONObject) jLegs.get(j)).get("end_address") + "|-|";
+                    o += ((JSONObject) jLegs.get(j)).get("start_address") + "|-|";
 
                     for (int k = 0; k < jSteps.length(); k++) {
+                        String d = o + ((JSONObject) jSteps.get(k)).get("html_instructions") + "|-|";
+                        d += ((JSONObject) ((JSONObject) jSteps.get(k)).get("distance")).get("text") + "|-|";
+                        d += (String) ((JSONObject) ((JSONObject) jSteps.get(k)).get("duration")).get("text");
+
+                        directions.add(d);
                         String polyline = (String) ((JSONObject) ((JSONObject) jSteps.get(k)).get("polyline")).get("points");
                         List<LatLng> list = decodePoly(polyline);
 
@@ -54,7 +67,11 @@ public class JSONPathBuilder {
             // Handle unknown/unexpected exception
         }
 
-        return routes;
+        List<List> r = new ArrayList<>();
+        r.add(routes);
+        r.add(directions);
+
+        return r;
     }
 
     /**

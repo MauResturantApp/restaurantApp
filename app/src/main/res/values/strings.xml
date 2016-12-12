@@ -45,7 +45,6 @@
     <string name="checkoutTotalPrice">Total price for your items: </string>
     <string name="checkoutBtnCheckout">Send Order!</string>
     <string name="menuHandler">Menu Handler</string>
-    <string name="homeWelcomeHeader">Restaurant DTU App</string>
     <string name="addTab">Add New Tab</string>
     <string name="updateTab">Update Tab</string>
     <string name="removeTab">Remove Tab</string>
@@ -67,7 +66,34 @@
     <string name="addNewProduct_price">Price</string>
     <string name="addNewProduct_tab">Add to Tab</string>
 
+    <string name="settingsLogo">Restaurant DTU</string>
+    <string name="settingsUkFlagDesc">Language: English</string>
+    <string name="settingsDkFlagDesc">Sprog: dansk</string>
+    <string name="directionsHeader">Find restaurant</string>
+    <string name="directionsDescription">Pick what type of transportation you\'ll use, and a route from your current location will be drawn on map, along with what directions to take.</string>
+    <string name="directionRouteHeader">Directions</string>
+    <string name="directionsCarImgDescription">Get directions for car</string>
+    <string name="directionsWalkImgDescription">Get walking directions</string>
+    <string name="directionsTransitImgDescription">Get directions for public transportation</string>
+    <string name="directionsBikeImgDescription">Get biking directions</string>
+    <string name="directionRouteDescription">The trip from %1$s to %2$s will take %3$s. The trip is %4$s.</string>
 
+    <string name="homeWelcomeHeader">Restaurant DTU</string>
+    <string name="homeWelcomeText">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec bibendum enim sit amet mauris varius eleifend\n\nSed ultricies lobortis lorem, sed mattis mi. Aenean vulputate purus et accumsan gravida. Interdum et malesuada fames ac ante ipsum primis in faucibus.\n\nUt nec mollis orci, in bibendum urna. Pellentesque et nulla et tortor laoreet hendrerit.</string>
+    <string name="homeOpeningHours">Opening hours</string>
+    <string name="homeOpeningHoursDesc">Mon-Thursday: 9.00-17.00\nFri- &amp; Saturday: 9.00-21.00\nSunday &amp; holidays: closed</string>
+    <string name="homeNewsHeader">Latest news</string>
+    <string name="contactHeader">Contact us</string>
+    <string name="contactDescription">You can contact us via this form if you have any questions for us. If you\'re in doubt who to write, please choose \"General inquiries\" from the mail list.</string>
+    <string name="contactWho">Department</string>
+    <string name="contactResetButton">Reset</string>
+    <string name="contactMailSubject">Subject</string>
+    <string-array name="contactMailList">
+        <item>General inquiries</item>
+        <item>Technical department</item>
+        <item>Accounting</item>
+        <item>Management</item>
+    </string-array>
 
     <string-array name="admincontrols">
         <item>Add new menu</item>
@@ -78,9 +104,4 @@
         <item>Messages</item>
         <item>Shop settings</item>
     </string-array>
-
-
-
 </resources>
-
-

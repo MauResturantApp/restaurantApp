@@ -34,7 +34,6 @@ public class QRCodeUtils {
         QRCodeWriter qrw = new QRCodeWriter();
         int w, h;
 
-        // Create a matrix containing the actual code
         BitMatrix bmatrix = qrw.encode(content, BarcodeFormat.QR_CODE, size, size);
 
         w = bmatrix.getWidth();

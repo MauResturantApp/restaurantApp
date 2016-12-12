@@ -10,11 +10,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.PendingResult;
@@ -54,6 +59,10 @@ import java.util.List;
 
 import mau.resturantapp.R;
 import mau.resturantapp.utils.JSONPathBuilder;
+import mau.resturantapp.utils.LanguageHandler;
+import mau.resturantapp.utils.ListUtil;
+
+import static mau.resturantapp.R.id.map;
 
 public class FindWay_frag extends Fragment implements
         GoogleApiClient.ConnectionCallbacks,
@@ -77,13 +86,15 @@ public class FindWay_frag extends Fragment implements
     private ImageButton btnGetDirectionsTransit;
     private ImageButton btnGetDirectionsWalking;
     private ImageButton btnGetDirectionsBicycling;
+    private LinearLayout directionRoutes;
+    private TextView directionRoute;
 
     // Default values for Google Maps
     private static final String MAPS_UNITS = "&units=metric";
     private static final String MAPS_REGION = "&region=da";
     private static final String MAPS_ALTERNATIVES = "&alternatives=false";
     private static final String MAPS_AVOID = "&avoid=indoor";
-    private static long REQUEST_INTERVAL = 30000l;
+    private static long REQUEST_INTERVAL = 30000L;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
 
     // Restaurant info (move to resources?)
@@ -110,8 +121,12 @@ public class FindWay_frag extends Fragment implements
         // Check current state of the location setting (and prompt user to enable if disabled)
         checkLocationSetting();
 
+        // View setup
+        directionRoutes = (LinearLayout) rod.findViewById(R.id.directionRoutes);
+        directionRoute = (TextView) rod.findViewById(R.id.directionRoute);
+
         // Google map
-        mFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(map);
         mFrag.getMapAsync(this);
 
         return rod;
@@ -178,10 +193,20 @@ public class FindWay_frag extends Fragment implements
 
         // Setting up parameters (input/output format)
         String origin = this.lastLatitude + "," + this.lastLongitude;
-        String destination = RESTAURANT_LATITUDE + "," + RESTAURANT_LONGITUDE;
 
-        directions += "json?origin=" + origin + "&destination=" + destination + "&key=" + apiKey + "&mode=" + mode;
+        String destination = getRestAddress();
+        if(destination == null)
+            destination = RESTAURANT_LATITUDE + "," + RESTAURANT_LONGITUDE;
+
+        String lang = LanguageHandler.getLanguage(getContext());
+        if(lang.equals("dk"))
+            lang = "da";
+
+        directions += "json?origin=" + origin + "&destination=" + destination + "&key=" + apiKey + "&mode=" + mode + "&language=" + lang;
         directions += MAPS_ALTERNATIVES + MAPS_AVOID + MAPS_REGION + MAPS_UNITS;
+
+        // DEBUG
+        // System.out.println(":::::::DIRECTIONS::::::: " + directions);
 
         // Build a marker for current location
         MarkerOptions options = new MarkerOptions();
@@ -206,10 +231,78 @@ public class FindWay_frag extends Fragment implements
         gMap.animateCamera(cu);
 
         // Build route
-        new JSONPathDownloader(gMap).execute(directions);
+        new JSONPathDownloader().execute(directions);
+
+        // Build route description
+        directionRoutes.setVisibility(View.VISIBLE);
 
         // Now that path has been drawn, next time make sure to delete previous
         pathDrawn = true;
+    }
+
+    /**
+     * Will build the readable directions with instructions.
+     * @param directions String-list containing all instructions
+     */
+    private void buildDescription(List<String> directions) {
+        // Build instruction list proper
+        List<String> instructions = new ArrayList<>();
+
+        String[] basics = directions.get(0).split("\\|-\\|");
+        String totalDistance = basics[0];
+        String totalDuration = basics[1];
+        String endLocation = basics[2];
+        String startLocation = basics[3];
+
+        directionRoute.setText(String.format(getResources().getString(R.string.directionRouteDescription), startLocation.split(",")[0], endLocation.split(",")[0], totalDuration, totalDistance));
+
+        // Note: the fromHtml-deprecation can be avoided with adding a 2nd parameter
+        // The 2nd parameter is an int describing the HTML-version.
+        // As we use "minSdk 16", we can't do this, as it requires APF level of 24. For now, we just
+        // use the deprecated version. We don't really need the fromHtml-method, it's just to strip
+        // all entities and HTML-tags that comes with JSON from Google
+        for(int i = 0; i < directions.size(); i++) {
+            String[] in = directions.get(i).split("\\|-\\|");
+            if(i == (directions.size()-1))
+                instructions.add(Html.fromHtml(in[4]).toString());
+            else
+                instructions.add(Html.fromHtml(in[4]).toString() + "\n" + in[5] + " - " + in[6]);
+        }
+
+        // Add proper instruction list to list adapter
+        ArrayAdapter<String> ap = new ArrayAdapter<>(getActivity(), R.layout.findos_instruction_list, instructions);
+
+        // Create the list with adapter
+        ListView lw = (ListView) rod.findViewById(R.id.directionsInstructionsList);
+        lw.setAdapter(ap);
+
+        // "ListView inside ScrollView"-fix
+        ListUtil.setListViewHeightBasedOnChildren(lw);
+    }
+
+    /**
+     * Receives the address from FireBase. If no address is given null will be returned.
+     *
+     * @return Address for restaurant, null if non exist
+     */
+    private String getRestAddress() {
+        String adr = null;
+
+        // TODO Get address from database
+        // NOTE: THE ADDRESS MUST BE IN LATITUDE AND LONGITUDE, NOT PLAIN TEXT
+        // http://www.latlong.net/convert-address-to-lat-long.html
+        // Inserting "Lautrupvej 15" on this site returns Lat: 55.729394 and Lon: 12.395340
+        // IT IS IMPORTANT YOU INCLUDE _ALL_ DECIMALS, OR YOU'LL BE REFERRING TO SOMEWHERE ELSE
+        // THAN WHAT YOU INTENDED:
+        // Lat::55.729394 != Lat::55 - actually FAR from the same.
+        // Remember, LatLng only goes from 0-120. The Earth's circumference is ~40.000 km, so any
+        // deviation from the actual coordinate means you'll have an error margin
+        // of 10's if not 100's of km's. This is very important to remember.
+        //
+        // EXAMPLE OF CORRECT FORMAT TO RETURN:
+        // String adr = "55.729394,12.395340" (55.72... = latitude, 12.39... = longitude)
+
+        return adr;
     }
 
     @Override
@@ -393,12 +486,6 @@ public class FindWay_frag extends Fragment implements
      * Inner Class for Path Downloader
      */
     private class JSONPathDownloader extends AsyncTask<String, Void, String> {
-        private GoogleMap map;
-
-        public JSONPathDownloader(GoogleMap map) {
-            this.map = map;
-        }
-
         @Override
         protected String doInBackground(String... url) {
             String data = "";
@@ -416,7 +503,7 @@ public class FindWay_frag extends Fragment implements
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            JSONPathTask pathTask = new JSONPathTask(map);
+            JSONPathTask pathTask = new JSONPathTask();
 
             // Invokes the thread for parsing the JSON data
             pathTask.execute(result);
@@ -464,42 +551,37 @@ public class FindWay_frag extends Fragment implements
      * Inner Class for Path Task.
      * This will add lines on GoogleMap in a non-UI thread.
      */
-    private class JSONPathTask extends AsyncTask<String, Integer, List<List<HashMap<String,String>>>> {
-        private GoogleMap map;
-
-        public JSONPathTask(GoogleMap map) {
-            this.map = map;
-        }
-
+    private class JSONPathTask extends AsyncTask<String, Integer, List<List>> {
         @Override
-        protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
+        protected List<List> doInBackground(String... jsonData) {
             JSONObject jObject;
-            List<List<HashMap<String, String>>> routes = null;
+            List<List> pathTask = null;
 
             try {
                 jObject = new JSONObject(jsonData[0]);
-                routes = JSONPathBuilder.parse(jObject);
+                pathTask = JSONPathBuilder.parse(jObject);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            return routes;
+            return pathTask;
         }
 
         @Override
-        protected void onPostExecute(List<List<HashMap<String, String>>> result) {
+        protected void onPostExecute(List<List> result) {
+            List<List<HashMap<String,String>>> paths = result.get(0);
+            List<String> directions = result.get(1);
+
+            // Build path on map
             ArrayList<LatLng> points;
             PolylineOptions lineOptions = null;
 
-            // Traversing through all the routes
-            for (int i = 0; i < result.size(); i++) {
+            for (int i = 0; i < paths.size(); i++) {
                 points = new ArrayList<>();
                 lineOptions = new PolylineOptions();
 
-                // Fetching i-th route
-                List<HashMap<String, String>> path = result.get(i);
+                List<HashMap<String, String>> path = paths.get(i);
 
-                // Fetching all the points in i-th route
                 for (int j = 0; j < path.size(); j++) {
                     HashMap<String, String> point = path.get(j);
 
@@ -510,14 +592,20 @@ public class FindWay_frag extends Fragment implements
                     points.add(position);
                 }
 
-                // Adding all the points in the route to LineOptions
                 lineOptions.addAll(points);
                 lineOptions.width(2);
                 lineOptions.color(Color.RED);
             }
 
-            // Drawing polyline in the Google Map for the i-th route
-            map.addPolyline(lineOptions);
+            try {
+                gMap.addPolyline(lineOptions);
+            } catch(NullPointerException e) {
+                // If this exception is thrown, something's MOST LIKELY wrong with the JSONPathBuilder
+                e.printStackTrace();
+            }
+
+            // Add instructions to list
+            buildDescription(directions);
         }
     }
 }
