@@ -40,9 +40,8 @@ public class AddNewProduct_frag extends Fragment implements View.OnClickListener
         name = (EditText) root.findViewById(R.id.addProduct_name_editText);
         price = (EditText) root.findViewById(R.id.price_editText);
         tab = (Spinner) root.findViewById(R.id.addToTab_spinner);
-      //  ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(),
-        //        R.layout.amd_newitem_addproduct_spinner, getTabNamesAdapter());
-        SpinnerAdapter adapter = new SpinnerAdapter(getContext(), R.layout.amd_newitem_addproduct_spinner, appData.tabs);
+        SpinnerAdapter adapter = new SpinnerAdapter(getContext(), R.layout.amd_newitem_addproduct_spinner, R.id.addProduct_spinner, appData.tabs);
+        adapter.setDropDownViewResource(R.layout.amd_newitem_addproduct_spinner);
         tab.setAdapter(adapter);
         addProduct.setOnClickListener(this);
 
@@ -70,16 +69,6 @@ public class AddNewProduct_frag extends Fragment implements View.OnClickListener
         return false;
     }
 
-    private String[] getTabNamesAdapter(){
-        int size = appData.tabs.size();
-        String[] strings = new String[size];
-        for(int i = 0; i < size; i++){
-            strings[i] = appData.tabs.get(i).getName();
-        }
-
-        return strings;
-    }
-
     private class SpinnerHolder {
         TextView textview;
         View root;
@@ -100,8 +89,8 @@ public class AddNewProduct_frag extends Fragment implements View.OnClickListener
         ArrayList<MenuTab> tabs;
 
 
-        private SpinnerAdapter(Context context, int textViewResourceId, ArrayList<MenuTab> tabs) {
-            super(context, textViewResourceId, tabs);
+        private SpinnerAdapter(Context context, int resource, int textViewResourceId, ArrayList<MenuTab> tabs) {
+            super(context, resource, textViewResourceId, tabs);
             this.tabs = tabs;
         }
 
@@ -112,19 +101,28 @@ public class AddNewProduct_frag extends Fragment implements View.OnClickListener
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            Log.d("spinneradapter", "getview start");
+             return getRowView(position,convertView,parent);
+         }
+
+        @Override
+        public View getDropDownView(int position, View convertView,
+                                    ViewGroup parent) {
+            return getRowView(position, convertView, parent);
+
+        }
+
+        private View getRowView(int position, View convertView, ViewGroup parent){
             View view = convertView;
             SpinnerHolder spinnerHolder;
             if(convertView == null){
                 view = getActivity().getLayoutInflater().inflate(R.layout.amd_newitem_addproduct_spinner, parent, false);
                 spinnerHolder = new SpinnerHolder(view);
-                spinnerHolder.setText(tabs.get(position).getName());
                 view.setTag(spinnerHolder);
             } else {
                 spinnerHolder = (SpinnerHolder) view.getTag();
             }
 
-            Log.d("idiot",tabs.get(position).getName());
+            spinnerHolder.setText(tabs.get(position).getName());
 
             return view;
         }
