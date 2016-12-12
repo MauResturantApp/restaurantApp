@@ -110,7 +110,8 @@
             android:layout_height="3dp"
             android:layout_alignBottom="@id/txt_menu_extraItemText"
             android:layerType="software"
-            android:background="@drawable/line_margin"></View>
+            android:background="@drawable/line_margin">
+        </View>
     </RelativeLayout>
 
 </RelativeLayout>

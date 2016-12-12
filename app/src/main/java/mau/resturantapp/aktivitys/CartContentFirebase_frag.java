@@ -42,14 +42,6 @@ import static mau.resturantapp.data.appData.event;
 import static mau.resturantapp.data.appData.firebaseDatabase;
 import static mau.resturantapp.data.appData.loggingIn;
 
-/**
- *  Work in progress
- *
- *  Should handle displaying and removing items from the cart in firebase
- *
- *  Currently it would only work if logged in - Handling anonymous users should be implemented
- *
- */
 
 public class CartContentFirebase_frag extends Fragment implements Runnable {
 

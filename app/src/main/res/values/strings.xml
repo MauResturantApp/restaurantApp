@@ -62,6 +62,10 @@
 
     <string name="addNewProduct">Add Product</string>
     <string name="removeProduct">Remove Product</string>
+    <string name="addNewProduct_headline">New Product</string>
+    <string name="addNewProduct_name">Name</string>
+    <string name="addNewProduct_price">Price</string>
+    <string name="addNewProduct_tab">Add to Tab</string>
 
 
 

@@ -63,7 +63,10 @@
 
     <string name="addNewProduct">Tilføj Produkt</string>
     <string name="removeProduct">Fjern Produkt</string>
-
+    <string name="addNewProduct_headline">Nyt Produkt</string>
+    <string name="addNewProduct_name">Navn</string>
+    <string name="addNewProduct_price">Pris</string>
+    <string name="addNewProduct_tab">Tilføj til menu</string>
 
 
     <string-array name="admincontrols">
