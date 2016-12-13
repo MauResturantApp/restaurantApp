@@ -54,6 +54,7 @@ import mau.resturantapp.aktivitys.mainFragments.Home_frag;
 import mau.resturantapp.aktivitys.mainFragments.menufrag.MenuHandler_frag;
 import mau.resturantapp.aktivitys.mainFragments.menufrag.MenuTabs_frag;
 import mau.resturantapp.aktivitys.mainFragments.Admincontrol_frag;
+import mau.resturantapp.aktivitys.mainFragments.userControls.Test_frag;
 import mau.resturantapp.aktivitys.mainFragments.userControls.userProfile_frag;
 import mau.resturantapp.data.appData;
 import mau.resturantapp.event.events.GuestUserCheckoutEvent;
@@ -334,6 +335,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                 break;
             case R.id.menu_userProfile:
                 frag = new userProfile_frag();
+                ft.addToBackStack(null);
+                ft.replace(R.id.mainFrameFrag, frag).commit();
+                break;
+            case R.id.menu_test:
+                frag = new Test_frag();
                 ft.addToBackStack(null);
                 ft.replace(R.id.mainFrameFrag, frag).commit();
                 break;
