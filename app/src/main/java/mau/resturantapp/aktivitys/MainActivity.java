@@ -1,6 +1,7 @@
 package mau.resturantapp.aktivitys;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -58,6 +60,7 @@ import mau.resturantapp.aktivitys.mainFragments.userControls.Test_frag;
 import mau.resturantapp.aktivitys.mainFragments.userControls.userProfile_frag;
 import mau.resturantapp.data.appData;
 import mau.resturantapp.event.events.GuestUserCheckoutEvent;
+import mau.resturantapp.event.events.HideCartEvent;
 import mau.resturantapp.event.events.IsAdminEvent;
 import mau.resturantapp.event.events.LogUserInEvent;
 import mau.resturantapp.event.events.NewUserFailedEvent;
@@ -66,6 +69,7 @@ import mau.resturantapp.event.events.OnFailedLogIn;
 import mau.resturantapp.event.events.OrderSuccessfulEvent;
 import mau.resturantapp.event.events.ShopClosedEvent;
 import mau.resturantapp.event.events.ShowAskforLoginDialogEvent;
+import mau.resturantapp.event.events.ShowCartEvent;
 import mau.resturantapp.event.events.ShowLogInDialogEvent;
 import mau.resturantapp.event.events.ShowSignupDialogEvent;
 import mau.resturantapp.test.QRCamera;
@@ -76,7 +80,7 @@ import mau.resturantapp.utils.LanguageHandler;
 
 import static android.support.design.widget.BottomSheetBehavior.*;
 
-public class MainActivity extends AppCompatActivity implements OnClickListener, OnTabSelectListener, OnNavigationItemSelectedListener,OnTouchListener, CompoundButton.OnCheckedChangeListener {
+public class MainActivity extends AppCompatActivity implements OnClickListener, OnTabSelectListener, OnNavigationItemSelectedListener,OnTouchListener, OnCheckedChangeListener {
 
     private FloatingActionButton actBtn;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -170,7 +174,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         showHomeScreen();
 
 
-        bottomBar.setElevation(4);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            bottomBar.setElevation(4);
+        }
 
         actBtn = (FloatingActionButton) findViewById(R.id.floatActBtn_cartContent);
 
@@ -473,6 +479,16 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     @Subscribe
     public void askForLoginDialogEvent(ShowAskforLoginDialogEvent event){
         showAskForLoginDialog();
+    }
+
+    @Subscribe
+    public void showcart(ShowCartEvent event){
+        showCartAndBtn();
+    }
+
+    @Subscribe
+    public void hideCart(HideCartEvent event){
+        hideCartAndBtn();
     }
 
     @Subscribe

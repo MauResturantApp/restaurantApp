@@ -1,6 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:layout_margin="5dp"
+        android:text="@string/admcontrol_closeOpen"
+        android:id="@+id/txt_admcontrol_opencloseheader"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="3"
+            android:textSize="15sp"
+            android:text="@string/admcontrol_open"
+            android:textAlignment="center"
+            android:id="@+id/txt_admcontrol_open"/>
+
+        <Switch
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+            android:layout_weight="1"
+        android:id="@+id/switch_admincontrol_closeshop" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="3"
+            android:textSize="15sp"
+            android:text="@string/admcontrol_close"
+            android:textAlignment="center"
+            android:id="@+id/txt_admcontrol_close"/>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/admcontrol_choseDay_txt"
+        android:textSize="15sp"
+        android:ems="10"
+
+        android:id="@+id/txt_admcontrol_days" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_marginTop="3dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spin_admcontrol_days" />
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginTop="7dp"
+       android:orientation="horizontal">
+       <TextView
+           android:layout_width="0dp"
+           android:layout_height="30dp"
+           android:ems="10"
+           android:layout_weight="1"
+           android:text="@string/admcontrol_opentime"
+           android:textAlignment="center"
+           android:textSize="15sp"
+           android:id="@+id/txt_admcontrol_opentime" />
+
+       <TextView
+           android:layout_width="0dp"
+           android:layout_weight="1"
+           android:layout_height="wrap_content"
+           android:text="@string/admcontrol_closetime"
+           android:ems="10"
+           android:textAlignment="center"
+           android:textSize="15sp"
+           android:id="@+id/txt_admcontrol_closetime" />
+   </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal">
+
+        <TimePicker
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:timePickerMode="spinner"
+            android:id="@+id/timepick_admcontrol_open">
+
+        </TimePicker>
+        <TimePicker
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:timePickerMode="spinner"
+
+            android:id="@+id/timepick_admcontrol_close">
+
+        </TimePicker>
+    </LinearLayout>
+
+
+    <TextView
+        android:text="@string/admcontrol_maintext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:id="@+id/txt_admcontrol_maintext" />
+
+   <FrameLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:background="@color/colorPrimaryDark">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_margin="1dp"
+        android:inputType="textLongMessage"
+        android:text=""
+        android:background="@color/colorPrimary"
+        android:ems="10"
+        android:id="@+id/edittxt_admcontrol_maintext" />
+   </FrameLayout>
+
+    <Button
+        android:text="@string/admcontrol_savebtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corners"
+        android:id="@+id/btn_admcontrol_savesettings" />
 </LinearLayout>
+</ScrollView>

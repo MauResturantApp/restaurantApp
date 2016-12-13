@@ -93,12 +93,39 @@
     <string name="contactMailSubject">Subject</string>
     <string name="contactContentHint">Your inquiry...</string>
     <string name="contactFormalDescription">Contact information</string>
+
+
+    <string name="admcontrol_closeOpen">Open or close shop</string>
+    <string name="admcontrol_open">Open</string>
+    <string name="admcontrol_close">Closed</string>
+    <string name="admcontrol_choseDay_txt">Choose day for setting oppening hours</string>
+    <string name="admcontrol_opentime">Opening time</string>
+    <string name="admcontrol_closetime">Closing time</string>
+    <string name="admcontrol_maintext">Set text for the Homepage</string>
+    <string name="admcontrol_savebtn">Save changes</string>
+
+
+
     <string-array name="contactMailList">
         <item>General inquiries</item>
         <item>Technical department</item>
         <item>Accounting</item>
         <item>Management</item>
     </string-array>
+
+
+    <string-array name="daysForOpeningTimes">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+        <item>Weekdays</item>
+        <item>Weekend</item>
+    </string-array>
+
 
     <string-array name="admincontrols">
         <item>Add new menu</item>

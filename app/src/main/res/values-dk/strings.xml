@@ -89,11 +89,34 @@
     <string name="contactResetButton">Nulstil</string>
     <string name="contactContentHint">Din forespørgsel...</string>
     <string name="contactFormalDescription">Kontakt information</string>
+
+    <string name="admcontrol_closeOpen">Åben eller luk for buttiken</string>
+    <string name="admcontrol_open">Åben</string>
+    <string name="admcontrol_close">Lukkede</string>
+    <string name="admcontrol_choseDay_txt">Vælg dag du vil ændre for åbningstiden</string>
+    <string name="admcontrol_opentime">Åbningstid</string>
+    <string name="admcontrol_closetime">Lukningstid</string>
+    <string name="admcontrol_maintext">Skriv text til hjemmeskærmen</string>
+    <string name="admcontrol_savebtn">Gem ændringer</string>
+
+
     <string-array name="contactMailList">
         <item>Generelt</item>
         <item>Teknisk afdeling</item>
         <item>Bogholder</item>
         <item>Ledelsen</item>
+    </string-array>
+
+    <string-array name="daysForOpeningTimes">
+        <item>Mandag</item>
+        <item>Tirsdag</item>
+        <item>Onsdag</item>
+        <item>Torsdag</item>
+        <item>Fredag</item>
+        <item>Lørdag</item>
+        <item>Søndag</item>
+        <item>Hverdage</item>
+        <item>Weekend</item>
     </string-array>
 
 
