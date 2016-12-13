@@ -558,7 +558,7 @@ public class appData extends Application {
     }
 
     public static void setOpeningHours(int openHour, int openMinutes, int closeHour, int closeMinutes){
-        DatabaseReference ref = firebaseDatabase.getReference("restaurantSettings");
+        DatabaseReference ref = firebaseDatabase.getReference("restaurantsettings/");
         Map<String, Integer> openingHours = new HashMap<>();
         openingHours.put("openHour", openHour);
         openingHours.put("openMinutes", openMinutes);
@@ -568,7 +568,7 @@ public class appData extends Application {
     }
 
     public static void getOpeningHours(){
-        DatabaseReference ref = firebaseDatabase.getReference("restaurantSettings");
+        DatabaseReference ref = firebaseDatabase.getReference("restaurantsettings/");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
