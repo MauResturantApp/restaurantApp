@@ -189,22 +189,27 @@ public class Test_frag extends Fragment implements DatePickerDialog.OnDateSetLis
         // TODO For now just dummy data...
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(
                 new DataPoint[]{
-                        new DataPoint(1, 1),
+                        new DataPoint(1, 2),
                         new DataPoint(2, 5),
-                        new DataPoint(3, 0),
-                        new DataPoint(4, 8),
-                        new DataPoint(5, 4),
-                        new DataPoint(6, 1),
-                        new DataPoint(7, 9),
-                        new DataPoint(8, 5),
+                        new DataPoint(3, 4),
+                        new DataPoint(4, 6),
+                        new DataPoint(5, 1),
+                        new DataPoint(6, 2),
+                        new DataPoint(7, 5),
+                        new DataPoint(8, 4),
                         new DataPoint(9, 4),
                         new DataPoint(10, 7),
                         new DataPoint(11, 1),
-                        new DataPoint(12, 8)
+                        new DataPoint(12, 3)
                 }
         );
 
-        series.setColor(Color.BLUE);
+        // Create a random color for the line
+        int r = new Random().nextInt(256);
+        int g = new Random().nextInt(256);
+        int b = new Random().nextInt(256);
+
+        series.setColor(Color.rgb(r,g,b));
 
         return series;
     }
@@ -228,22 +233,27 @@ public class Test_frag extends Fragment implements DatePickerDialog.OnDateSetLis
         // TODO For now just dummy data...
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(
                 new DataPoint[]{
-                        new DataPoint(1, 2),
-                        new DataPoint(2, 5),
-                        new DataPoint(3, 4),
-                        new DataPoint(4, 6),
-                        new DataPoint(5, 1),
-                        new DataPoint(6, 2),
-                        new DataPoint(7, 5),
-                        new DataPoint(8, 4),
-                        new DataPoint(9, 4),
+                        new DataPoint(1, 1),
+                        new DataPoint(2, 4),
+                        new DataPoint(3, 8),
+                        new DataPoint(4, 2),
+                        new DataPoint(5, 7),
+                        new DataPoint(6, 12),
+                        new DataPoint(7, 11),
+                        new DataPoint(8, 21),
+                        new DataPoint(9, 15),
                         new DataPoint(10, 7),
-                        new DataPoint(11, 1),
-                        new DataPoint(12, 3)
+                        new DataPoint(11, 13),
+                        new DataPoint(12, 15)
                 }
         );
 
-        series.setColor(Color.GREEN);
+        // Create a random color for the line
+        int r = new Random().nextInt(256);
+        int g = new Random().nextInt(256);
+        int b = new Random().nextInt(256);
+
+        series.setColor(Color.rgb(r,g,b));
 
         return series;
     }
@@ -261,25 +271,117 @@ public class Test_frag extends Fragment implements DatePickerDialog.OnDateSetLis
      * @return Series of DataPoints
      */
     private LineGraphSeries<DataPoint> getDataSeriesPrduct(String product, GraphType type, String from, String to) {
+        /******** THIS IS HOW IT IS SUPPOSED TO BE IMPLEMENTED ********
+
+        // First get a list of orders done with the specified product
+        List<Order> orderList = new ArrayList<>();
+        // Specify total time between "from" and "to"
+        long totalTime = from.getTimeMillis() - to.getTimeMillis();
+
+        // Build series with the following switch
+        switch (type) {
+            case DAY:
+                break;
+            case WEEK:
+                // E.g. if weekly view was chosen Then do a count of sales between a weekly
+                // time-period. This will require us to do something like this:
+
+                // Week time in milliseconds
+                long weekTime = 604800000l;
+
+                // How many weeks we've counted so far (this will indicate where on the x-axis
+                // the saleCount will be placed
+                int weekCount = 0;
+
+                // A temporary list to store the DataPoints for the different weeks
+                List<DataPoint> temp = new ArrayList<>();
+
+                // Count backwards "from" towards "to" with the interval of "weekTime"
+                // We'll set an offset of 1 week, should the specified dates not be divisible with
+                // a week's time in miliseconds (to make sure we get "the last week" in the count
+                // as well, otherwise if e.g. end up with a time of weekTime-1 for the last week,
+                // it would not be included in the salesCount, even though it is in fact within the
+                // given time period.
+                while(totalTime > 0) {
+                    // The interval we check for (the current counting week's saleCount)
+                    long interval = totalTime - weekTime;
+                    // Current week's saleCount
+                    int saleCount = 0;
+
+                    // For each on all orders
+                    for(Order o : orderList) {
+                        // Break if the current order's date is less (before) the current interval
+                        if(o.getTimestampAsDate().getTime() < interval)
+                            break;
+
+                        // Check and count each instance of the specified product in the order
+                        // and count 1 up
+                        for(Map.Entry<String, Product> entry : o.getCartContent()) {
+                            if(entry.getValue().getName().equals(product))
+                                saleCount++;
+                        }
+                    }
+
+                    // Create a new DataPoint for current week and week's sale of product
+                    temp.add(new DataPoint(weekCount, saleCount));
+                    // Count next week...
+                    weekCount++;
+                    // Deduct 1 week's time from totalTime
+                    totalTime -= weekTime;
+                }
+
+                // Now add the DataPoints to a LineGraphSeries. This is what we want to return
+                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(temp.toArray(new DataPoint[0]));
+
+                // Create a random color for the line
+                int r = new Random().nextInt(256);
+                int g = new Random().nextInt(256);
+                int b = new Random().nextInt(256);
+
+                series.setColor(Color.rgb(r,g,b));
+
+                // Return series!
+                return series;
+
+                break;
+            case FORTHNIGHT:
+                break;
+            case MONTH:
+                break;
+            case QUARTERLY:
+                break;
+            case ANNUALLY:
+                break;
+            default:
+                break;
+        }
+
+         ******** END OF HOW IT'S SUPPOSED TO BE DONE ********/
+
         // TODO For now just dummy data...
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(
                 new DataPoint[]{
                         new DataPoint(1, 6),
-                        new DataPoint(2, 7),
-                        new DataPoint(3, 4),
-                        new DataPoint(4, 6),
-                        new DataPoint(5, 2),
-                        new DataPoint(6, 4),
-                        new DataPoint(7, 6),
-                        new DataPoint(8, 3),
-                        new DataPoint(9, 6),
-                        new DataPoint(10, 2),
-                        new DataPoint(11, 4),
-                        new DataPoint(12, 7)
+                        new DataPoint(2, 43),
+                        new DataPoint(3, 23),
+                        new DataPoint(4, 12),
+                        new DataPoint(5, 54),
+                        new DataPoint(6, 32),
+                        new DataPoint(7, 17),
+                        new DataPoint(8, 14),
+                        new DataPoint(9, 13),
+                        new DataPoint(10, 7),
+                        new DataPoint(11, 23),
+                        new DataPoint(12, 33)
                 }
         );
 
-        series.setColor(Color.RED);
+        // Create a random color for the line
+        int r = new Random().nextInt(256);
+        int g = new Random().nextInt(256);
+        int b = new Random().nextInt(256);
+
+        series.setColor(Color.rgb(r,g,b));
 
         return series;
     }
