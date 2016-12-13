@@ -39,7 +39,7 @@ public class Test_frag extends Fragment implements DatePickerDialog.OnDateSetLis
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.amdcontrol_orderhistory,container,false);
+        root = inflater.inflate(R.layout.amdcontrol_accounting,container,false);
 
         from = (TextView) root.findViewById(R.id.orderHistoryCustomFrom);
         to = (TextView) root.findViewById(R.id.orderHistoryCustomTo);
