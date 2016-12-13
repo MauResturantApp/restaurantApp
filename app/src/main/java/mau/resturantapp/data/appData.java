@@ -569,14 +569,15 @@ public class appData extends Application {
 
     public static void getOpeningHours(){
         DatabaseReference ref = firebaseDatabase.getReference("restaurantsettings/");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    OPENHOUR = (int) snapshot.getValue();
-                    OPENMINUT = (int) snapshot.getValue();
-                    CLOSEHOUR = (int) snapshot.getValue();
-                    CLOSEMINUT = (int) snapshot.getValue();
+                    Map<String, Long> openingHours = (Map) snapshot.getValue();
+                    OPENHOUR = (int) (long) openingHours.get("openHour");
+                    OPENMINUT = (int) (long) openingHours.get("openMinutes");
+                    CLOSEHOUR = (int) (long) openingHours.get("closeHour");
+                    CLOSEMINUT = (int) (long) openingHours.get("closeMinutes");
                 }
             }
 
