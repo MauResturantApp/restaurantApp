@@ -37,7 +37,7 @@
                 android:layout_weight="50"
                 android:layout_height="wrap_content"
                 android:id="@+id/orderHistoryGraphYIntervalDesc"
-                android:text="Choose Y-value" />
+                android:text="Show sales for" />
 
             <Spinner
                 android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
                 android:layout_weight="50"
                 android:layout_height="wrap_content"
                 android:id="@+id/orderHistoryGraphXIntervalDesc"
-                android:text="Choose X-value" />
+                android:text="In the interval" />
 
             <Spinner
                 android:layout_width="wrap_content"
@@ -97,6 +97,24 @@
                 style="@android:style/Widget.DeviceDefault.Light.Spinner"
                 android:hint="... to date"/>
         </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/orderHistoryGraphXIntervalCustomLayout"
+            android:layout_toLeftOf="@+id/orderHistoryAddLineBtn"
+            android:text="Clear graph"
+            android:visibility="invisible"
+            android:id="@+id/orderHistoryClearGraphBtn" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/orderHistoryGraphXIntervalCustomLayout"
+            android:layout_toLeftOf="@+id/orderHistoryBuildBtn"
+            android:text="Add line"
+            android:id="@+id/orderHistoryAddLineBtn"
+            android:visibility="invisible" />
 
         <Button
             android:layout_width="wrap_content"

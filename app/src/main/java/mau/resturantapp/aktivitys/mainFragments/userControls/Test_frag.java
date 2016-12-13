@@ -1,6 +1,7 @@
 package mau.resturantapp.aktivitys.mainFragments.userControls;
 
 import android.app.DatePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -12,13 +13,16 @@ import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import mau.resturantapp.R;
 import mau.resturantapp.aktivitys.dialogs.DatePickerFragment;
@@ -30,6 +34,8 @@ public class Test_frag extends Fragment implements DatePickerDialog.OnDateSetLis
 
     private TextView from;
     private TextView to;
+
+    private GraphView gw;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,11 +82,59 @@ public class Test_frag extends Fragment implements DatePickerDialog.OnDateSetLis
         root.findViewById(R.id.orderHistoryBuildBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GraphView gw = (GraphView) root.findViewById(R.id.orderHisttoryTest);
+                gw = (GraphView) root.findViewById(R.id.orderHisttoryTest);
 
-                gw.getViewport().setScalable(true);
-                gw.getViewport().setScrollable(true);
+                gw.getViewport().setScalable(false);
+                gw.getViewport().setScrollable(false);
 
+                String f = from.getText().toString();
+                String t = to.getText().toString();
+
+                gw.getSeries().clear();
+
+                if(!f.equals("")) {
+                    if(!t.equals("")) {
+                        gw.addSeries(getDataSeriesPrduct(
+                                yInterval.getSelectedItem().toString(),
+                                GraphType.isEnum(xInterval.getSelectedItem().toString()),
+                                f,
+                                t
+                        ));
+                    } else {
+                        gw.addSeries(getDataSeriesPrduct(
+                                yInterval.getSelectedItem().toString(),
+                                GraphType.isEnum(xInterval.getSelectedItem().toString()),
+                                f
+                        ));
+                    }
+                } else {
+                    gw.addSeries(getDataSeriesPrduct(
+                            yInterval.getSelectedItem().toString(),
+                            GraphType.isEnum(xInterval.getSelectedItem().toString())
+                    ));
+                }
+
+                NumberFormat nf = NumberFormat.getInstance();
+                nf.setMaximumFractionDigits(0);
+                gw.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(nf,nf));
+
+                gw.getViewport().setXAxisBoundsManual(true);
+                gw.getGridLabelRenderer().setNumHorizontalLabels(12);
+
+                gw.setVisibility(View.VISIBLE);
+
+                root.findViewById(R.id.orderHistoryAddLineBtn).setVisibility(View.VISIBLE);
+                root.findViewById(R.id.orderHistoryClearGraphBtn).setVisibility(View.VISIBLE);
+
+                root.findViewById(R.id.orderHistoryGraphXInterval).setEnabled(false);
+                root.findViewById(R.id.orderHistoryAddLineBtn).setClickable(true);
+                root.findViewById(R.id.orderHistoryBuildBtn).setClickable(false);
+            }
+        });
+
+        root.findViewById(R.id.orderHistoryAddLineBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 String f = from.getText().toString();
                 String t = to.getText().toString();
 
@@ -105,8 +159,17 @@ public class Test_frag extends Fragment implements DatePickerDialog.OnDateSetLis
                             GraphType.isEnum(xInterval.getSelectedItem().toString())
                     ));
                 }
+            }
+        });
 
-                gw.setVisibility(View.VISIBLE);
+        root.findViewById(R.id.orderHistoryClearGraphBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gw.removeAllSeries();
+
+                root.findViewById(R.id.orderHistoryGraphXInterval).setEnabled(true);
+                root.findViewById(R.id.orderHistoryBuildBtn).setClickable(true);
+                root.findViewById(R.id.orderHistoryAddLineBtn).setClickable(false);
             }
         });
 
@@ -124,7 +187,7 @@ public class Test_frag extends Fragment implements DatePickerDialog.OnDateSetLis
      */
     private LineGraphSeries<DataPoint> getDataSeriesPrduct(String product, GraphType type) {
         // TODO For now just dummy data...
-        return new LineGraphSeries<>(
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(
                 new DataPoint[]{
                         new DataPoint(1, 1),
                         new DataPoint(2, 5),
@@ -140,6 +203,10 @@ public class Test_frag extends Fragment implements DatePickerDialog.OnDateSetLis
                         new DataPoint(12, 8)
                 }
         );
+
+        series.setColor(Color.BLUE);
+
+        return series;
     }
 
     /**
@@ -159,22 +226,26 @@ public class Test_frag extends Fragment implements DatePickerDialog.OnDateSetLis
      */
     private LineGraphSeries<DataPoint> getDataSeriesPrduct(String product, GraphType type, String from) {
         // TODO For now just dummy data...
-        return new LineGraphSeries<>(
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(
                 new DataPoint[]{
-                        new DataPoint(1, 1),
+                        new DataPoint(1, 2),
                         new DataPoint(2, 5),
-                        new DataPoint(3, 0),
-                        new DataPoint(4, 8),
-                        new DataPoint(5, 4),
-                        new DataPoint(6, 1),
-                        new DataPoint(7, 9),
-                        new DataPoint(8, 5),
+                        new DataPoint(3, 4),
+                        new DataPoint(4, 6),
+                        new DataPoint(5, 1),
+                        new DataPoint(6, 2),
+                        new DataPoint(7, 5),
+                        new DataPoint(8, 4),
                         new DataPoint(9, 4),
                         new DataPoint(10, 7),
                         new DataPoint(11, 1),
-                        new DataPoint(12, 8)
+                        new DataPoint(12, 3)
                 }
         );
+
+        series.setColor(Color.GREEN);
+
+        return series;
     }
 
     /**
@@ -191,22 +262,26 @@ public class Test_frag extends Fragment implements DatePickerDialog.OnDateSetLis
      */
     private LineGraphSeries<DataPoint> getDataSeriesPrduct(String product, GraphType type, String from, String to) {
         // TODO For now just dummy data...
-        return new LineGraphSeries<>(
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(
                 new DataPoint[]{
-                        new DataPoint(1, 1),
-                        new DataPoint(2, 5),
-                        new DataPoint(3, 0),
-                        new DataPoint(4, 8),
-                        new DataPoint(5, 4),
-                        new DataPoint(6, 1),
-                        new DataPoint(7, 9),
-                        new DataPoint(8, 5),
-                        new DataPoint(9, 4),
-                        new DataPoint(10, 7),
-                        new DataPoint(11, 1),
-                        new DataPoint(12, 8)
+                        new DataPoint(1, 6),
+                        new DataPoint(2, 7),
+                        new DataPoint(3, 4),
+                        new DataPoint(4, 6),
+                        new DataPoint(5, 2),
+                        new DataPoint(6, 4),
+                        new DataPoint(7, 6),
+                        new DataPoint(8, 3),
+                        new DataPoint(9, 6),
+                        new DataPoint(10, 2),
+                        new DataPoint(11, 4),
+                        new DataPoint(12, 7)
                 }
         );
+
+        series.setColor(Color.RED);
+
+        return series;
     }
 
     /**
