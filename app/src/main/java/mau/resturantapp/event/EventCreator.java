@@ -4,6 +4,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import mau.resturantapp.event.events.FragContainerChangedEvent;
 import mau.resturantapp.event.events.GuestUserCheckoutEvent;
+import mau.resturantapp.event.events.HideCartEvent;
 import mau.resturantapp.event.events.IsAdminEvent;
 import mau.resturantapp.event.events.LogUserInEvent;
 import mau.resturantapp.event.events.NewItemToCartEvent;
@@ -15,6 +16,7 @@ import mau.resturantapp.event.events.OrderSuccessfulEvent;
 import mau.resturantapp.event.events.ResumeTabsEvent;
 import mau.resturantapp.event.events.ShopClosedEvent;
 import mau.resturantapp.event.events.ShowAskforLoginDialogEvent;
+import mau.resturantapp.event.events.ShowCartEvent;
 import mau.resturantapp.event.events.ShowLogInDialogEvent;
 import mau.resturantapp.event.events.ShowSignupDialogEvent;
 import mau.resturantapp.event.events.SignOutEvent;
@@ -105,6 +107,16 @@ public class EventCreator {
 
     public void orderSuccessful(){
         OrderSuccessfulEvent event = new OrderSuccessfulEvent();
+        bus.post(event);
+    }
+
+    public void showCart(){
+        ShowCartEvent event = new ShowCartEvent();
+        bus.post(event);
+    }
+
+    public void hideCart(){
+        HideCartEvent event = new HideCartEvent();
         bus.post(event);
     }
 }

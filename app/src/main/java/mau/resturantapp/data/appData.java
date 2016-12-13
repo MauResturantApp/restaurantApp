@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -61,6 +62,10 @@ public class appData extends Application {
     public static List<Runnable> priceObservers = new ArrayList<Runnable>();
     public static int totalPrice = 0;
 
+
+    // Denne værdig skal hentes fra Firebase, så kan man lukke/åbne resturanten fra selve admincontrols.
+    public static boolean shopOpen = true;
+
     public static Cartcontent_adapter adapter = new Cartcontent_adapter();
 
     public static int OPENHOUR = 11; //dette laves om senere til at admin kan skifte, men for now tester jeg bare.
@@ -89,9 +94,17 @@ public class appData extends Application {
 
         appPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         setPrefs();
+        getOpeningHours();
 
         //Maybe move this depending on how we structure the security rules in firebase
         getTabs();
+    }
+
+    public static void closeShop(){
+        shopOpen = false;
+    }
+    public static void openShop(){
+        shopOpen = true;
     }
 
 
@@ -438,6 +451,24 @@ public class appData extends Application {
                 Log.d("GetUserProfile error", databaseError.getMessage());
             }
         });
+    }
+
+    public static boolean isShopOpen(){
+
+        Calendar c = Calendar.getInstance();
+        if(c.get(Calendar.HOUR_OF_DAY) > OPENHOUR && c.get(Calendar.HOUR_OF_DAY) < CLOSEHOUR){
+            return true;
+        }
+        else if((int)c.get(Calendar.HOUR_OF_DAY) == OPENHOUR && c.get(Calendar.MINUTE) >= OPENMINUT )
+        {
+            return true;
+        }
+        else if((int)c.get(Calendar.HOUR_OF_DAY) == CLOSEHOUR && c.get(Calendar.MINUTE) < CLOSEMINUT){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public static void updateUserProfile(String name, String phoneNumber){
