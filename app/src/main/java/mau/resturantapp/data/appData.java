@@ -457,4 +457,102 @@ public class appData extends Application {
             onSuccesfullLogin();
         }
     }
+
+    @Deprecated
+    public static void getPendingOrders(){
+        DatabaseReference ref = firebaseDatabase.getReference("pendingOrders");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    userProfile = snapshot.getValue(UserProfile.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("GetPendingOrders error", databaseError.getMessage());
+            }
+        });
+    }
+
+    public static ArrayList<Order> getAllOrders(){
+        DatabaseReference ref = firebaseDatabase.getReference("users");
+        final ArrayList<Order> orders = new ArrayList<>();
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for(DataSnapshot userSnapshot: snapshot.getChildren()){
+                        for(DataSnapshot orderSnapshot: userSnapshot.getChildren()){
+                            Order order = orderSnapshot.getValue(Order.class);
+                            orders.add(order);
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("GetUserOrders() error", databaseError.getMessage());
+            }
+        });
+        return orders;
+    }
+
+    public static ArrayList<Order> getCurrentUsersOrders(){
+        DatabaseReference ref = firebaseDatabase.getReference("users/" + firebaseAuth.getCurrentUser().getUid());
+        final ArrayList<Order> orders = new ArrayList<>();
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for(DataSnapshot keySnapshot: snapshot.getChildren()){
+                        for(DataSnapshot orderSnapshot: keySnapshot.getChildren()){
+                            Order order = orderSnapshot.getValue(Order.class);
+                            orders.add(order);
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("GetUserOrders() error", databaseError.getMessage());
+            }
+        });
+        return orders;
+    }
+
+    public static void setOpeningHours(int openHour, int openMinutes, int closeHour, int closeMinutes){
+        DatabaseReference ref = firebaseDatabase.getReference("restaurantSettings");
+        Map<String, Integer> openingHours = new HashMap<>();
+        openingHours.put("openHour", openHour);
+        openingHours.put("openMinutes", openMinutes);
+        openingHours.put("closeHour", closeHour);
+        openingHours.put("closeMinutes", closeMinutes);
+        ref.setValue(openingHours);
+    }
+
+    public static void getOpeningHours(){
+        DatabaseReference ref = firebaseDatabase.getReference("restaurantSettings");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    OPENHOUR = (int) snapshot.getValue();
+                    OPENMINUT = (int) snapshot.getValue();
+                    CLOSEHOUR = (int) snapshot.getValue();
+                    CLOSEMINUT = (int) snapshot.getValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("GetOpeningHours() error", databaseError.getMessage());
+            }
+        });
+    }
 }
