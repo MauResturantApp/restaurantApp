@@ -132,17 +132,20 @@ public class FirebaseRead {
         return orders;
     }
 
-    public static void getOpeningHours(){
+    public static void getShopSettings(){
         DatabaseReference ref = appData.firebaseDatabase.getReference("restaurantsettings/");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    Map<String, Long> openingHours = (Map) snapshot.getValue();
-                    appData.OPENHOUR = (int) (long) openingHours.get("openHour");
-                    appData.OPENMINUT = (int) (long) openingHours.get("openMinutes");
-                    appData.CLOSEHOUR = (int) (long) openingHours.get("closeHour");
-                    appData.CLOSEMINUT = (int) (long) openingHours.get("closeMinutes");
+                    Map<String, Object> shopSettings = (Map) snapshot.getValue();
+                    appData.OPENHOUR = (int) (long) shopSettings.get("openHour");
+                    appData.OPENMINUT = (int) (long) shopSettings.get("openMinutes");
+                    appData.CLOSEHOUR = (int) (long) shopSettings.get("closeHour");
+                    appData.CLOSEMINUT = (int) (long) shopSettings.get("closeMinutes");
+                    appData.shopOpen = (boolean) shopSettings.get("shopOpen");
+                    appData.mainText = (String) shopSettings.get("mainText");
+                    //appData.address = (String) shopSettings.get("address");
                 }
             }
 

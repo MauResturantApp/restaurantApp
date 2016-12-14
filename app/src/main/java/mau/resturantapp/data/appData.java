@@ -60,16 +60,15 @@ public class appData extends Application {
     public static int totalPrice = 0;
 
 
-    // Denne værdig skal hentes fra Firebase, så kan man lukke/åbne resturanten fra selve admincontrols.
+    //Shop settings
     public static boolean shopOpen = true;
-
-    public static Cartcontent_adapter adapter = new Cartcontent_adapter();
-
-    public static int OPENHOUR = 11; //dette laves om senere til at admin kan skifte, men for now tester jeg bare.
+    public static int OPENHOUR = 11;
     public static int OPENMINUT = 00;
     public static int CLOSEHOUR = 21;
     public static int CLOSEMINUT = 00;
+    public static String mainText;
 
+    public static Cartcontent_adapter adapter = new Cartcontent_adapter();
     public static CartContent shoppingCart;
     public static boolean loggingIn = false;
 
@@ -89,15 +88,12 @@ public class appData extends Application {
 
         appPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         setPrefs();
-        FirebaseRead.getOpeningHours();
+        FirebaseRead.getShopSettings();
         FirebaseRead.getTabs();
     }
 
-    public static void closeShop(){
-        shopOpen = false;
-    }
-    public static void openShop(){
-        shopOpen = true;
+    public static void setShopOpenOrClosed(boolean bool){
+        shopOpen = bool;
     }
 
 

@@ -2,6 +2,7 @@ package mau.resturantapp.aktivitys.mainFragments.adminControls;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,6 +22,7 @@ import java.util.Date;
 
 import mau.resturantapp.R;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.utils.Firebase.FirebaseRead;
 import mau.resturantapp.utils.Firebase.FirebaseWrite;
 
 /**
@@ -84,6 +86,7 @@ public class ShopSettings_frag extends Fragment implements OnClickListener,OnIte
         String hometxt = maintext.getText().toString();
 
         FirebaseWrite.setOpeningHours(openHour,openMinuts,closeHour,closeMinute);
+        FirebaseWrite.setShopMainText(hometxt);
     }
 
     @Override
@@ -163,12 +166,8 @@ public class ShopSettings_frag extends Fragment implements OnClickListener,OnIte
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         if(openCloseshop == compoundButton){
-            if(b == true){
-                appData.closeShop();
-            }
-            else{
-                appData.openShop();
-            }
+            FirebaseWrite.setShopOpenOrClosed(b);
+            appData.setShopOpenOrClosed(b);
         }
 
     }

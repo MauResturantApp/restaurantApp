@@ -110,12 +110,12 @@ public class FirebaseWrite {
 
     public static void setOpeningHours(int openHour, int openMinutes, int closeHour, int closeMinutes){
         DatabaseReference ref = appData.firebaseDatabase.getReference("restaurantsettings/");
-        Map<String, Integer> openingHours = new HashMap<>();
+        Map<String, Object> openingHours = new HashMap<>();
         openingHours.put("openHour", openHour);
         openingHours.put("openMinutes", openMinutes);
         openingHours.put("closeHour", closeHour);
         openingHours.put("closeMinutes", closeMinutes);
-        ref.setValue(openingHours);
+        ref.updateChildren(openingHours);
     }
 
     public static void addProductToTab(String name, int price, String key){
@@ -129,5 +129,23 @@ public class FirebaseWrite {
     public static void removeProductFromTab(String tabKey, Product product){
         DatabaseReference ref = appData.firebaseDatabase.getReference("product/" + tabKey + "/" + product.getKey());
         ref.removeValue();
+    }
+
+    public static void setShopOpenOrClosed(boolean open){
+        DatabaseReference ref = appData.firebaseDatabase.getReference("restaurantsettings/");
+        Map<String, Object> update = new HashMap<>();
+        update.put("shopOpen", open);
+        ref.updateChildren(update);
+    }
+
+    public static void setShopMainText(String text){
+        DatabaseReference ref = appData.firebaseDatabase.getReference("restaurantsettings/");
+        Map<String, Object> update = new HashMap<>();
+        update.put("mainText", text);
+        ref.updateChildren(update);
+    }
+
+    public static void setAddress(String address){
+        //TODO HVILKET FORMAT SKAL ADDRESSE VÆRE?
     }
 }
