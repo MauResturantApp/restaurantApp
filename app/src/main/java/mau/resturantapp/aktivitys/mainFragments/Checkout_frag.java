@@ -21,6 +21,7 @@ import android.widget.TimePicker;
 import mau.resturantapp.R;
 import mau.resturantapp.adapters.Cartcontent_adapter;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.utils.Firebase.FirebaseWrite;
 
 /**
  * Created by AnwarC on 23/11/2016.
@@ -78,7 +79,7 @@ public class Checkout_frag extends Fragment implements View.OnClickListener,Runn
         if(shopIsOpen()){
             String comment = UIcomment.getText().toString();
             String timeToPickup = "" + UITimepick.getCurrentHour() + ":" + UITimepick.getCurrentMinute();
-            appData.placeOrder(comment, timeToPickup);
+            FirebaseWrite.placeOrder(comment, timeToPickup);
         } else {
             Log.w("Checkout" , "Shop is closed");
             appData.event.shopCLosed();

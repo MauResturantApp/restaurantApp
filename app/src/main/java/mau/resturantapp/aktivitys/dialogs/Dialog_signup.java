@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import mau.resturantapp.R;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.utils.Firebase.FirebaseAuthentication;
 
 /**
  * Created by AnwarC on 15/11/2016.
@@ -76,7 +77,7 @@ public class Dialog_signup extends DialogFragment {
             appData.event.showSignupDialog();
 
         } else {
-            appData.testNewUser(email,password);
+            FirebaseAuthentication.NewUser(email,password);
         }
     }
 }

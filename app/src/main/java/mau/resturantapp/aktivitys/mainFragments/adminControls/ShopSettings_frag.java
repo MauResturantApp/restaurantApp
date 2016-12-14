@@ -21,6 +21,7 @@ import java.util.Date;
 
 import mau.resturantapp.R;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.utils.Firebase.FirebaseWrite;
 
 /**
  * Created by AnwarC on 05/12/2016.
@@ -82,8 +83,7 @@ public class ShopSettings_frag extends Fragment implements OnClickListener,OnIte
         int closeHour = closeTime.getCurrentHour();
         String hometxt = maintext.getText().toString();
 
-        appData.setOpeningHours(openHour,openMinuts,closeHour,closeMinute);
-
+        FirebaseWrite.setOpeningHours(openHour,openMinuts,closeHour,closeMinute);
     }
 
     @Override

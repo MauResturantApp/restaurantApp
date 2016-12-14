@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import mau.resturantapp.R;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.utils.Firebase.FirebaseWrite;
 
 public class MenuListFirebase_frag extends Fragment implements View.OnClickListener {
     private static final String argPage = "Arg_Page";
@@ -36,17 +37,17 @@ public class MenuListFirebase_frag extends Fragment implements View.OnClickListe
     public void onClick(View v) {
         if(v == updateTab){
             if(hasUpdate())
-            appData.updateTab(name.getText().toString(), Integer.parseInt(position.getText().toString()), active.getText().toString(), tabKey);
+            FirebaseWrite.updateTab(name.getText().toString(), Integer.parseInt(position.getText().toString()), active.getText().toString(), tabKey);
         }
         if(v == addTab){
-            appData.addTab(name.getText().toString(), Integer.parseInt(position.getText().toString()), active.getText().toString());
+            FirebaseWrite.addTab(name.getText().toString(), Integer.parseInt(position.getText().toString()), active.getText().toString());
             //De her skal være der, så standard input er tilbage efter ny tab.
             name.setText(pageTitle);
             position.setText(Integer.toString(tabPosition));
             active.setText(tabActive);
         }
         if(v == removeTab){
-            appData.removeTab(tabKey);
+            FirebaseWrite.removeTab(tabKey);
             //De her skal være der, ellers husker android tekstinput selv efter onDestroy()
             name.setText(pageTitle);
             position.setText(Integer.toString(tabPosition));

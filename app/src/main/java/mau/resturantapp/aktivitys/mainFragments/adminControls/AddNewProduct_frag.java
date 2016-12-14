@@ -20,6 +20,7 @@ import java.util.List;
 import mau.resturantapp.R;
 import mau.resturantapp.data.MenuTab;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.utils.Firebase.FirebaseWrite;
 
 /**
  * Created by Yoouughurt on 11-12-2016.
@@ -51,14 +52,17 @@ public class AddNewProduct_frag extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if(v == addProduct){
+            Log.d("AddProductButton", " Clicked");
             if(checkUI()) {
-               //appData.addNewProduct(name.getText().toString(), price.getText().toString(), tab.getSelectedItem());
+                Log.d("CheckUI", "true");
+                MenuTab currentTab = (MenuTab) tab.getSelectedItem();
+                FirebaseWrite.addProductToTab(name.getText().toString(), Integer.parseInt(price.getText().toString()), currentTab.getKey());
             }
         }
     }
 
     private boolean checkUI(){
-        if(name.getText().toString().equals("") && price.getText().toString().equals("")){
+        if(!(name.getText().toString().equals("") && price.getText().toString().equals(""))){
             try{
                 Integer.parseInt(price.getText().toString());
                 return true;

@@ -92,7 +92,7 @@ public class CartContentFirebase_frag extends Fragment implements Runnable {
 
         appData.priceObservers.add(this);
 
-        appData.adapter.setRef(appData.firebaseDatabase.getReference("shoppingcart/" + appData.getUID())
+        appData.adapter.setRef(appData.firebaseDatabase.getReference("shoppingcart/" + appData.firebaseAuth.getCurrentUser().getUid())
         );
         appData.adapter.startAuthStateListener();
         appData.firebaseAuth.addAuthStateListener(appData.adapter.getmAuthListener());

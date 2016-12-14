@@ -25,6 +25,7 @@ import com.facebook.login.widget.LoginButton;
 
 import mau.resturantapp.R;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.utils.Firebase.FirebaseAuthentication;
 
 /**
  * Created by AnwarC on 15/11/2016.
@@ -75,7 +76,7 @@ public class Dialog_login extends DialogFragment {
         facebookBtn.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                appData.loginFacebook(loginResult.getAccessToken());
+                FirebaseAuthentication.loginFacebook(loginResult.getAccessToken());
                 dismiss();
             }
 
@@ -95,7 +96,7 @@ public class Dialog_login extends DialogFragment {
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
                 if(currentAccessToken == null){
                     LoginManager.getInstance().logOut();
-                    appData.logOutUser();
+                    FirebaseAuthentication.logOutUser();
                 }
             }
         };
@@ -132,7 +133,7 @@ public class Dialog_login extends DialogFragment {
         }
 
         else{
-            appData.testValidLogin(email,password);
+            FirebaseAuthentication.ValidLogin(email,password);
         }
     }
 

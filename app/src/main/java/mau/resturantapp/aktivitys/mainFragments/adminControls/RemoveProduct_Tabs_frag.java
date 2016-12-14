@@ -25,12 +25,13 @@ import mau.resturantapp.aktivitys.mainFragments.menufrag.MenuTabs_frag;
 import mau.resturantapp.data.MenuTab;
 import mau.resturantapp.data.appData;
 import mau.resturantapp.event.events.TabsChangedEvent;
+import mau.resturantapp.utils.Firebase.FirebaseRead;
 
 /**
  * Created by Yoouughurt on 12-12-2016.
  */
 
-public class RemoveProduct_Tabs_frag extends Fragment implements TabLayout.OnTabSelectedListener {
+public class RemoveProduct_Tabs_frag extends Fragment {
 
     private View rod;
     private TabLayout tableLayout;
@@ -43,14 +44,13 @@ public class RemoveProduct_Tabs_frag extends Fragment implements TabLayout.OnTab
         rod = inflater.inflate(R.layout.amdcontrol_removeproduct_productlist, container, false);
 
         tabs = (ViewPager) rod.findViewById(R.id.menuTabContent);
-        tabs.setAdapter(new TabsAdapter(getChildFragmentManager(), getContext()));
+        tabs.setAdapter(new TabsAdapter(getChildFragmentManager()));
 
         tableLayout = (TabLayout) rod.findViewById(R.id.tabLayout);
 
         tableLayout.setupWithViewPager(tabs);
 
-        tableLayout.addOnTabSelectedListener(this);
-        appData.getTabs();
+        FirebaseRead.getTabs();
         return rod;
     }
 
@@ -123,55 +123,13 @@ public class RemoveProduct_Tabs_frag extends Fragment implements TabLayout.OnTab
     }
 
 
-
-    public void newTabSelectedEvent(int tabPage){
-        int pageNumber = tabPage + 1;
-
-      /*  switch (pageNumber){
-            case 1:
-                tabsImage.setImageResource(R.mipmap.tabs_aqurk);
-                break;
-            case 2:
-                tabsImage.setImageResource(R.mipmap.tabs_burger);
-                break;
-            case 3:
-                tabsImage.setImageResource(R.mipmap.tabs_cola);
-                break;
-            case 4:
-                tabsImage.setImageResource(R.mipmap.tabs_pizza);
-                break;
-            case 5:
-                tabsImage.setImageResource(R.mipmap.tabs_aqurk);
-                break;
-            default:
-                break;
-        }*/
-    }
-
-    @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        newTabSelectedEvent(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-
-    }
-
     public class TabsAdapter extends FragmentStatePagerAdapter {
-        private Context context;
         private ArrayList<MenuTab> tabs = appData.tabs;
 
 
 
-        public TabsAdapter(FragmentManager fm, Context context) {
+        public TabsAdapter(FragmentManager fm) {
             super(fm);
-            this.context = context;
         }
 
 
@@ -196,7 +154,7 @@ public class RemoveProduct_Tabs_frag extends Fragment implements TabLayout.OnTab
         public Fragment getItem(int position) {
             Log.d("getitem funktion" , "position : " + position);
 
-            return RemoveProduct_List_frag.newInstance(position + 1, tabs.get(position).getName());
+            return RemoveProduct_List_frag.newInstance(position + 1, tabs.get(position).getName(), tabs.get(position).getKey());
         }
 
         @Override

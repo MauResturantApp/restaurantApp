@@ -27,6 +27,7 @@ import mau.resturantapp.R;
 import mau.resturantapp.data.appData;
 
 import mau.resturantapp.data.Product;
+import mau.resturantapp.utils.Firebase.FirebaseWrite;
 
 /**
  * Created by anwar on 10/17/16.
@@ -35,10 +36,11 @@ import mau.resturantapp.data.Product;
 public class MenuList_frag extends Fragment {
     private static final String argPage = "Arg_Page";
     private static final String argPageTitle = "Arg_PageTitle";
+    private static final String argTabKey = "Arg_TabKey";
 
     private int pageNumber;
     private String pageTitle;
-    private ListView menuList;
+    private String key;
 
     private DatabaseReference ref;
 
@@ -94,10 +96,11 @@ public class MenuList_frag extends Fragment {
         }
     }
 
-    public static MenuList_frag newInstance(int page, String pageTitle) {
+    public static MenuList_frag newInstance(int page, String pageTitle, String key) {
         Bundle args = new Bundle();
         args.putInt(argPage, page);
         args.putString(argPageTitle, pageTitle);
+        args.putString(argTabKey, key);
         Log.d("recyclerViewAdapter", "imagebutton" + page);
         MenuList_frag frag = new MenuList_frag();
         frag.setArguments(args);
@@ -109,6 +112,7 @@ public class MenuList_frag extends Fragment {
         super.onCreate(savedInstanceState);
         pageNumber = getArguments().getInt(argPage);
         pageTitle = getArguments().getString(argPageTitle);
+        key = getArguments().getString(argTabKey);
         Log.d("oncreate" , "pagenumber" + pageNumber);
 
     }
@@ -155,24 +159,7 @@ public class MenuList_frag extends Fragment {
         products.setHasFixedSize(false); //Test forskel
         products.setLayoutManager(manager);
 
-        switch (pageNumber) {
-            case 1:
-                ref = appData.firebaseDatabase.getReference("products/Frugt");
-                break;
-            case 2:
-                ref = appData.firebaseDatabase.getReference("products/Frugt");
-                break;
-            case 3:
-                ref = appData.firebaseDatabase.getReference("products/Frugt");
-                break;
-            case 4:
-                ref = appData.firebaseDatabase.getReference("products/Frugt");
-                break;
-            case 5:
-                ref = appData.firebaseDatabase.getReference("products/Frugt");
-                break;
-
-        }
+        ref = appData.firebaseDatabase.getReference("product/" + key);
 
         products.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -216,7 +203,7 @@ public class MenuList_frag extends Fragment {
                 holder.addNewItemBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        appData.addProductToCart(recyclerViewAdapter.getItem(position));
+                        FirebaseWrite.addProductToCart(recyclerViewAdapter.getItem(position));
                         Toast.makeText(getContext(), recyclerViewAdapter.getItem(position).getName() + "er tilføget til kurv", Toast.LENGTH_SHORT).show();
                         appData.event.newItemToCart();
                         succesfullAddItem(holder,position);
@@ -270,12 +257,11 @@ public class MenuList_frag extends Fragment {
                     @Override
                     public void onClick(View v) {
                         //appData.cartContent.add(recyclerViewAdapter.getItem(mPosition));
-                        appData.addProductToCart(product);
+                        FirebaseWrite.addProductToCart(product);
                         appData.setNewPrice(product.getPrice());
                         Toast.makeText(getContext(), recyclerViewAdapter.getItem(mPosition).getName() + "er tilføget til kurv", Toast.LENGTH_SHORT).show();
                         appData.event.newItemToCart();
                         succesfullAddItem(productHolder,mPosition);
-
 
                     }
                 });
@@ -298,7 +284,7 @@ public class MenuList_frag extends Fragment {
                     @Override
                     public void onClick(View view) {
                         for(int i = 0; i<productHolder.amount;i++){
-                            appData.addProductToCart(product);
+                            FirebaseWrite.addProductToCart(product);
                             productHolder.multipleItemLayout.setAlpha(0f);
                         }
                     }

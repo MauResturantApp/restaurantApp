@@ -20,6 +20,8 @@ import java.util.List;
 import mau.resturantapp.R;
 import mau.resturantapp.data.ShoppingCartItem;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.utils.Firebase.FirebaseAuthentication;
+import mau.resturantapp.utils.Firebase.FirebaseWrite;
 
 /**
  * Created by AnwarC on 02/12/2016.
@@ -63,7 +65,7 @@ public class Cartcontent_adapter {
                     @Override
                     public void onClick(View v) {
                         //remove from cart representation in firebase
-                        appData.removeProductFromCart(shoppingCartItem.getKey());
+                        FirebaseWrite.removeProductFromCart(shoppingCartItem.getKey());
                     }
                 });
             }
@@ -107,7 +109,7 @@ public class Cartcontent_adapter {
                     if(!appData.loggingIn) {
                         // User is signed out
                         appData.loggingIn = true;
-                        appData.logInAnonymously();
+                        FirebaseAuthentication.logInAnonymously();
                     }
                 }
             }

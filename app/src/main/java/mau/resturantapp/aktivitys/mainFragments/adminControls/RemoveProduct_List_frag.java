@@ -22,6 +22,7 @@ import com.google.firebase.database.Query;
 import mau.resturantapp.R;
 import mau.resturantapp.data.Product;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.utils.Firebase.FirebaseWrite;
 
 
 /**
@@ -32,9 +33,11 @@ public class RemoveProduct_List_frag extends Fragment {
 
     private static final String argPage = "Arg_Page";
     private static final String argPageTitle = "Arg_PageTitle";
+    private static final String argTabKey = "Arg_TabKey";
 
     private int pageNumber;
     private String pageTitle;
+    private String key;
 
     private DatabaseReference ref;
 
@@ -75,10 +78,11 @@ public class RemoveProduct_List_frag extends Fragment {
         }
     }
 
-    public static RemoveProduct_List_frag newInstance(int page, String pageTitle) {
+    public static RemoveProduct_List_frag newInstance(int page, String pageTitle, String key) {
         Bundle args = new Bundle();
         args.putInt(argPage, page);
         args.putString(argPageTitle, pageTitle);
+        args.putString(argTabKey, key);
         Log.d("recyclerViewAdapter", "imagebutton" + page);
         RemoveProduct_List_frag frag = new RemoveProduct_List_frag();
         frag.setArguments(args);
@@ -90,6 +94,7 @@ public class RemoveProduct_List_frag extends Fragment {
         super.onCreate(savedInstanceState);
         pageNumber = getArguments().getInt(argPage);
         pageTitle = getArguments().getString(argPageTitle);
+        key = getArguments().getString(argTabKey);
         Log.d("oncreate" , "pagenumber" + pageNumber);
 
     }
@@ -136,24 +141,7 @@ public class RemoveProduct_List_frag extends Fragment {
         products.setHasFixedSize(false);
         products.setLayoutManager(manager);
 
-        switch (pageNumber) {
-            case 1:
-                ref = appData.firebaseDatabase.getReference("products/Frugt");
-                break;
-            case 2:
-                ref = appData.firebaseDatabase.getReference("products/Frugt");
-                break;
-            case 3:
-                ref = appData.firebaseDatabase.getReference("products/Frugt");
-                break;
-            case 4:
-                ref = appData.firebaseDatabase.getReference("products/Frugt");
-                break;
-            case 5:
-                ref = appData.firebaseDatabase.getReference("products/Frugt");
-                break;
-
-        }
+        ref = appData.firebaseDatabase.getReference("product/" + key);
 
         return rod;
     }
@@ -174,7 +162,7 @@ public class RemoveProduct_List_frag extends Fragment {
                 productHolder.addNewItemBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //appData.removeProductFromFirebase(product);
+                        FirebaseWrite.removeProductFromTab(key, product);
                         Toast.makeText(getContext(), recyclerViewAdapter.getItem(mPosition).getName() + "er fjernet", Toast.LENGTH_SHORT).show();
                     }
                 });

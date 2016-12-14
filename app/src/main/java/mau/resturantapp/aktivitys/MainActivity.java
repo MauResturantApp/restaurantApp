@@ -74,6 +74,7 @@ import mau.resturantapp.event.events.ShowLogInDialogEvent;
 import mau.resturantapp.event.events.ShowSignupDialogEvent;
 import mau.resturantapp.test.QRCamera;
 import mau.resturantapp.test.QRTest;
+import mau.resturantapp.utils.Firebase.FirebaseAuthentication;
 import mau.resturantapp.utils.LanguageContextWrapper;
 import mau.resturantapp.utils.LanguageHandler;
 
@@ -324,14 +325,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                 showSignupDialog();
                 break;
             case R.id.menu_logout:
-                //appData.cartContent.clear();
-                //appData.event.newItemToCart();
-                //appData.currentUser = null;
-                //userLoggedOut();
-
-                //firebase+facebook logout
-                appData.logOutUser();
-
+                FirebaseAuthentication.logOutUser();
                 showHomeScreen();
                 break;
             case R.id.menu_menuHandler:

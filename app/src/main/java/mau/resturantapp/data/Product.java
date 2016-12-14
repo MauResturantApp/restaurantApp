@@ -9,9 +9,7 @@ import com.google.firebase.database.Exclude;
 public class Product {
     private String name;
     private int price;
-    @Exclude
-    private String id;
-    //maybe some accessories list here
+    private String key;
 
     public Product(){
 
@@ -36,5 +34,13 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

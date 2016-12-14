@@ -28,6 +28,7 @@ import mau.resturantapp.R;
 import mau.resturantapp.data.MenuTab;
 import mau.resturantapp.data.appData;
 import mau.resturantapp.event.events.TabsChangedEvent;
+import mau.resturantapp.utils.Firebase.FirebaseRead;
 
 public class MenuTabsFirebase_frag extends Fragment implements OnTabSelectedListener {
 
@@ -42,7 +43,7 @@ public class MenuTabsFirebase_frag extends Fragment implements OnTabSelectedList
         rod = inflater.inflate(R.layout.food_menu_frag, container, false);
 
         tabs = (ViewPager) rod.findViewById(R.id.menuTabContent);
-        tabs.setAdapter(new TabsAdapter(getChildFragmentManager(), getContext()));
+        tabs.setAdapter(new TabsAdapter(getChildFragmentManager()));
 
         tabsImage = (ImageView) rod.findViewById(R.id.menu_tabs_image);
 
@@ -51,7 +52,7 @@ public class MenuTabsFirebase_frag extends Fragment implements OnTabSelectedList
         tableLayout.setupWithViewPager(tabs);
 
         tableLayout.addOnTabSelectedListener(this);
-        appData.getTabs();
+        FirebaseRead.getTabs();
         return rod;
     }
 
@@ -165,14 +166,12 @@ public class MenuTabsFirebase_frag extends Fragment implements OnTabSelectedList
     }
 
     public class TabsAdapter extends FragmentStatePagerAdapter {
-        private Context context;
         private ArrayList<MenuTab> tabs = appData.tabs;
 
 
 
-        public TabsAdapter(FragmentManager fm, Context context) {
+        public TabsAdapter(FragmentManager fm) {
             super(fm);
-            this.context = context;
         }
 
 

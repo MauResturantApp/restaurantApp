@@ -36,7 +36,7 @@ public class LanguageHandler {
     }
 
     /**
-     * Returns false if if none is present @Default language code = dk.
+     * Returns false if none is present @Default language code = dk.
      * @param context Context.
      * @return Boolean true = english | false = danish
      */

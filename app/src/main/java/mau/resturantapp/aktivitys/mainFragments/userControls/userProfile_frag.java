@@ -15,6 +15,7 @@ import org.w3c.dom.Text;
 import mau.resturantapp.R;
 import mau.resturantapp.data.UserProfile;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.utils.Firebase.FirebaseWrite;
 
 public class userProfile_frag extends Fragment implements View.OnClickListener {
 
@@ -45,7 +46,7 @@ public class userProfile_frag extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         if(v == updateButton){
             if(hasUpdate()){
-                appData.updateUserProfile(name.getText().toString(), phoneNumber.getText().toString());
+                FirebaseWrite.updateUserProfile(name.getText().toString(), phoneNumber.getText().toString());
             }
         }
     }
