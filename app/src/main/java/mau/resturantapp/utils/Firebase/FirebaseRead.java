@@ -145,7 +145,8 @@ public class FirebaseRead {
                     appData.CLOSEMINUT = (int) (long) shopSettings.get("closeMinutes");
                     appData.shopOpen = (boolean) shopSettings.get("shopOpen");
                     appData.mainText = (String) shopSettings.get("mainText");
-                    //appData.address = (String) shopSettings.get("address");
+                    appData.address = (String) shopSettings.get("address");
+                    appData.emailAddress = (String) shopSettings.get("emailAddress");
                 }
             }
 
@@ -155,4 +156,6 @@ public class FirebaseRead {
             }
         });
     }
+
+
 }

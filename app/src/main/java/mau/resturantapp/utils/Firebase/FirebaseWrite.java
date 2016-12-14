@@ -146,6 +146,16 @@ public class FirebaseWrite {
     }
 
     public static void setAddress(String address){
-        //TODO HVILKET FORMAT SKAL ADDRESSE VÆRE?
+        DatabaseReference ref = appData.firebaseDatabase.getReference("restaurantsettings/");
+        Map<String, Object> update = new HashMap<>();
+        update.put("address", address);
+        ref.updateChildren(update);
+    }
+
+    public static void setEmailAddress(String emailAddress){
+        DatabaseReference ref = appData.firebaseDatabase.getReference("restaurantsettings/");
+        Map<String, Object> update = new HashMap<>();
+        update.put("emailAddress", emailAddress);
+        ref.updateChildren(update);
     }
 }

@@ -67,6 +67,8 @@ public class appData extends Application {
     public static int CLOSEHOUR = 21;
     public static int CLOSEMINUT = 00;
     public static String mainText;
+    public static String address;
+    public static String emailAddress;
 
     public static Cartcontent_adapter adapter = new Cartcontent_adapter();
     public static CartContent shoppingCart;
