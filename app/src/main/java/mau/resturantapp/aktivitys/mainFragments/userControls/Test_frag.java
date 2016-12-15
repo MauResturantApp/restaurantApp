@@ -396,11 +396,11 @@ public class Test_frag extends Fragment implements DatePickerDialog.OnDateSetLis
 
         // TODO Get product list from Firebase
         // For now we just use some dummy data...
-        productList.add(new Product("Some product", 2));
-        productList.add(new Product("Another product", 2));
-        productList.add(new Product("A third product", 2));
-        productList.add(new Product("More products", 2));
-        productList.add(new Product("Final product", 2));
+        productList.add(new Product("Apple", 2));
+        productList.add(new Product("Banana", 2));
+        productList.add(new Product("Orange", 2));
+        productList.add(new Product("Watermelon", 2));
+        productList.add(new Product("Plumb", 2));
 
         return productList;
     }

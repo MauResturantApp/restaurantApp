@@ -119,7 +119,7 @@ public class FindWay_frag extends Fragment implements
         }
 
         // Check current state of the location setting (and prompt user to enable if disabled)
-        checkLocationSetting();
+        checkLocation();
 
         // View setup
         directionRoutes = (LinearLayout) rod.findViewById(R.id.directionRoutes);
@@ -382,7 +382,7 @@ public class FindWay_frag extends Fragment implements
             // allowing the app to use current location. This should've been resolved already,
             // but might've been overlooked upon an app-resume or whatever. Anyway, redo the
             // entire please-change-your-settings-dialog check
-            checkLocationSetting();
+            checkLocation();
         }
     }
 
@@ -404,7 +404,7 @@ public class FindWay_frag extends Fragment implements
      * This will allow us to control how to react to the user's choice in regard of either accepting
      * or declining to turn on location service for the app.
      */
-    public void checkLocationSetting() {
+    public void checkLocation() {
         LocationRequest request = LocationRequest.create();
 
         request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
