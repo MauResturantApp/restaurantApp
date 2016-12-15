@@ -41,14 +41,6 @@
             android:icon="@drawable/ic_action_signout"
             android:visible="false">
         </item>
-        <item
-            android:id="@+id/menu_test"
-            android:orderInCategory="11"
-            android:title="TEST"
-            android:icon="@drawable/ic_action_signout"
-            android:visible="true">
-        </item>
-
 <item android:title="@string/draweMenuUser"
     android:orderInCategory="15">
     <menu>
