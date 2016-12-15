@@ -30,6 +30,11 @@ import mau.resturantapp.user.LoggedInUser;
  */
 
 public class FirebaseAuthentication {
+
+
+    /**
+     *  Handles the necessary actions to take when an authenticated user signs in.
+     */
     private static void onSuccesfullLogin() {
         String name = appData.firebaseAuth.getCurrentUser().getDisplayName();
         String email = appData.firebaseAuth.getCurrentUser().getEmail();
@@ -38,6 +43,10 @@ public class FirebaseAuthentication {
         isAdmin();
     }
 
+    /**
+     * Checks if the currently logged in user is an administrator.
+     * If he is an administrator this will be saved and an event to handle it will fire.
+     */
     public static void isAdmin() {
         DatabaseReference ref = appData.firebaseDatabase.getReference("permissions/" + appData.firebaseAuth.getCurrentUser().getUid());
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -59,11 +68,21 @@ public class FirebaseAuthentication {
         });
     }
 
+    /**
+     * Handles the sign up flow with email authentication.
+     * @param email The users email
+     * @param password The users password
+     */
     public static void NewUser(String email, String password) {
         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
         linkWithCredential(credential);
     }
 
+    /**
+     *  Handles the login flow for email authentication.
+     * @param userEmail The users email
+     * @param userPassword The users password
+     */
     public static void ValidLogin(final String userEmail, final String userPassword) {
         FirebaseUser user = appData.firebaseAuth.getCurrentUser();
         if (user != null && user.isAnonymous()) {
@@ -76,6 +95,11 @@ public class FirebaseAuthentication {
         LoginAndTransfer(userEmail, userPassword);
     }
 
+    /**
+     *  Signs in to firebase and transfers their shoppingcart to firebase.
+     * @param userEmail The users email
+     * @param userPassword The users password
+     */
     private static void LoginAndTransfer(String userEmail, String userPassword) {
 
         String email = userEmail;
@@ -101,6 +125,9 @@ public class FirebaseAuthentication {
                 });
     }
 
+    /**
+     * Signs out from both the Facebook API and Firebase.
+     */
     public static void logOutUser() {
         if(!appData.loggingIn) {
             LoginManager.getInstance().logOut();
@@ -110,6 +137,9 @@ public class FirebaseAuthentication {
         Log.d("Appdata", "Logged out user");
     }
 
+    /**
+     * Will login to firebase as an anonymous user.
+     */
     public static void logInAnonymously() {
         appData.firebaseAuth.signInAnonymously()
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -127,12 +157,21 @@ public class FirebaseAuthentication {
                 });
     }
 
+    /**
+     * When a user has logged in with facebook, this function will use the generated AccessToken to authenticate with firebase.
+     * @param token The AccessToken from the facebook API.
+     */
     public static void loginFacebook(AccessToken token) {
         Log.d("appData", "handleFacebookAccessToken:" + token);
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         linkWithCredential(credential);
     }
 
+    /**
+     * Tries to link an anonymous user with the signed up user, so they will be able to access the same data.
+     * If the linking fails the usual login-flow proceeds.
+     * @param credential The credentials to login with.
+     */
     private static void linkWithCredential(final AuthCredential credential){
         appData.firebaseAuth.getCurrentUser().linkWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -148,6 +187,10 @@ public class FirebaseAuthentication {
                 });
     }
 
+    /**
+     * Tries to login to firebase with the given credentials. If the current user is anonymous the shoppingcart is saved first so it can be transferred.
+     * @param credential The credentials to login with.
+     */
     private static void loginWithCredential(AuthCredential credential){
         FirebaseUser user = appData.firebaseAuth.getCurrentUser();
         if (user != null && user.isAnonymous()) {
@@ -172,6 +215,11 @@ public class FirebaseAuthentication {
                 });
 
     }
+
+    /**
+     * Saves a users shoppingcart in memory and deletes it from firebase.
+     * Proceeds to prepare for login as this is a intermediate step going from anonymous to authenticated user.
+     */
 
     private static void saveShoppingCart(){
         final DatabaseReference ref = appData.firebaseDatabase.getReference("shoppingcart/" + appData.firebaseAuth.getCurrentUser().getUid());
@@ -199,6 +247,10 @@ public class FirebaseAuthentication {
         });
     }
 
+    /**
+     *  Transfers the users saved shoppingcart in memory to the authenticated users shoppingcart in Firebase.
+     *  Proceeds to remove the shoppingcart from memory.
+     */
     private static void transferShoppingCart(){
         if (appData.shoppingCart != null) {
             DatabaseReference ref = appData.firebaseDatabase.getReference("shoppingcart/" + appData.firebaseAuth.getCurrentUser().getUid());

@@ -22,6 +22,9 @@ import mau.resturantapp.data.appData;
 
 public class FirebaseRead {
 
+    /**
+     * Retrieves the Menu-Tabs and saves it in the application-object.
+     */
     public static void getTabs(){
         DatabaseReference ref = appData.firebaseDatabase.getReference("menutabs/");
         ref.addValueEventListener(new ValueEventListener() {
@@ -47,6 +50,9 @@ public class FirebaseRead {
         });
     }
 
+    /**
+     * Retrieves a users profile and saves it in the application-object
+     */
     public static void getUserProfile(){
         DatabaseReference ref = appData.firebaseDatabase.getReference("users/" + appData.firebaseAuth.getCurrentUser().getUid());
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -64,24 +70,21 @@ public class FirebaseRead {
         });
     }
 
+    /**
+     * Admin function.
+     * Returns pending orders.
+     * Not implemented yet.
+     */
     @Deprecated
     public static void getPendingOrders(){
-        DatabaseReference ref = appData.firebaseDatabase.getReference("pendingOrders");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    appData.userProfile = snapshot.getValue(UserProfile.class);
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d("GetPendingOrders error", databaseError.getMessage());
-            }
-        });
     }
 
+    /**
+     * Admin function.
+     * Retrieves all users orders.
+     * @return An ArrayList with all users orders.
+     */
     public static ArrayList<Order> getAllOrders(){
         DatabaseReference ref = appData.firebaseDatabase.getReference("users");
         final ArrayList<Order> orders = new ArrayList<>();
@@ -107,6 +110,10 @@ public class FirebaseRead {
         return orders;
     }
 
+    /**
+     * Retrieves the current users orders
+     * @return An arraylist with all their orders.
+     */
     public static ArrayList<Order> getCurrentUsersOrders(){
         DatabaseReference ref = appData.firebaseDatabase.getReference("users/" + appData.firebaseAuth.getCurrentUser().getUid());
         final ArrayList<Order> orders = new ArrayList<>();
@@ -132,6 +139,9 @@ public class FirebaseRead {
         return orders;
     }
 
+    /**
+     * Retrieves the shopSettings and saves it in the application-object.
+     */
     public static void getShopSettings(){
         DatabaseReference ref = appData.firebaseDatabase.getReference("restaurantsettings/");
         ref.addValueEventListener(new ValueEventListener() {
