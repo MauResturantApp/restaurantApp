@@ -52,8 +52,6 @@ public class userProfile_frag extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if(v == updateButton){
-            //testing
-            sendTokenToServer("ajjafjksgjrKKoooPPadadjk");
             if(hasUpdate()){
                 FirebaseWrite.updateUserProfile(name.getText().toString(), phoneNumber.getText().toString());
             }

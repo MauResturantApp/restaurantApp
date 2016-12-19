@@ -9,10 +9,16 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.SocketException;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 /**
  * Created by Yoouughurt on 19-12-2016.
@@ -31,46 +37,25 @@ public class FirebaseTokenHandlerService extends FirebaseInstanceIdService {
     }
 
     private void sendTokenToServer(String token){
-            HttpURLConnection connection = null;
-            try {
-                //Create connection
-                URL url = new URL("http://192.168.1.2:9000");
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("POST");
-                connection.setRequestProperty("Content-Type",
-                        "application/x-www-form-urlencoded");
+        byte[] data = token.getBytes();
 
-                connection.setRequestProperty("Content-Length",
-                        Integer.toString(token.getBytes().length));
-                connection.setRequestProperty("Content-Language", "en-US");
-
-                connection.setUseCaches(false);
-                connection.setDoOutput(true);
-
-                //Send request
-                DataOutputStream wr = new DataOutputStream (
-                        connection.getOutputStream());
-                wr.writeBytes(token);
-                wr.close();
-
-                //Get Response
-                InputStream is = connection.getInputStream();
-                BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-                StringBuilder response = new StringBuilder(); // or StringBuffer if Java version 5+
-                String line;
-                while ((line = rd.readLine()) != null) {
-                    response.append(line);
-                    response.append('\r');
-                }
-                rd.close();
-                Log.d("TOKEN TO SERVER", response.toString());
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
-            }
+        InetAddress ipAddress = null;
+        try {
+            ipAddress = InetAddress.getByName("185.15.73.229");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        DatagramPacket packet = new DatagramPacket(data, data.length, ipAddress, 9000);
+        DatagramSocket socket = null;
+        try {
+            socket = new DatagramSocket();
+            socket.send(packet);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Log.d("Packet send", packet.toString());
         }
 }
 
