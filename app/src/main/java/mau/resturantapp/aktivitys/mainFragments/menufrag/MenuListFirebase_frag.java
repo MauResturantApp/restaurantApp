@@ -9,8 +9,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import mau.resturantapp.R;
+import mau.resturantapp.aktivitys.dialogs.Dialog_ConfirmDeleteTab;
 import mau.resturantapp.data.appData;
+import mau.resturantapp.event.events.AskForDeleteTabeEvent;
 import mau.resturantapp.utils.Firebase.FirebaseWrite;
 
 public class MenuListFirebase_frag extends Fragment implements View.OnClickListener {
@@ -26,12 +31,15 @@ public class MenuListFirebase_frag extends Fragment implements View.OnClickListe
     private String tabActive;
     private String tabKey;
 
+    private Dialog_ConfirmDeleteTab d;
+
     private EditText name;
     private EditText position;
     private EditText active;
     private Button updateTab;
     private Button addTab;
     private Button removeTab;
+
 
     @Override
     public void onClick(View v) {
@@ -47,11 +55,12 @@ public class MenuListFirebase_frag extends Fragment implements View.OnClickListe
             active.setText(tabActive);
         }
         if(v == removeTab){
-            FirebaseWrite.removeTab(tabKey);
-            //De her skal være der, ellers husker android tekstinput selv efter onDestroy()
-            name.setText(pageTitle);
-            position.setText(Integer.toString(tabPosition));
-            active.setText(tabActive);
+            d = new Dialog_ConfirmDeleteTab();
+            Bundle bundle = new Bundle();
+            bundle.putString("id",tabKey);
+            d.setArguments(bundle);
+            d.show(getFragmentManager(),null);
+            Log.d("clicked", "clicked+++++++++++++++++++++++++++++++++++++++++++++++++++++++" + removeTab.isActivated());
         }
     }
 
@@ -68,7 +77,6 @@ public class MenuListFirebase_frag extends Fragment implements View.OnClickListe
         return frag;
     }
 
-    //test
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +101,14 @@ public class MenuListFirebase_frag extends Fragment implements View.OnClickListe
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
     public void onPause() {
+        EventBus.getDefault().unregister(this);
         super.onPause();
         Log.d("pause", "pagenumber" + pageNumber);
     }
@@ -125,6 +140,17 @@ public class MenuListFirebase_frag extends Fragment implements View.OnClickListe
         active.setText(tabActive);
 
         return rod;
+    }
+
+    @Subscribe
+    public void confirmDeleteTab(AskForDeleteTabeEvent event){
+
+        FirebaseWrite.removeTab(event.getId());
+        //De her skal være der, ellers husker android tekstinput selv efter onDestroy()
+        name.setText(pageTitle);
+        position.setText(Integer.toString(tabPosition));
+        active.setText(tabActive);
+        d.onDestroy();
     }
 
     public int getPageNumber() {

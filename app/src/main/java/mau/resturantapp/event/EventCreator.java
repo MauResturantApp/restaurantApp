@@ -2,6 +2,7 @@ package mau.resturantapp.event;
 
 import org.greenrobot.eventbus.EventBus;
 
+import mau.resturantapp.event.events.AskForDeleteTabeEvent;
 import mau.resturantapp.event.events.FragContainerChangedEvent;
 import mau.resturantapp.event.events.GuestUserCheckoutEvent;
 import mau.resturantapp.event.events.HideCartEvent;
@@ -117,6 +118,10 @@ public class EventCreator {
 
     public void hideCart(){
         HideCartEvent event = new HideCartEvent();
+        bus.post(event);
+    }
+    public void confirmDeleteTab(String id){
+        AskForDeleteTabeEvent event = new AskForDeleteTabeEvent(id);
         bus.post(event);
     }
 }

@@ -109,6 +109,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         sideMenu = (NavigationView) findViewById(R.id.navView_sideMenu);
         progBar = (ProgressBar) findViewById(R.id.progBar_main);
         progBar.setVisibility(View.GONE);
+        actBtn = (FloatingActionButton) findViewById(R.id.floatActBtn_cartContent);
+
 
         bottomBar.setOnTabReselectListener(new OnTabReselectListener() {
             @Override
@@ -170,15 +172,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
             }
         });
 
-        hideCart();
-        showHomeScreen();
+
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             bottomBar.setElevation(4);
         }
 
-        actBtn = (FloatingActionButton) findViewById(R.id.floatActBtn_cartContent);
 
         actBtn.setOnClickListener(this);
 
@@ -188,6 +188,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         else {
             userLoggedIn();
         }
+
+        hideCart();
+        showHomeScreen();
 
 
     }
@@ -216,6 +219,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
 
     private void showHomeScreen() {
+        showCartAndBtn();
         bottomBar.selectTabAtPosition(0);
     }
 
@@ -242,11 +246,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         switch (tabId){
             case R.id.botbar_food:
                 if (!(currentFrag instanceof MenuTabs_frag)){
-
-
                     frag = new MenuTabs_frag();
                     ft.addToBackStack(null);
                     ft.replace(R.id.mainFrameFrag, frag).commit();
+                    showCartAndBtn();
                 }
 
                 break;
@@ -258,6 +261,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                     frag = new Home_frag();
                     ft.addToBackStack(null);
                     ft.replace(R.id.mainFrameFrag, frag).commit();
+                    showCartAndBtn();
                 }
 
                 break;
@@ -287,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment frag;
         drawLayout.closeDrawer(Gravity.LEFT);
-        hideCart();
+        hideCartAndBtn();
         switch (item.getItemId()) {
 
 
@@ -327,11 +331,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                 FirebaseAuthentication.logOutUser();
                 showHomeScreen();
                 break;
-            case R.id.menu_menuHandler:
-                frag = new MenuHandler_frag();
-                ft.addToBackStack(null);
-                ft.replace(R.id.mainFrameFrag, frag).commit();
-                break;
             case R.id.menu_userProfile:
                 frag = new userProfile_frag();
                 ft.addToBackStack(null);
@@ -351,6 +350,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     private void anonymousLoggedIn() {
         Log.d("MainActivity", "Anonymous logged in navbar");
         Menu navMenu = sideMenu.getMenu();
+        showCartAndBtn();
         navMenu.findItem(R.id.menu_login).setVisible(true);
         navMenu.findItem(R.id.menu_signin).setVisible(true);
         navMenu.findItem(R.id.menu_logout).setVisible(false);
@@ -363,6 +363,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     private void userLoggedIn(){
         Log.d("MainActivity", "User logged in navbar");
         Menu navMenu = sideMenu.getMenu();
+        showCartAndBtn();
         navMenu.findItem(R.id.menu_login).setVisible(false);
         navMenu.findItem(R.id.menu_signin).setVisible(false);
         navMenu.findItem(R.id.menu_logout).setVisible(true);
@@ -377,6 +378,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     private void userLoggedOut(){
         Log.d("MainActivity", "User logged in navbar");
         Menu navMenu = sideMenu.getMenu();
+        showCartAndBtn();
         navMenu.findItem(R.id.menu_login).setVisible(true);
         navMenu.findItem(R.id.menu_signin).setVisible(true);
         navMenu.findItem(R.id.menu_logout).setVisible(false);
@@ -392,6 +394,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
       }
         else{
             goToCheckout();
+            hideCartAndBtn();
       }
     }
 
@@ -522,23 +525,25 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         progBar.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onBackPressed() {
+        setActiveBarTab();
+        super.onBackPressed();
+    }
 
     //used for setting the correct active tab on backpress.
     private void setActiveBarTab(){
         Fragment currentFrag = getSupportFragmentManager().findFragmentById(R.id.mainFrameFrag);
-        bottomBar.setActiveTabColor(ContextCompat.getColor(this,R.color.colorSecondaryDark));
-        Log.d("ggggggg","gggggg");
         if(currentFrag instanceof Home_frag){
-            bottomBar.selectTabAtPosition(0);
+            showCartAndBtn();
 
         }
         else if (currentFrag instanceof MenuTabs_frag){
-                        bottomBar.selectTabAtPosition(1);
+            showCartAndBtn();
 
 
         }
         else if (currentFrag instanceof Contact_frag ){
-                        bottomBar.selectTabAtPosition(2);
 
         }
 
