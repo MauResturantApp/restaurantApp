@@ -100,9 +100,10 @@ public class userProfile_frag extends Fragment implements View.OnClickListener {
         @Override
         protected Void doInBackground(Void... params) {
             byte[] data = token.getBytes();
+
             InetAddress ipAddress = null;
             try {
-                ipAddress = InetAddress.getByName("");
+                ipAddress = InetAddress.getByName("185.15.73.229");
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             }
