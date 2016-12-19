@@ -20,6 +20,8 @@ public class NewMenu_frag extends Fragment {
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.amdcontrol_newmenu,container,false);
 
+
+
         return root;
     }
 }
