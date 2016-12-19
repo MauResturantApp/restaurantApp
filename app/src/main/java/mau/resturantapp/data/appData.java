@@ -51,7 +51,7 @@ import mau.resturantapp.utils.LanguageContextWrapper;
 
 public class appData extends Application {
     public static EventCreator event = new EventCreator();
-    public static ArrayList<Product> cartContent = new ArrayList<>();
+    //public static ArrayList<Product> cartContent = new ArrayList<>();
     public static LoggedInUser currentUser;
     public static FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -77,7 +77,7 @@ public class appData extends Application {
     public static ArrayList<MenuTab> tabs = new ArrayList<>();
 
     public static UserProfile userProfile;
-
+    public static CartContent cartContent;
 
     private static void setNewPrices(){
         for(int i = 0; i<priceObservers.size();i++){
@@ -106,18 +106,9 @@ public class appData extends Application {
         }
     }
 
-    public static int getTotalPrice() {
-        int totalprice = 0;
 
-        for (int i = 0; i < appData.cartContent.size(); i++) {
-            totalprice += appData.cartContent.get(i).getPrice();
-        }
-
-        return totalprice;
-    }
-
-    public static void setNewPrice(int newItemPrice){
-        totalPrice += newItemPrice;
+    public static void setNewPrice(int newTotalPrice){
+        totalPrice = newTotalPrice;
         setNewPrices();
     }
 

@@ -12,7 +12,8 @@ import com.google.firebase.messaging.RemoteMessage;
 public class FirebaseNotificationService extends FirebaseMessagingService {
 
     /**
-     * On message received will be called whenever a notification is sent to the device, as long as the service is running (Whether app is in foreground or background)
+     * On message received will be called whenever a notification is sent to the device while app is in foreground.
+     * If in background it will be send to the notificationTray
      * @param remoteMessage The message received
      */
     @Override

@@ -66,11 +66,16 @@ public class Checkout_frag extends Fragment implements View.OnClickListener,Runn
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        appData.priceObservers.add(this);
+        run();
+    }
 
     @Override
     public void onStart() {
         super.onStart();
-        appData.priceObservers.add(this);
         appData.adapter.startRecyclerViewAdapter();
         finalItems.setAdapter(appData.adapter.getRecyclerViewAdapter());
     }
@@ -87,12 +92,15 @@ public class Checkout_frag extends Fragment implements View.OnClickListener,Runn
 
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        appData.priceObservers.remove(this);
+    }
 
     @Override
     public void onStop() {
         super.onStop();
-        appData.priceObservers.remove(this);
-
         appData.adapter.recyclerViewAdapterCleanUp();
     }
 

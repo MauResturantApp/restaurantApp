@@ -1,5 +1,6 @@
 package mau.resturantapp.utils.Firebase;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -20,6 +21,8 @@ import java.net.SocketException;
 import java.net.URL;
 import java.net.UnknownHostException;
 
+import mau.resturantapp.data.appData;
+
 /**
  * Created by Yoouughurt on 19-12-2016.
  */
@@ -27,16 +30,19 @@ import java.net.UnknownHostException;
 public class FirebaseTokenHandlerService extends FirebaseInstanceIdService {
     public static final String instanceID = "instanceID";
 
+
     @Override
     public void onTokenRefresh() {
         String token = FirebaseInstanceId.getInstance().getToken();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         preferences.edit().putString(instanceID, token).apply();
         Log.d("TOKEN",token);
-        sendTokenToServer(token);
+        if(appData.currentUser != null && appData.currentUser.isAdmin()) {
+            sendTokenToServer(token);
+        }
     }
 
-    private void sendTokenToServer(String token){
+    private static void sendTokenToServer(String token){
         byte[] data = token.getBytes();
 
         InetAddress ipAddress = null;
@@ -57,6 +63,14 @@ public class FirebaseTokenHandlerService extends FirebaseInstanceIdService {
         }
         Log.d("Packet send", packet.toString());
         }
+
+    public static void sendCurrentToken(Context context){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String token = preferences.getString(instanceID, "None");
+        if(!(token.equals("None"))){
+            sendTokenToServer(token);
+        }
+    }
 }
 
 

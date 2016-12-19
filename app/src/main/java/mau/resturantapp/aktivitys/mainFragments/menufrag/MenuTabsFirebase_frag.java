@@ -44,7 +44,6 @@ public class MenuTabsFirebase_frag extends Fragment implements OnTabSelectedList
 
         tabs = (ViewPager) rod.findViewById(R.id.menuTabContent);
         tabs.setAdapter(new TabsAdapter(getChildFragmentManager()));
-
         tabsImage = (ImageView) rod.findViewById(R.id.menu_tabs_image);
 
         tableLayout = (TabLayout) rod.findViewById(R.id.tabLayout);

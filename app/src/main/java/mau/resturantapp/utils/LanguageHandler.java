@@ -20,7 +20,9 @@ public class LanguageHandler {
      */
     public static void saveLanguage(Context context, String language){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().putString(LANGUAGE, language).apply();
+        if(!preferences.contains(LANGUAGE)) {
+            preferences.edit().putString(LANGUAGE, language).apply();
+        }
     }
 
     /**

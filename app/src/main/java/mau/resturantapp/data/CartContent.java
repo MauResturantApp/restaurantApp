@@ -1,6 +1,7 @@
 package mau.resturantapp.data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,10 @@ public class CartContent {
 
     }
 
+    public void setCartContent(Map<String, Product> entry){
+        this.cartContent = entry;
+    }
+
     public CartContent(Map<String, Product> cartContent){
         this.cartContent = cartContent;
     }
@@ -23,5 +28,15 @@ public class CartContent {
 
     public Map<String, Product> getCartContent() {
         return cartContent;
+    }
+
+    public int getTotalPrice(){
+        int price = 0;
+        if(cartContent != null) {
+            for (Product product : cartContent.values()) {
+                price += product.getPrice();
+            }
+        }
+        return price;
     }
 }

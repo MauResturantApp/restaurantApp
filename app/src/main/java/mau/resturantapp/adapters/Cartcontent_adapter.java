@@ -21,6 +21,7 @@ import mau.resturantapp.R;
 import mau.resturantapp.data.ShoppingCartItem;
 import mau.resturantapp.data.appData;
 import mau.resturantapp.utils.Firebase.FirebaseAuthentication;
+import mau.resturantapp.utils.Firebase.FirebaseRead;
 import mau.resturantapp.utils.Firebase.FirebaseWrite;
 
 /**
@@ -66,6 +67,7 @@ public class Cartcontent_adapter {
                     public void onClick(View v) {
                         //remove from cart representation in firebase
                         FirebaseWrite.removeProductFromCart(shoppingCartItem.getKey());
+                        appData.setNewPrice(appData.totalPrice - shoppingCartItem.getPrice());
                     }
                 });
             }
@@ -95,6 +97,7 @@ public class Cartcontent_adapter {
                     Log.d("Current user", ""+user.getUid());
                     // User is signed in
                     ref = appData.firebaseDatabase.getReference("shoppingcart/" + user.getUid() /*appData.getUID()*/);
+                    FirebaseRead.getCartContent();
                     Log.d("Authstate", "onAuthStateChanged:signed_in:" + user.getUid());
                     if(user.isAnonymous()){
                         //Save logged in as anonymous Reference to later transfer data

@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -203,11 +202,7 @@ public class MenuList_frag extends Fragment {
                 holder.addNewItemBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        FirebaseWrite.addProductToCart(recyclerViewAdapter.getItem(position));
-                        Toast.makeText(getContext(), recyclerViewAdapter.getItem(position).getName() + "er tilføget til kurv", Toast.LENGTH_SHORT).show();
-                        appData.event.newItemToCart();
-                        succesfullAddItem(holder,position);
-
+                    addProduct(position, holder);
                     }
                 });
 
@@ -245,7 +240,7 @@ public class MenuList_frag extends Fragment {
                 Product.class, R.layout.menu_item_list, ProductHolder.class, query) {
 
             @Override
-            protected void populateViewHolder(final ProductHolder productHolder, final Product product, int position) {
+            protected void populateViewHolder(final ProductHolder productHolder, final Product product, final int position) {
                 //Log.d("recyclerViewAdapter", ""+position);
                 final int mPosition = position;
                 productHolder.setProductName(product.getName());
@@ -256,13 +251,7 @@ public class MenuList_frag extends Fragment {
                 productHolder.addNewItemBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //appData.cartContent.add(recyclerViewAdapter.getItem(mPosition));
-                        FirebaseWrite.addProductToCart(product);
-                        appData.setNewPrice(product.getPrice());
-                        Toast.makeText(getContext(), recyclerViewAdapter.getItem(mPosition).getName() + "er tilføget til kurv", Toast.LENGTH_SHORT).show();
-                        appData.event.newItemToCart();
-                        succesfullAddItem(productHolder,mPosition);
-
+                        addProduct(position, productHolder);
                     }
                 });
 
@@ -320,6 +309,14 @@ public class MenuList_frag extends Fragment {
         return pageTitle;
     }
 
+    private void addProduct(int position, ProductHolder holder){
+        Log.d("PRICE!!!!" , "PRIIIIIIIIIIIIIIIICE"+recyclerViewAdapter.getItem(position).getPrice());
+        appData.setNewPrice(appData.totalPrice + recyclerViewAdapter.getItem(position).getPrice());
+        FirebaseWrite.addProductToCart(recyclerViewAdapter.getItem(position));
+        Toast.makeText(getContext(), recyclerViewAdapter.getItem(position).getName() + "er tilføget til kurv", Toast.LENGTH_SHORT).show();
+        appData.event.newItemToCart();
+        succesfullAddItem(holder,position);
+    }
 /*    public class FoodMenuAdapter extends ArrayAdapter<MenuItem> {
         private int rod;
         private List<MenuItem> tempVare;

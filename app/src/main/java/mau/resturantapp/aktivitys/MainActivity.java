@@ -131,7 +131,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         languageSwitch.setChecked(LanguageHandler.isChecked(this));
         languageSwitch.setOnCheckedChangeListener(this);
 
-
         int dp = DPtoPixels(39f); // husk f efter tallet
         bottomSheetBehavior.setPeekHeight(dp);
         bottomSheetBehavior.setHideable(true);

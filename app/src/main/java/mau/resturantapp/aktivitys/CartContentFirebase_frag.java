@@ -85,29 +85,38 @@ public class CartContentFirebase_frag extends Fragment implements Runnable {
         appData.adapter.recyclerViewAdapterCleanUp();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        appData.priceObservers.add(this);
+        run();
+    }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        appData.priceObservers.add(this);
+        if(appData.firebaseAuth.getCurrentUser() != null) {
+            appData.adapter.setRef(appData.firebaseDatabase.getReference("shoppingcart/" + appData.firebaseAuth.getCurrentUser().getUid())
+            );
+            appData.adapter.startAuthStateListener();
+            appData.firebaseAuth.addAuthStateListener(appData.adapter.getmAuthListener());
 
-        appData.adapter.setRef(appData.firebaseDatabase.getReference("shoppingcart/" + appData.firebaseAuth.getCurrentUser().getUid())
-        );
-        appData.adapter.startAuthStateListener();
-        appData.firebaseAuth.addAuthStateListener(appData.adapter.getmAuthListener());
+            appData.adapter.startRecyclerViewAdapter();
 
-        appData.adapter.startRecyclerViewAdapter();
+            cartContent.setAdapter(appData.adapter.getRecyclerViewAdapter());
+        }
+    }
 
-        cartContent.setAdapter(appData.adapter.getRecyclerViewAdapter());
-
+    @Override
+    public void onPause() {
+        appData.priceObservers.remove(this);
+        super.onPause();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
-        appData.priceObservers.remove(this);
 
         appData.firebaseAuth.removeAuthStateListener(appData.adapter.getmAuthListener());
 

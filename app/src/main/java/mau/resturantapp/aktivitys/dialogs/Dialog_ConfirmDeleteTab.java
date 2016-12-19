@@ -18,8 +18,19 @@ public class Dialog_ConfirmDeleteTab extends DialogFragment {
 
     private String id;
 
+    public static Dialog_ConfirmDeleteTab newInstance(String title) {
+        Dialog_ConfirmDeleteTab frag = new Dialog_ConfirmDeleteTab();
+        Bundle args = new Bundle();
+        args.putString("id", title);
+        frag.setArguments(args);
+        return frag;
+        }
+
+
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        id = getArguments().getString("id");
         super.onCreate(savedInstanceState);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -33,7 +44,7 @@ public class Dialog_ConfirmDeleteTab extends DialogFragment {
             }
         });
         try {
-            id = savedInstanceState.getString("id");
+
             builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {

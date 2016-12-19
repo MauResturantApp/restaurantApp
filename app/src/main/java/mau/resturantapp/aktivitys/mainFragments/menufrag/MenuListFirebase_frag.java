@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -55,12 +56,13 @@ public class MenuListFirebase_frag extends Fragment implements View.OnClickListe
             active.setText(tabActive);
         }
         if(v == removeTab){
-            d = new Dialog_ConfirmDeleteTab();
-            Bundle bundle = new Bundle();
-            bundle.putString("id",tabKey);
-            d.setArguments(bundle);
-            d.show(getFragmentManager(),null);
-            Log.d("clicked", "clicked+++++++++++++++++++++++++++++++++++++++++++++++++++++++" + removeTab.isActivated());
+            if(appData.tabs.size() > 1) {
+                d = Dialog_ConfirmDeleteTab.newInstance(tabKey);
+                d.show(getFragmentManager(), null);
+                Log.d("clicked", "clicked+++++++++++++++++++++++++++++++++++++++++++++++++++++++" + removeTab.isActivated());
+            } else {
+                Toast.makeText(getContext(), "Det er ikke muligt at slette sidste tab af menuen", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -144,13 +146,15 @@ public class MenuListFirebase_frag extends Fragment implements View.OnClickListe
 
     @Subscribe
     public void confirmDeleteTab(AskForDeleteTabeEvent event){
+        if(tabKey.equals(event.getId())) {
+            FirebaseWrite.removeTab(event.getId());
+            //De her skal være der, ellers husker android tekstinput selv efter onDestroy()
+            name.setText(pageTitle);
+            position.setText(Integer.toString(tabPosition));
+            active.setText(tabActive);
+            d.onDestroy();
+        }
 
-        FirebaseWrite.removeTab(event.getId());
-        //De her skal være der, ellers husker android tekstinput selv efter onDestroy()
-        name.setText(pageTitle);
-        position.setText(Integer.toString(tabPosition));
-        active.setText(tabActive);
-        d.onDestroy();
     }
 
     public int getPageNumber() {

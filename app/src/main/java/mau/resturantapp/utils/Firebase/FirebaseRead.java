@@ -9,10 +9,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
+import mau.resturantapp.data.CartContent;
 import mau.resturantapp.data.MenuTab;
 import mau.resturantapp.data.Order;
+import mau.resturantapp.data.Product;
 import mau.resturantapp.data.UserProfile;
 import mau.resturantapp.data.appData;
 
@@ -167,5 +170,28 @@ public class FirebaseRead {
         });
     }
 
+    public static void getCartContent(){
+        DatabaseReference ref = appData.firebaseDatabase.getReference("shoppingcart/" + appData.firebaseAuth.getCurrentUser().getUid());
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Map<String, Product> cartContent = new HashMap<String, Product>();
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    Product product = snapshot.getValue(Product.class);
+                    cartContent.put(snapshot.getKey(), product);
+                }
+
+                appData.cartContent = new CartContent(cartContent);
+                if(appData.cartContent != null) {
+                    appData.setNewPrice(appData.cartContent.getTotalPrice());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("getCartContent", "Error" + databaseError);
+            }
+        });
+    }
 
 }
