@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="mau.resturantapp"
+    package="mau.restaurantapp"
     >
     <uses-sdk
         android:minSdkVersion="15"
@@ -9,7 +9,7 @@
         />
 
     <permission
-        android:name="mau.resturantapp.permission.MAPS_RECEIVE"
+        android:name="mau.restaurantapp.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
     <uses-permission android:name="mau.resturantapp.permission.MAPS_RECEIVE" />
@@ -31,7 +31,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".aktivitys.MainActivity">
+        <activity android:name="mau.restaurantapp.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -39,13 +39,13 @@
         </activity>
 
         <service
-            android:name="mau.resturantapp.utils.Firebase.FirebaseNotificationService">
+            android:name="mau.restaurantapp.utils.firebase.FirebaseNotificationService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
         <service
-            android:name="mau.resturantapp.utils.Firebase.FirebaseTokenHandlerService">
+            android:name="mau.restaurantapp.utils.firebase.FirebaseTokenHandlerService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>

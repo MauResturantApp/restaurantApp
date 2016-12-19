@@ -1,5 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ResturantApp</string>
+    <string name="app_name">Restaurant App</string>
+
     <string name="password_hint">Password</string>
     <string name="email_hint">Email</string>
     <string name="sign_up_button_label">Sign Up</string>
@@ -11,13 +13,16 @@
     <string name="login_button_label">Login</string>
     <string name="sign_up_text">Sign Up!</string>
     <string name="title_activity_login">Sign in</string>
+
     <string name="add_item">Add New Item</string>
     <string name="action_logout">Logout</string>
     <string name="sign_up_click">Or click here to sign up!</string>
     <string name="btnDirDirection">Get directions</string>
     <string name="facebook_app_id">1738385356483264</string>
+
     <string name="emptyCart">Cart is empty.</string>
     <string name="checkOut">Checkout!</string>
+
     <string name="guestInfo">Please fill the boxes</string>
     <string name="guestName">Full name</string>
     <string name="guestEmail">Email</string>
@@ -29,7 +34,8 @@
     <string name="signInUsername">Email</string>
     <string name="signInPassword">Password</string>
     <string name="signInFacebook">Sign In with Facebook</string>
-    <string name="draweMenuFindWay">Directory</string>
+
+    <string name="draweMenuFindWay">Directions</string>
     <string name="draweMenuSettings">Settings</string>
     <string name="draweMenuQRcode">QR code</string>
     <string name="draweMenuQrCamera">Qr Camera</string>
@@ -37,13 +43,16 @@
     <string name="draweMenuSignin">Sign in</string>
     <string name="draweMenuSignup">Sign up</string>
     <string name="draweMenuSignout">Sign Out</string>
+
     <string name="bottomMenuHome">Home</string>
     <string name="bottomMenuMenu">Our Menu</string>
     <string name="bottomMenuContact">Contact</string>
+
     <string name="checkoutTimepicker">Choose a Time for pickup</string>
     <string name="checkoutExtraText">If you have any special request or comments, type it in the textbox below</string>
     <string name="checkoutTotalPrice">Total price for your items: </string>
     <string name="checkoutBtnCheckout">Send Order!</string>
+
     <string name="menuHandler">Menu Handler</string>
     <string name="addTab">Add New Tab</string>
     <string name="updateTab">Update Tab</string>

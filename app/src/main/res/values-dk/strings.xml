@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">RestaurantApp</string>
+    <string name="app_name">Restaurant App</string>
+
     <string name="password_hint">Password</string>
     <string name="email_hint">Email</string>
     <string name="sign_up_button_label">Tilmeld</string>
@@ -12,13 +13,16 @@
     <string name="login_button_label">Log ind</string>
     <string name="sign_up_text">Tilmeld!</string>
     <string name="title_activity_login">Sign in</string>
+
     <string name="add_item">Tilføj nyt element</string>
     <string name="action_logout">Log ud</string>
     <string name="sign_up_click">Eller klik her for at tilmelde dig!</string>
     <string name="btnDirDirection">Få rutevejledning</string>
     <string name="facebook_app_id">1738385356483264</string>
+
     <string name="emptyCart">Kurv er tom.</string>
     <string name="checkOut">Checkout!</string>
+
     <string name="guestInfo">Fyld venligst boksene</string>
     <string name="guestName">Fuld navn</string>
     <string name="guestEmail">Email</string>
@@ -30,7 +34,8 @@
     <string name="signInUsername">Email</string>
     <string name="signInPassword">Password</string>
     <string name="signInFacebook">Log ind med Facebook</string>
-    <string name="draweMenuFindWay">Directory</string>
+
+    <string name="draweMenuFindWay">Rutevejledning</string>
     <string name="draweMenuSettings">Indstillinger</string>
     <string name="draweMenuQRcode">QR kode</string>
     <string name="draweMenuQrCamera">Qr Kamera</string>
@@ -38,13 +43,16 @@
     <string name="draweMenuSignin">Log ind</string>
     <string name="draweMenuSignup">Tilmeld</string>
     <string name="draweMenuSignout">Log ud</string>
+
     <string name="bottomMenuHome">Hjem</string>
     <string name="bottomMenuMenu">Vores Menu</string>
     <string name="bottomMenuContact">Kontakt</string>
     <string name="checkoutTimepicker">Vælg tidspunkt for afhentning</string>
+
     <string name="checkoutExtraText">Hvis du har nogle specielle ønsker eller komentarer, skriv det i tekstboksen nedenunder.</string>
     <string name="checkoutTotalPrice">Total pris for dine elementer:</string>
     <string name="checkoutBtnCheckout">Send Ordre!</string>
+
     <string name="menuHandler">Menu Handler</string>
     <string name="addTab">Tilføj Ny Tab</string>
     <string name="updateTab">Opdater Tab</string>

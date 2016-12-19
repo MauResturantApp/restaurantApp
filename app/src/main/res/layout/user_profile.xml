@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="mau.restaurantapp.activities.fragments.userControls.UserProfile">
+
+    <TextView
+        android:textSize="30sp"
+        android:text="@string/profile_headline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:id="@+id/headline"/>
+    <TextView
+        android:textSize="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/userProfile_email"
+        android:layout_below="@id/headline"
+        android:id="@+id/addProduct_name_textview"/>
+    <EditText
+        android:textSize="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="New e-mail adress"
+        android:gravity="start"
+        android:id="@+id/emailAddress_editText"/>
+    <TextView
+        android:textSize="16sp"
+        android:text="@string/userProfile_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/price_textview"/>
+    <EditText
+        android:textSize="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="New profile name"
+        android:id="@+id/name_editText"/>
+    <TextView
+        android:text="@string/userProfile_phoneNumber"
+        android:textSize="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/addToTab_textview"/>
+    <EditText
+        android:textSize="16sp"
+        android:layout_width="match_parent"
+        android:hint="New phone number"
+        android:layout_height="wrap_content"
+        android:id="@+id/phoneNumber_edittext"/>
+    <Button
+        android:textSize="16sp"
+        android:text="@string/userProfile_updateProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/rounded_corners"
+        android:id="@+id/updateProfile"/>
+</LinearLayout>
