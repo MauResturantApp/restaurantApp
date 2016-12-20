@@ -89,7 +89,7 @@ public class FirebaseRead {
      *
      * @return An ArrayList with all users orders.
      */
-    public static ArrayList<Order> getAllOrders() {
+    public static void getAllOrders() {
         DatabaseReference ref = AppData.firebaseDatabase.getReference("orders/");
         final ArrayList<Order> orders = new ArrayList<>();
         final Map<String, Product> products = new HashMap<>();
@@ -103,12 +103,12 @@ public class FirebaseRead {
                             for(DataSnapshot cartSnapshot: orderSnapshot.getChildren()) {
                                 if(cartSnapshot.getKey().equals("cartContent")){
                                     for(DataSnapshot contentSnapShot: cartSnapshot.getChildren()){
-                                        Log.d("Key = " + contentSnapShot.getKey(), "Value = " + contentSnapShot.getValue());
+                                        //Log.d("Key = " + contentSnapShot.getKey(), "Value = " + contentSnapShot.getValue());
                                         Product product = contentSnapShot.getValue(Product.class);
                                         products.put(contentSnapShot.getKey(),product);
                                     }
                                 }
-                                Log.d("OrderKey = " + cartSnapshot.getKey(),"orderValues = " + cartSnapshot.getValue());
+                               // Log.d("OrderKey = " + cartSnapshot.getKey(),"orderValues = " + cartSnapshot.getValue());
                                 orderValues.put(cartSnapshot.getKey(), cartSnapshot.getValue());
                             }
                             String comment = (String) orderValues.get("comment");
@@ -117,9 +117,10 @@ public class FirebaseRead {
                             int totalprice = (int) (long) orderValues.get("totalPrice");
                             Order order = new Order(products, totalprice, comment, timeToPickUp, timestamp);
                             orders.add(order);
+                            Log.d("ORDER ADDED", ""+orders.size());
                         }
                     }
-
+                    AppData.allOrders = orders;
                 }
             }
 
@@ -128,7 +129,6 @@ public class FirebaseRead {
                 Log.d("GetUserOrders() error", databaseError.getMessage());
             }
         });
-        return orders;
     }
 
     /**
@@ -136,7 +136,7 @@ public class FirebaseRead {
      * Retrieves all current products
      * @return An ArrayList with all current products.
      */
-    public static ArrayList<Product> getAllProducts() {
+    public static void getAllProducts() {
         DatabaseReference ref = AppData.firebaseDatabase.getReference("product");
         final ArrayList<Product> products = new ArrayList<>();
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -149,7 +149,7 @@ public class FirebaseRead {
                             products.add(product);
                         }
                     }
-
+                    AppData.allProducts = products;
                 }
             }
 
@@ -158,7 +158,6 @@ public class FirebaseRead {
                 Log.d("GetAllProducts() error", databaseError.getMessage());
             }
         });
-        return products;
     }
 
     /**
