@@ -137,7 +137,7 @@ public class FirebaseRead {
      * @return An ArrayList with all current products.
      */
     public static ArrayList<Product> getAllProducts() {
-        DatabaseReference ref = AppData.firebaseDatabase.getReference("menutabs");
+        DatabaseReference ref = AppData.firebaseDatabase.getReference("product");
         final ArrayList<Product> products = new ArrayList<>();
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
