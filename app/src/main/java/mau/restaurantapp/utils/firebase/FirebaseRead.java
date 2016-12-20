@@ -92,12 +92,13 @@ public class FirebaseRead {
     public static void getAllOrders() {
         DatabaseReference ref = AppData.firebaseDatabase.getReference("orders/");
         final ArrayList<Order> orders = new ArrayList<>();
-        final Map<String, Product> products = new HashMap<>();
-        final Map<String, Object> orderValues = new HashMap<>();
+        //final Map<String, Product> products = new HashMap<>();
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists()) {
+                    Map<String, Product> products = new HashMap<>();
+                    Map<String, Object> orderValues = new HashMap<>();
                     for (DataSnapshot userSnapshot : snapshot.getChildren()) {
                         for (DataSnapshot orderSnapshot : userSnapshot.getChildren()) {
                             for(DataSnapshot cartSnapshot: orderSnapshot.getChildren()) {
@@ -116,16 +117,17 @@ public class FirebaseRead {
                             Object timestamp = (Object) orderValues.get("timestamp");
                             int totalprice = (int) (long) orderValues.get("totalPrice");
                             Log.d("Products size =", " "+products.size());
+
                             Order order = new Order(products, totalprice, comment, timeToPickUp, timestamp);
                             orders.add(order);
                             products.clear();
-                            //orderValues.clear();
+                            orderValues.clear();
 
                             Log.d("ORDER ADDED", ""+orders.size() + " PRODUCTS cleared size " + products.size());
                         }
                     }
                     //hvorfor kører den ik den her log?
-                    Log.d("ORDERS SIZE " + orders.size(), "");
+                    //Log.d("ORDERS SIZE " + orders.size(), "");
                     /*for(int i = 0; i < orders.size(); i++){
                         Order order = orders.get(i);
                         for(Product product: order.getCartContent().values()){
