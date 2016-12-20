@@ -2,6 +2,7 @@ package mau.restaurantapp.utils.firebase;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -24,7 +25,6 @@ import mau.restaurantapp.data.AppData;
 public class FirebaseTokenHandlerService extends FirebaseInstanceIdService {
     public static final String instanceID = "instanceID";
 
-
     @Override
     public void onTokenRefresh() {
         String token = FirebaseInstanceId.getInstance().getToken();
@@ -36,6 +36,10 @@ public class FirebaseTokenHandlerService extends FirebaseInstanceIdService {
         }
     }
 
+    /**
+     * Sends the token to our server with an simple UDP Packet
+     * @param token The device-token
+     */
     private static void sendTokenToServer(String token) {
         byte[] data = token.getBytes();
 
@@ -62,7 +66,20 @@ public class FirebaseTokenHandlerService extends FirebaseInstanceIdService {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String token = preferences.getString(instanceID, "None");
         if (!(token.equals("None"))) {
+            AsyncTokenSender sender = new AsyncTokenSender();
+            sender.token = token;
+            sender.execute();
+        }
+    }
+
+    private static class AsyncTokenSender extends AsyncTask<Void, Void, Void>
+    {
+        private String token;
+
+        @Override
+        protected Void doInBackground(Void... params) {
             sendTokenToServer(token);
+            return null;
         }
     }
 }

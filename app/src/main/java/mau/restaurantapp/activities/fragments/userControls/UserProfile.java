@@ -1,23 +1,14 @@
 package mau.restaurantapp.activities.fragments.userControls;
 
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 
 import mau.restaurantapp.R;
 import mau.restaurantapp.data.AppData;
@@ -78,46 +69,6 @@ public class UserProfile extends Fragment implements View.OnClickListener {
                 name.setText(userProfileType.getName());
                 phoneNumber.setText(userProfileType.getPhoneNumber());
             }
-        }
-    }
-
-    /**
-     * Testing connection to server - Should not be in here in final build
-     *
-     * @param token represents the real device token
-     */
-    public void sendTokenToServer(String token) {
-        testServerConnection test = new testServerConnection();
-        test.token = token;
-        test.execute();
-    }
-
-    private class testServerConnection extends AsyncTask<Void, Void, Void> {
-
-        private String token;
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            byte[] data = token.getBytes();
-
-            InetAddress ipAddress = null;
-            try {
-                ipAddress = InetAddress.getByName("185.15.73.229");
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            }
-            DatagramPacket packet = new DatagramPacket(data, data.length, ipAddress, 9000);
-            DatagramSocket socket = null;
-            try {
-                socket = new DatagramSocket();
-                socket.send(packet);
-            } catch (SocketException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Log.d("Packet send", packet.toString());
-            return null;
         }
     }
 }

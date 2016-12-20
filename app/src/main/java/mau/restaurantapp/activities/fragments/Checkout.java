@@ -114,7 +114,7 @@ public class Checkout extends Fragment implements View.OnClickListener, Runnable
 
     @Override
     public void run() {
-        totalPrice.setText(AppData.totalPrice);
+        totalPrice.setText(String.valueOf(AppData.totalPrice));
     }
 
 
