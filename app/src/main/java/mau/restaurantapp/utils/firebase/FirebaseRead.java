@@ -103,12 +103,12 @@ public class FirebaseRead {
                             for(DataSnapshot cartSnapshot: orderSnapshot.getChildren()) {
                                 if(cartSnapshot.getKey().equals("cartContent")){
                                     for(DataSnapshot contentSnapShot: cartSnapshot.getChildren()){
-                                        //Log.d("Key = " + contentSnapShot.getKey(), "Value = " + contentSnapShot.getValue());
+                                        Log.d("Key = " + contentSnapShot.getKey(), "Value = " + contentSnapShot.getValue());
                                         Product product = contentSnapShot.getValue(Product.class);
                                         products.put(contentSnapShot.getKey(),product);
                                     }
                                 }
-                               // Log.d("OrderKey = " + cartSnapshot.getKey(),"orderValues = " + cartSnapshot.getValue());
+                                Log.d("OrderKey = " + cartSnapshot.getKey(),"orderValues = " + cartSnapshot.getValue());
                                 orderValues.put(cartSnapshot.getKey(), cartSnapshot.getValue());
                             }
                             String comment = (String) orderValues.get("comment");
@@ -117,7 +117,10 @@ public class FirebaseRead {
                             int totalprice = (int) (long) orderValues.get("totalPrice");
                             Order order = new Order(products, totalprice, comment, timeToPickUp, timestamp);
                             orders.add(order);
-                            Log.d("ORDER ADDED", ""+orders.size());
+                            products.clear();
+                            orderValues.clear();
+
+                            Log.d("ORDER ADDED", ""+orders.size() + " PRODUCTS" + orderValues.size());
                         }
                     }
                     AppData.allOrders = orders;
