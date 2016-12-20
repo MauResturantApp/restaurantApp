@@ -115,6 +115,36 @@ public class FirebaseRead {
     }
 
     /**
+     * Admin function.
+     * Retrieves all current products
+     * @return An ArrayList with all current products.
+     */
+    public static ArrayList<Product> getAllProducts() {
+        DatabaseReference ref = AppData.firebaseDatabase.getReference("menutabs");
+        final ArrayList<Product> products = new ArrayList<>();
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot menuSnapshot : snapshot.getChildren()) {
+                        for (DataSnapshot productSnapshot : menuSnapshot.getChildren()) {
+                            Product product = productSnapshot.getValue(Product.class);
+                            products.add(product);
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("GetAllProducts() error", databaseError.getMessage());
+            }
+        });
+        return products;
+    }
+
+    /**
      * Retrieves the current users orders
      *
      * @return An arraylist with all their orders.
