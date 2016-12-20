@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import mau.restaurantapp.data.AppData;
 import mau.restaurantapp.data.types.CartContent;
@@ -91,16 +92,15 @@ public class FirebaseRead {
      */
     public static void getAllOrders() {
         DatabaseReference ref = AppData.firebaseDatabase.getReference("orders/");
-        final ArrayList<Order> orders = new ArrayList<>();
-        //final Map<String, Product> products = new HashMap<>();
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    Map<String, Product> products = new HashMap<>();
-                    Map<String, Object> orderValues = new HashMap<>();
+                    ArrayList<Order> orders = new ArrayList<>();
                     for (DataSnapshot userSnapshot : snapshot.getChildren()) {
                         for (DataSnapshot orderSnapshot : userSnapshot.getChildren()) {
+                            Map<String, Product> products = new HashMap<>();
+                            Map<String, Object> orderValues = new HashMap<>();
                             for(DataSnapshot cartSnapshot: orderSnapshot.getChildren()) {
                                 if(cartSnapshot.getKey().equals("cartContent")){
                                     for(DataSnapshot contentSnapShot: cartSnapshot.getChildren()){
@@ -108,10 +108,11 @@ public class FirebaseRead {
                                         Product product = contentSnapShot.getValue(Product.class);
                                         products.put(contentSnapShot.getKey(),product);
                                     }
+                                } else {
+                                    Log.d("OrderKey = " + cartSnapshot.getKey(), "orderValues = " + cartSnapshot.getValue());
+                                    orderValues.put(cartSnapshot.getKey(), cartSnapshot.getValue());
                                 }
-                                Log.d("OrderKey = " + cartSnapshot.getKey(),"orderValues = " + cartSnapshot.getValue());
-                                orderValues.put(cartSnapshot.getKey(), cartSnapshot.getValue());
-                            }
+                                }
                             String comment = (String) orderValues.get("comment");
                             String timeToPickUp = (String) orderValues.get("timeToPickup");
                             Object timestamp = (Object) orderValues.get("timestamp");
@@ -119,21 +120,23 @@ public class FirebaseRead {
                             Log.d("Products size =", " "+products.size());
 
                             Order order = new Order(products, totalprice, comment, timeToPickUp, timestamp);
-                            orders.add(order);
-                            products.clear();
-                            orderValues.clear();
 
+                            orders.add(order);
+        /*                    Log.d("ORDERS SIZE " + orders.size(), "");
+                            for(int i = 0; i < orders.size(); i++) {
+                                Order ord = orders.get(i);
+                                for (Product product : ord.getCartContent().values()) {
+                                    Log.d("Product" + i, " Name =" + product.getName());
+                                }
+                            }
+*/
+
+                            Log.d("KRISTIN = ", "" +orders.get(orders.size()-1).getCartContent().size());
                             Log.d("ORDER ADDED", ""+orders.size() + " PRODUCTS cleared size " + products.size());
                         }
                     }
-                    //hvorfor kører den ik den her log?
-                    //Log.d("ORDERS SIZE " + orders.size(), "");
-                    /*for(int i = 0; i < orders.size(); i++){
-                        Order order = orders.get(i);
-                        for(Product product: order.getCartContent().values()){
-                            Log.d("Product" + i , " Name =" + product.getName());
-                        }
-                    }*/
+
+
                     AppData.allOrders = orders;
                 }
             }
