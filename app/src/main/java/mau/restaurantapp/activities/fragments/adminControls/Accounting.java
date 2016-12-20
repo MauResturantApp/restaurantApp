@@ -18,17 +18,25 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.security.cert.Certificate;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import mau.restaurantapp.R;
 import mau.restaurantapp.activities.dialogs.DatePickerFragment;
 import mau.restaurantapp.data.AppData;
+import mau.restaurantapp.data.types.Order;
 import mau.restaurantapp.data.types.Product;
 import mau.restaurantapp.data.types.GraphType;
+import mau.restaurantapp.utils.firebase.FirebaseRead;
 
 public class Accounting extends Fragment implements DatePickerDialog.OnDateSetListener {
     private View root;
@@ -40,7 +48,7 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.admcontrol_accounting,container,false);
+        root = inflater.inflate(R.layout.admcontrol_accounting, container, false);
 
         from = (TextView) root.findViewById(R.id.orderHistoryCustomFrom);
         to = (TextView) root.findViewById(R.id.orderHistoryCustomTo);
@@ -88,28 +96,41 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
                 gw.getViewport().setScalable(false);
                 gw.getViewport().setScrollable(false);
 
-                String f = from.getText().toString();
-                String t = to.getText().toString();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM-yyyy");
+                Calendar c = Calendar.getInstance();
+
+                long f = 0L;
+                long t = 0L;
+
+                try {
+                    c.setTime(sdf.parse(from.getText().toString()));
+                    f = c.getTimeInMillis();
+
+                    c.setTime(sdf.parse(to.getText().toString()));
+                    t = c.getTimeInMillis();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
                 gw.getSeries().clear();
 
-                if(!f.equals("")) {
-                    if(!t.equals("")) {
-                        gw.addSeries(getDataSeriesPrduct(
+                if (!from.getText().toString().equals("")) {
+                    if (!to.getText().toString().equals("")) {
+                        gw.addSeries(getDataSeriesProduct(
                                 yInterval.getSelectedItem().toString(),
                                 GraphType.isEnum(xInterval.getSelectedItem().toString()),
                                 f,
                                 t
                         ));
                     } else {
-                        gw.addSeries(getDataSeriesPrduct(
+                        gw.addSeries(getDataSeriesProduct(
                                 yInterval.getSelectedItem().toString(),
                                 GraphType.isEnum(xInterval.getSelectedItem().toString()),
                                 f
                         ));
                     }
                 } else {
-                    gw.addSeries(getDataSeriesPrduct(
+                    gw.addSeries(getDataSeriesProduct(
                             yInterval.getSelectedItem().toString(),
                             GraphType.isEnum(xInterval.getSelectedItem().toString())
                     ));
@@ -117,7 +138,7 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
 
                 NumberFormat nf = NumberFormat.getInstance();
                 nf.setMaximumFractionDigits(0);
-                gw.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(nf,nf));
+                gw.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(nf, nf));
 
                 gw.getViewport().setXAxisBoundsManual(true);
                 gw.getGridLabelRenderer().setNumHorizontalLabels(12);
@@ -136,26 +157,39 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
         root.findViewById(R.id.orderHistoryAddLineBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String f = from.getText().toString();
-                String t = to.getText().toString();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM-yyyy");
+                Calendar c = Calendar.getInstance();
 
-                if(!f.equals("")) {
-                    if(!t.equals("")) {
-                        gw.addSeries(getDataSeriesPrduct(
+                long f = 0L;
+                long t = 0L;
+
+                try {
+                    c.setTime(sdf.parse(from.getText().toString()));
+                    f = c.getTimeInMillis();
+
+                    c.setTime(sdf.parse(to.getText().toString()));
+                    t = c.getTimeInMillis();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                if (!from.getText().toString().equals("")) {
+                    if (!to.getText().toString().equals("")) {
+                        gw.addSeries(getDataSeriesProduct(
                                 yInterval.getSelectedItem().toString(),
                                 GraphType.isEnum(xInterval.getSelectedItem().toString()),
                                 f,
                                 t
                         ));
                     } else {
-                        gw.addSeries(getDataSeriesPrduct(
+                        gw.addSeries(getDataSeriesProduct(
                                 yInterval.getSelectedItem().toString(),
                                 GraphType.isEnum(xInterval.getSelectedItem().toString()),
                                 f
                         ));
                     }
                 } else {
-                    gw.addSeries(getDataSeriesPrduct(
+                    gw.addSeries(getDataSeriesProduct(
                             yInterval.getSelectedItem().toString(),
                             GraphType.isEnum(xInterval.getSelectedItem().toString())
                     ));
@@ -183,36 +217,11 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
      * the given type will be shown, and it will use "now()" as starting date.
      *
      * @param product product in question (y-axis)
-     * @param type interval (x-axis)
+     * @param type    interval (x-axis)
      * @return Series of DataPoints
      */
-    private LineGraphSeries<DataPoint> getDataSeriesPrduct(String product, GraphType type) {
-        // TODO For now just dummy data...
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(
-                new DataPoint[]{
-                        new DataPoint(1, 2),
-                        new DataPoint(2, 5),
-                        new DataPoint(3, 4),
-                        new DataPoint(4, 6),
-                        new DataPoint(5, 1),
-                        new DataPoint(6, 2),
-                        new DataPoint(7, 5),
-                        new DataPoint(8, 4),
-                        new DataPoint(9, 4),
-                        new DataPoint(10, 7),
-                        new DataPoint(11, 1),
-                        new DataPoint(12, 3)
-                }
-        );
-
-        // Create a random color for the line
-        int r = new Random().nextInt(256);
-        int g = new Random().nextInt(256);
-        int b = new Random().nextInt(256);
-
-        series.setColor(Color.rgb(r,g,b));
-
-        return series;
+    private LineGraphSeries<DataPoint> getDataSeriesProduct(String product, GraphType type) {
+        return getDataSeriesProduct(product, type, Calendar.getInstance().getTimeInMillis());
     }
 
     /**
@@ -226,37 +235,49 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
      * "from" can not be later than "now()" (basically can't be a future date).
      *
      * @param product product in question (y-axis)
-     * @param type interval (x-axis)
-     * @param from "from" date boundary
+     * @param type    interval (x-axis)
+     * @param from    "from" date boundary
      * @return Series of DataPoints
      */
-    private LineGraphSeries<DataPoint> getDataSeriesPrduct(String product, GraphType type, String from) {
-        // TODO For now just dummy data...
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(
-                new DataPoint[]{
-                        new DataPoint(1, 1),
-                        new DataPoint(2, 4),
-                        new DataPoint(3, 8),
-                        new DataPoint(4, 2),
-                        new DataPoint(5, 7),
-                        new DataPoint(6, 12),
-                        new DataPoint(7, 11),
-                        new DataPoint(8, 21),
-                        new DataPoint(9, 15),
-                        new DataPoint(10, 7),
-                        new DataPoint(11, 13),
-                        new DataPoint(12, 15)
-                }
-        );
+    private LineGraphSeries<DataPoint> getDataSeriesProduct(String product, GraphType type, long from) {
+        // As no "to" has been selected, we'll do a default iteration number of 12
+        long interval = 86400000L;
 
-        // Create a random color for the line
-        int r = new Random().nextInt(256);
-        int g = new Random().nextInt(256);
-        int b = new Random().nextInt(256);
+        switch (type) {
+            case DAY:
+                // Already set as a day, so just skip
+                break;
 
-        series.setColor(Color.rgb(r,g,b));
+            case WEEK:
+                // Week time in milliseconds
+                interval *= 7;
+                break;
 
-        return series;
+            case FORTHNIGHT:
+                interval *= 14;
+                break;
+
+            case MONTH:
+                interval *= 30;
+                break;
+
+            case QUARTERLY:
+                interval *= 30*3;
+                break;
+
+            case ANNUALLY:
+                interval *= 12*30;
+                break;
+
+            default:
+                // If for some reason the type given isn't regocnized, we'll use a month as standard
+                interval *= 30;
+                break;
+        }
+
+        long to = from - interval * 12;
+
+        return getDataSeriesProduct(product, type, from, to);
     }
 
     /**
@@ -266,144 +287,103 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
      * Neither "from" nor "to" can be later than "now()" (basically can't be a future date).
      *
      * @param product product in question (y-axis)
-     * @param type interval (x-axis)
-     * @param from "from" date boundary
-     * @param to "to" date boundary
+     * @param type    interval (x-axis)
+     * @param from    "from" date boundary
+     * @param to      "to" date boundary
      * @return Series of DataPoints
      */
-    private LineGraphSeries<DataPoint> getDataSeriesPrduct(String product, GraphType type, String from, String to) {
-        /******** THIS IS HOW IT IS SUPPOSED TO BE IMPLEMENTED ********
+    private LineGraphSeries<DataPoint> getDataSeriesProduct(String product, GraphType type, long from, long to) {
+        //******** THIS IS HOW IT IS SUPPOSED TO BE IMPLEMENTED ********
 
-         // First get a list of orders done with the specified product
-         List<Order> orderList = new ArrayList<>();
-         // Specify total time between "from" and "to"
-         long totalTime = from.getTimeMillis() - to.getTimeMillis();
+        // First get a list of orders done with the specified product
+        List<Order> orderList = AppData.allOrders;
 
-         // Build series with the following switch
-         switch (type) {
-         case DAY:
-         break;
-         case WEEK:
-         // E.g. if weekly view was chosen Then do a count of sales between a weekly
-         // time-period. This will require us to do something like this:
+        // Specify total time between "from" and "to"
+        long totalTime = from - to;
 
-         // Week time in milliseconds
-         long weekTime = 604800000l;
+        long interval = 86400000L;
 
-         // How many weeks we've counted so far (this will indicate where on the x-axis
-         // the saleCount will be placed
-         int weekCount = 0;
+        // Set interval
+        switch (type) {
+            case DAY:
+                // Already set as a day, so just skip
+                break;
 
-         // A temporary list to store the DataPoints for the different weeks
-         List<DataPoint> temp = new ArrayList<>();
+            case WEEK:
+                // Week time in milliseconds
+                interval *= 7;
+                break;
 
-         // Count backwards "from" towards "to" with the interval of "weekTime"
-         // We'll set an offset of 1 week, should the specified dates not be divisible with
-         // a week's time in miliseconds (to make sure we get "the last week" in the count
-         // as well, otherwise if e.g. end up with a time of weekTime-1 for the last week,
-         // it would not be included in the salesCount, even though it is in fact within the
-         // given time period.
-         while(totalTime > 0) {
-         // The interval we check for (the current counting week's saleCount)
-         long interval = totalTime - weekTime;
-         // Current week's saleCount
-         int saleCount = 0;
+            case FORTHNIGHT:
+                interval *= 14;
+                break;
 
-         // For each on all orders
-         for(Order o : orderList) {
-         // Break if the current order's date is less (before) the current interval
-         if(o.getTimestampAsDate().getTime() < interval)
-         break;
+            case MONTH:
+                interval *= 30;
+                break;
 
-         // Check and count each instance of the specified product in the order
-         // and count 1 up
-         for(Map.Entry<String, Product> entry : o.getCartContent()) {
-         if(entry.getValue().getName().equals(product))
-         saleCount++;
-         }
-         }
+            case QUARTERLY:
+                interval *= 30*3;
+                break;
 
-         // Create a new DataPoint for current week and week's sale of product
-         temp.add(new DataPoint(weekCount, saleCount));
-         // Count next week...
-         weekCount++;
-         // Deduct 1 week's time from totalTime
-         totalTime -= weekTime;
-         }
+            case ANNUALLY:
+                interval *= 12*30;
+                break;
 
-         // Now add the DataPoints to a LineGraphSeries. This is what we want to return
-         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(temp.toArray(new DataPoint[0]));
+            default:
+                // If for some reason the type given isn't regocnized, we'll use a month as standard
+                interval *= 30;
+                break;
+        }
 
-         // Create a random color for the line
-         int r = new Random().nextInt(256);
-         int g = new Random().nextInt(256);
-         int b = new Random().nextInt(256);
+        // How many weeks we've counted so far (this will indicate where on the x-axis
+        // the saleCount will be placed
+        int iterations = 0;
 
-         series.setColor(Color.rgb(r,g,b));
+        // A temporary list to store the DataPoints for the different weeks
+        List<DataPoint> temp = new ArrayList<>();
 
-         // Return series!
-         return series;
+        // Count backwards "from" towards "to" with the given interval
+        while (totalTime > 0) {
+            long currentIteration = totalTime - interval;
 
-         break;
-         case FORTHNIGHT:
-         break;
-         case MONTH:
-         break;
-         case QUARTERLY:
-         break;
-         case ANNUALLY:
-         break;
-         default:
-         break;
-         }
+            // Current week's saleCount
+            int saleCount = 0;
 
-         ******** END OF HOW IT'S SUPPOSED TO BE DONE ********/
+            // For each on all orders
+            for (Order o : orderList) {
+                // Break if the current order's date is less (before) the current interval
+                if (o.getTimestampAsDate().getTime() < currentIteration)
+                    break;
 
-        // TODO For now just dummy data...
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(
-                new DataPoint[]{
-                        new DataPoint(1, 6),
-                        new DataPoint(2, 43),
-                        new DataPoint(3, 23),
-                        new DataPoint(4, 12),
-                        new DataPoint(5, 54),
-                        new DataPoint(6, 32),
-                        new DataPoint(7, 17),
-                        new DataPoint(8, 14),
-                        new DataPoint(9, 13),
-                        new DataPoint(10, 7),
-                        new DataPoint(11, 23),
-                        new DataPoint(12, 33)
+                // Check and count each instance of the specified product in the order
+                // and count 1 up
+                for (Product p : o.getCartContent().values()) {
+                    if (p.getName().equals(product))
+                        saleCount++;
                 }
-        );
+            }
+
+            // Create a new DataPoint for current week and week's sale of product
+            temp.add(new DataPoint(iterations, saleCount));
+            // Count next week...
+            iterations++;
+            // Deduct 1 week's time from totalTime
+            totalTime -= interval;
+        }
+
+        // Now add the DataPoints to a LineGraphSeries. This is what we want to return
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(temp.toArray(new DataPoint[0]));
 
         // Create a random color for the line
         int r = new Random().nextInt(256);
         int g = new Random().nextInt(256);
         int b = new Random().nextInt(256);
 
-        series.setColor(Color.rgb(r,g,b));
+        series.setColor(Color.rgb(r, g, b));
 
+        // Return series!
         return series;
-    }
-
-    /**
-     * Returns a list of products saved in FireBase.
-     *
-     * @return list of products
-     */
-    private List<Product> getProductList() {
-        List<Product> productList = new ArrayList<>();
-
-        // TODO Get product list from Firebase
-        // For now we just use some dummy data...
-        productList.add(new Product("Some product", 2));
-        productList.add(new Product("Another product", 2));
-        productList.add(new Product("A third product", 2));
-        productList.add(new Product("More products", 2));
-        productList.add(new Product("Final product", 2));
-
-        return productList;
     }
 
     /**
@@ -414,11 +394,7 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
     private List<String> getProductListNames() {
         List<String> productList = new ArrayList<>();
 
-        // TODO Get product list from Firebase
-        // For now we just use some dummy data...
-        List<Product> pl = getProductList();
-
-        for(Product p : pl)
+        for (Product p : AppData.allProducts)
             productList.add(p.getName());
 
         return productList;
@@ -434,7 +410,7 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
 
         List<GraphType> graphTypes = Arrays.asList(GraphType.values());
 
-        for(GraphType gt : graphTypes)
+        for (GraphType gt : graphTypes)
             intervalList.add(gt.toString());
 
         return intervalList;

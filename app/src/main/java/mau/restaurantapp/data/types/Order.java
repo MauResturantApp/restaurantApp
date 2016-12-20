@@ -18,11 +18,11 @@ public class Order {
     private String timeToPickup;
     private Object timestamp;
 
-    public Order() {
+    public Order(){
 
     }
 
-    public Order(Map<String, Product> cartContent, int totalPrice, String comment, String timeToPickup, Object timestamp) {
+    public Order(Map<String, Product> cartContent, int totalPrice, String comment, String timeToPickup, Object timestamp){
         this.cartContent = cartContent;
         this.totalPrice = totalPrice;
         this.comment = comment;
@@ -47,8 +47,8 @@ public class Order {
     }
 
     @Exclude
-    public Date getTimestampAsDate() {
-        Date date = new Date((Long) timestamp);
+    public Date getTimestampAsDate(){
+        Date date = new Date((Long)timestamp);
         //Handle Locale for multi-language later
         SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         sfd.format(date);
