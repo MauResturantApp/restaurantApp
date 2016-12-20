@@ -115,14 +115,23 @@ public class FirebaseRead {
                             String timeToPickUp = (String) orderValues.get("timeToPickup");
                             Object timestamp = (Object) orderValues.get("timestamp");
                             int totalprice = (int) (long) orderValues.get("totalPrice");
+                            Log.d("Products size =", " "+products.size());
                             Order order = new Order(products, totalprice, comment, timeToPickUp, timestamp);
                             orders.add(order);
                             products.clear();
-                            orderValues.clear();
+                            //orderValues.clear();
 
-                            Log.d("ORDER ADDED", ""+orders.size() + " PRODUCTS" + orderValues.size());
+                            Log.d("ORDER ADDED", ""+orders.size() + " PRODUCTS cleared size " + products.size());
                         }
                     }
+                    //hvorfor kører den ik den her log?
+                    Log.d("ORDERS SIZE " + orders.size(), "");
+                    /*for(int i = 0; i < orders.size(); i++){
+                        Order order = orders.get(i);
+                        for(Product product: order.getCartContent().values()){
+                            Log.d("Product" + i , " Name =" + product.getName());
+                        }
+                    }*/
                     AppData.allOrders = orders;
                 }
             }
