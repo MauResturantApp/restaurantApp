@@ -1,119 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
     android:padding="12dp">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/contactHeader"
-        android:text="@string/contactHeader"
-        android:textStyle="bold"
-        android:textSize="18sp" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/contactHeader"
-        android:id="@+id/contactDescription"
-        android:text="@string/contactDescription"
-        android:layout_marginBottom="25dp" />
+        <TextView
+            android:id="@+id/contactHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/contactHeader"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/contactDescription"
-        android:id="@+id/contactWho"
-        android:text="@string/contactWho"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="10dp" />
+        <TextView
+            android:id="@+id/contactDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/contactHeader"
+            android:layout_marginBottom="25dp"
+            android:text="@string/contactDescription" />
 
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/contactDescription"
-        android:layout_alignParentRight="true"
-        android:layout_toLeftOf="@id/contactWho"
-        android:id="@+id/contactMailListSpinner" />
+        <TextView
+            android:id="@+id/contactWho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/contactDescription"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="5dp"
+            android:text="@string/contactWho" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/contactWho"
-        android:id="@+id/contactMailSubject"
-        android:isScrollContainer="false"
-        android:textSize="16sp"
-        android:hint="@string/contactMailSubject" />
+        <Spinner
+            android:id="@+id/contactMailListSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/contactDescription"
+            android:layout_toLeftOf="@id/contactWho" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_below="@id/contactMailSubject"
-        android:id="@+id/contactMailContent"
-        android:gravity="start"
-        android:isScrollContainer="true"
-        android:textSize="16sp"
-        android:hint="@string/contactContentHint"
-        android:textAlignment="textStart" />
+        <EditText
+            android:id="@+id/contactMailSubject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/contactWho"
+            android:hint="@string/contactMailSubject"
+            android:isScrollContainer="false"
+            android:textSize="16sp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/contactMailContent"
-        android:layout_toLeftOf="@+id/contactSendEmail"
-        android:id="@+id/contactResetBtn"
-        android:text="@string/contactResetButton" />
+        <EditText
+            android:id="@+id/contactMailContent"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_below="@id/contactMailSubject"
+            android:gravity="start"
+            android:hint="@string/contactContentHint"
+            android:isScrollContainer="true"
+            android:textAlignment="textStart"
+            android:textSize="16sp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/contactMailContent"
-        android:layout_alignParentRight="true"
-        android:id="@+id/contactSendEmail"
-        android:text="Send email" />
+        <Button
+            android:id="@+id/contactResetBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/contactMailContent"
+            android:layout_toLeftOf="@+id/contactSendEmail"
+            android:text="@string/contactResetButton" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_below="@id/contactSendEmail"
-        android:id="@+id/contactSpace"/>
+        <Button
+            android:id="@+id/contactSendEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/contactMailContent"
+            android:text="Send email" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/contactSpace"
-        android:id="@+id/contactFormal"
-        android:text="@string/contactFormalDescription"
-        android:textStyle="bold" />
+        <Space
+            android:id="@+id/contactSpace"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_below="@id/contactSendEmail" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/contactFormal"
-        android:id="@+id/contactCompanyName"
-        android:text="Name" />
+        <TextView
+            android:id="@+id/contactFormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/contactSpace"
+            android:text="@string/contactFormalDescription"
+            android:textStyle="bold" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/contactCompanyName"
-        android:id="@+id/contactCompanyAddress"
-        android:text="Address" />
+        <TextView
+            android:id="@+id/contactCompanyName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/contactFormal"
+            android:text="Name" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/contactCompanyAddress"
-        android:id="@+id/contactCompanyCountry"
-        android:text="Country" />
+        <TextView
+            android:id="@+id/contactCompanyAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/contactCompanyName"
+            android:text="Address" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/contactCompanyCountry"
-        android:id="@+id/contactPhone"
-        android:text="Phone" />
+        <TextView
+            android:id="@+id/contactCompanyCountry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/contactCompanyAddress"
+            android:text="Country" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/contactPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/contactCompanyCountry"
+            android:text="Phone" />
+    </RelativeLayout>
+</ScrollView>

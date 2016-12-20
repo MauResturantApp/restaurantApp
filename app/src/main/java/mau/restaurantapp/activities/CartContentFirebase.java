@@ -96,6 +96,6 @@ public class CartContentFirebase extends Fragment implements Runnable {
 
     @Override
     public void run() {
-        totalPriceTxt.setText("Totalprice :" + AppData.totalPrice);
+        totalPriceTxt.setText("Totalprice: " + AppData.totalPrice);
     }
 }

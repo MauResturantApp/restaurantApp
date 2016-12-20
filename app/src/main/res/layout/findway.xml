@@ -1,100 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/findos_frag"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <TableLayout
-    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:weightSum="1">
-        <TextView
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/directionHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/directionsHeader"
+        android:textSize="8pt"
+        android:textStyle="bold" />
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_below="@+id/directionHeader"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="5" />
+
+    <ScrollView
+        android:id="@+id/directionScroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/map">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/directionsHeader"
-            android:layout_marginBottom="10dp"
-            android:textStyle="bold"
-            android:textSize="8pt" />
-        <fragment
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="330dp"
-            android:layout_weight="5"
-            android:layout_marginBottom="10dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/directionsDescription"
-            android:layout_marginBottom="10dp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginBottom="10dp">
-
-            <ImageButton
-                android:id="@+id/btnGetDirectionsCar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/directionsCarImgDescription"
-                app:srcCompat="@drawable/directions_car" />
-
-            <ImageButton
-                android:id="@+id/btnGetDirectionsTransit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/directionsTransitImgDescription"
-                app:srcCompat="@drawable/directions_transit" />
-
-            <ImageButton
-                android:id="@+id/btnGetDirectionsWalk"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/directionsWalkImgDescription"
-                app:srcCompat="@drawable/directions_walk" />
-
-            <ImageButton
-                android:id="@+id/btnGetDirectionsBicycle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/directionsBikeImgDescription"
-                app:srcCompat="@drawable/directions_bike" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/directionRoutes"
-            android:orientation="vertical"
-            android:visibility="gone"
-            android:layout_marginBottom="65dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/directionRouteHeader"
-                android:text="@string/directionRouteHeader"
-                android:textStyle="bold" />
+            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/directionRoute"
-                android:layout_marginBottom="5dp" />
+                android:layout_marginBottom="10dp"
+                android:text="@string/directionsDescription"
+                android:id="@+id/directionDescription" />
 
-            <ListView
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_below="@+id/directionDescription"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:id="@+id/directionButtons">
+
+                <ImageButton
+                    android:id="@+id/btnGetDirectionsCar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/directionsCarImgDescription"
+                    app:srcCompat="@drawable/directions_car" />
+
+                <ImageButton
+                    android:id="@+id/btnGetDirectionsTransit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/directionsTransitImgDescription"
+                    app:srcCompat="@drawable/directions_transit" />
+
+                <ImageButton
+                    android:id="@+id/btnGetDirectionsWalk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/directionsWalkImgDescription"
+                    app:srcCompat="@drawable/directions_walk" />
+
+                <ImageButton
+                    android:id="@+id/btnGetDirectionsBicycle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/directionsBikeImgDescription"
+                    app:srcCompat="@drawable/directions_bike" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/directionRoutes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/directionsInstructionsList" />
-        </LinearLayout>
-    </TableLayout>
-</ScrollView>
+                android:layout_marginBottom="65dp"
+                android:layout_below="@+id/directionButtons"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/directionRouteHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/directionRouteHeader"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/directionRoute"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp" />
+
+                <ListView
+                    android:id="@+id/directionsInstructionsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

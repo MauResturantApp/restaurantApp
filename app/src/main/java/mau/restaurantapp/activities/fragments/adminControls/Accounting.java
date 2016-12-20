@@ -26,6 +26,7 @@ import java.util.Random;
 
 import mau.restaurantapp.R;
 import mau.restaurantapp.activities.dialogs.DatePickerFragment;
+import mau.restaurantapp.data.AppData;
 import mau.restaurantapp.data.types.Product;
 import mau.restaurantapp.data.types.GraphType;
 

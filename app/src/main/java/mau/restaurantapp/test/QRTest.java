@@ -37,7 +37,7 @@ public class QRTest extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rod = inflater.inflate(R.layout.qr_test, container, false);
+        rod = inflater.inflate(R.layout.qr_code_test, container, false);
 
         qrcode = (ImageView) rod.findViewById(R.id.qrCodeImg);
         qrTestContent = (TextView) rod.findViewById(R.id.qrTestContent);

@@ -83,7 +83,8 @@ public class Home extends Fragment {
     }
 
     /**
-     * Will create a new "Home Box"
+     * Will create a new "Home Box". You can use {@link #homeBoxEntry} to add content to the new box.
+     * A box can contain unlimited amount of new entries.
      *
      * @return LinearLayout-object, "the new box"
      */
@@ -110,11 +111,13 @@ public class Home extends Fragment {
 
     /**
      * Will create content for new "Home Boxes".
+     * If you need to do specific styling on the new box, it can be obtained through the list
+     * {@link #newsEntries}. It'll be the last added entry (unless more content has been added since).
      *
      * @param content Content to be added to home box
      * @return TextView containing content
      */
-    private TextView homeBoxEntry(String content) {
+    public TextView homeBoxEntry(String content) {
         TextView t = new TextView(getActivity());
 
         t.setLayoutParams(new LinearLayout.LayoutParams(
@@ -135,18 +138,26 @@ public class Home extends Fragment {
      *
      * @param s The new text for the home screen
      */
-    private void setHomeText(String s) {
-        TextView t = (TextView) rod.findViewById(R.id.homeWelcomeText);
-        t.setText(s);
+    public void setHomeText(String s) {
+        ((TextView) rod.findViewById(R.id.homeWelcomeText)).setText(s);
     }
 
     /**
-     * This methid will delete the current header and replace it with given String s.
+     * This method will delete the current header and replace it with given String s.
      *
      * @param s New header
      */
-    private void setHomeHeader(String s) {
-        TextView t = (TextView) rod.findViewById(R.id.homeWelcomeHeader);
-        t.setText(s);
+    public void setHomeHeader(String s) {
+        ((TextView) rod.findViewById(R.id.homeWelcomeHeader)).setText(s);
+    }
+
+    /**
+     * This methid will delete the current opening hours-content, and replace it with given String s.
+     * Use "\n" when doing line breaks. Use "\n\n" when you need to imitate a paragraph.
+     *
+     * @param s New opening hours
+     */
+    public void setOpeningHours(String s) {
+        ((TextView) rod.findViewById(R.id.homeOpeningHoursDescription)).setText(s);
     }
 }
