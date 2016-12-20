@@ -90,15 +90,32 @@ public class FirebaseRead {
      * @return An ArrayList with all users orders.
      */
     public static ArrayList<Order> getAllOrders() {
-        DatabaseReference ref = AppData.firebaseDatabase.getReference("users");
+        DatabaseReference ref = AppData.firebaseDatabase.getReference("orders/");
         final ArrayList<Order> orders = new ArrayList<>();
+        final Map<String, Product> products = new HashMap<>();
+        final Map<String, Object> orderValues = new HashMap<>();
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     for (DataSnapshot userSnapshot : snapshot.getChildren()) {
                         for (DataSnapshot orderSnapshot : userSnapshot.getChildren()) {
-                            Order order = orderSnapshot.getValue(Order.class);
+                            for(DataSnapshot cartSnapshot: orderSnapshot.getChildren()) {
+                                if(cartSnapshot.getKey().equals("cartContent")){
+                                    for(DataSnapshot contentSnapShot: cartSnapshot.getChildren()){
+                                        Log.d("Key = " + contentSnapShot.getKey(), "Value = " + contentSnapShot.getValue());
+                                        Product product = contentSnapShot.getValue(Product.class);
+                                        products.put(contentSnapShot.getKey(),product);
+                                    }
+                                }
+                                Log.d("OrderKey = " + cartSnapshot.getKey(),"orderValues = " + cartSnapshot.getValue());
+                                orderValues.put(cartSnapshot.getKey(), cartSnapshot.getValue());
+                            }
+                            String comment = (String) orderValues.get("comment");
+                            String timeToPickUp = (String) orderValues.get("timeToPickup");
+                            Object timestamp = (Object) orderValues.get("timestamp");
+                            int totalprice = (int) (long) orderValues.get("totalPrice");
+                            Order order = new Order(products, totalprice, comment, timeToPickUp, timestamp);
                             orders.add(order);
                         }
                     }
