@@ -3,6 +3,7 @@ package mau.restaurantapp.activities;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.mainactivity);
@@ -111,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         bottomBar.setOnTabReselectListener(new OnTabReselectListener() {
             @Override
             public void onTabReSelected(@IdRes int tabId) {
-                onTabSelected(tabId);
             }
         });
 
@@ -175,15 +175,18 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
         actBtn.setOnClickListener(this);
 
-        if (AppData.currentUser == null) {
-            userLoggedOut();
-        } else {
-            userLoggedIn();
+        if(savedInstanceState == null) {
+            Log.d("----------------------","-----------------------------------------");
+
+            if (AppData.currentUser == null) {
+                userLoggedOut();
+            } else {
+                userLoggedIn();
+            }
+
+            hideCart();
+            showHomeScreen();
         }
-
-        hideCart();
-        showHomeScreen();
-
 
     }
 
@@ -353,6 +356,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         Log.d("MainActivity", "User logged in navbar");
         Menu navMenu = sideMenu.getMenu();
         showCartAndBtn();
+        userLoginText();
         navMenu.findItem(R.id.menu_login).setVisible(false);
         navMenu.findItem(R.id.menu_signin).setVisible(false);
         navMenu.findItem(R.id.menu_logout).setVisible(true);
@@ -537,6 +541,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -546,10 +551,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-
+    protected void onDestroy() {
+        super.onDestroy();
         AppData.firebaseAuth.removeAuthStateListener(mAuthListener);
+
     }
 
     private void startAuthStateListener() {
@@ -564,7 +569,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                     } else {
                         // User is logged in as a known user
                         AppData.loggingIn = false;
-                        userLoginText();
                         userLoggedIn();
                     }
                 } else {
@@ -582,7 +586,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         fadeView.animate().alpha(0.0f);
         fadeView.setVisibility(View.GONE);
         progBar.setVisibility(View.GONE);
-        showHomeScreen();
     }
 
     @Override

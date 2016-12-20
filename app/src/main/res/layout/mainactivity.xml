@@ -50,7 +50,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/half_circle_right_arrow_large"
+            android:src="@drawable/half_circle_right_arrow"
             android:background="@null"
             android:layout_marginTop="50dp"
             android:id="@+id/btn_sidemenu" />
