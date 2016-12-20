@@ -13,6 +13,8 @@ import java.util.List;
 
 import mau.restaurantapp.adapters.CartContent;
 import mau.restaurantapp.data.types.MenuTab;
+import mau.restaurantapp.data.types.Order;
+import mau.restaurantapp.data.types.Product;
 import mau.restaurantapp.data.types.UserProfileType;
 import mau.restaurantapp.event.EventCreator;
 import mau.restaurantapp.user.LoggedInUser;
@@ -51,6 +53,9 @@ public class AppData extends Application {
 
     public static UserProfileType userProfileType;
     public static mau.restaurantapp.data.types.CartContent cartContent;
+
+    public static ArrayList<Order> allOrders;
+    public static ArrayList<Product> allProducts;
 
     private static void setNewPrices() {
         for (int i = 0; i < priceObservers.size(); i++) {
