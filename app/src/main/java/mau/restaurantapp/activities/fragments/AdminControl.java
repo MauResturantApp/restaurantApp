@@ -19,6 +19,7 @@ import mau.restaurantapp.activities.fragments.adminControls.NewMenu;
 import mau.restaurantapp.activities.fragments.adminControls.OrderHistory;
 import mau.restaurantapp.activities.fragments.adminControls.PendingOrders;
 import mau.restaurantapp.activities.fragments.adminControls.ShopSettings;
+import mau.restaurantapp.utils.firebase.FirebaseRead;
 
 /**
  * Created by anwar on 10/16/16.
@@ -42,6 +43,9 @@ public class AdminControl extends Fragment implements AdapterView.OnItemSelected
 
         menu.setOnItemSelectedListener(this);
 
+        // Orders/product fix (used for Accounting)
+        FirebaseRead.getAllProducts();
+        FirebaseRead.getAllOrders();
 
         return rod;
     }

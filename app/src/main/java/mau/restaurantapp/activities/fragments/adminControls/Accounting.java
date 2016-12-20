@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -25,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +47,9 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
     private TextView to;
 
     private GraphView gw;
+
+    private List<Order> orders = AppData.allOrders;
+    private List<Product> products = AppData.allProducts;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -93,9 +98,6 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
             public void onClick(View v) {
                 gw = (GraphView) root.findViewById(R.id.orderHisttoryTest);
 
-                gw.getViewport().setScalable(false);
-                gw.getViewport().setScrollable(false);
-
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM-yyyy");
                 Calendar c = Calendar.getInstance();
 
@@ -114,27 +116,31 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
 
                 gw.getSeries().clear();
 
+                LineGraphSeries<DataPoint> series;
+
                 if (!from.getText().toString().equals("")) {
                     if (!to.getText().toString().equals("")) {
-                        gw.addSeries(getDataSeriesProduct(
+                        series = getDataSeriesProduct(
                                 yInterval.getSelectedItem().toString(),
                                 GraphType.isEnum(xInterval.getSelectedItem().toString()),
                                 f,
                                 t
-                        ));
+                        );
                     } else {
-                        gw.addSeries(getDataSeriesProduct(
+                        series = getDataSeriesProduct(
                                 yInterval.getSelectedItem().toString(),
                                 GraphType.isEnum(xInterval.getSelectedItem().toString()),
                                 f
-                        ));
+                        );
                     }
                 } else {
-                    gw.addSeries(getDataSeriesProduct(
+                    series = getDataSeriesProduct(
                             yInterval.getSelectedItem().toString(),
                             GraphType.isEnum(xInterval.getSelectedItem().toString())
-                    ));
+                    );
                 }
+
+                gw.addSeries(series);
 
                 NumberFormat nf = NumberFormat.getInstance();
                 nf.setMaximumFractionDigits(0);
@@ -142,14 +148,16 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
 
                 gw.getViewport().setXAxisBoundsManual(true);
                 gw.getGridLabelRenderer().setNumHorizontalLabels(12);
+                gw.getViewport().setScalable(false);
+                gw.getViewport().setScrollable(true);
 
                 gw.setVisibility(View.VISIBLE);
 
                 root.findViewById(R.id.orderHistoryAddLineBtn).setVisibility(View.VISIBLE);
-                root.findViewById(R.id.orderHistoryClearGraphBtn).setVisibility(View.VISIBLE);
-
-                root.findViewById(R.id.orderHistoryGraphXInterval).setEnabled(false);
                 root.findViewById(R.id.orderHistoryAddLineBtn).setClickable(true);
+                root.findViewById(R.id.orderHistoryClearGraphBtn).setVisibility(View.VISIBLE);
+                root.findViewById(R.id.orderHistoryClearGraphBtn).setClickable(true);
+                root.findViewById(R.id.orderHistoryGraphXInterval).setEnabled(false);
                 root.findViewById(R.id.orderHistoryBuildBtn).setClickable(false);
             }
         });
@@ -201,10 +209,14 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
             @Override
             public void onClick(View v) {
                 gw.removeAllSeries();
+                gw.setVisibility(View.GONE);
 
                 root.findViewById(R.id.orderHistoryGraphXInterval).setEnabled(true);
                 root.findViewById(R.id.orderHistoryBuildBtn).setClickable(true);
+                root.findViewById(R.id.orderHistoryClearGraphBtn).setClickable(false);
+                root.findViewById(R.id.orderHistoryClearGraphBtn).setVisibility(View.GONE);
                 root.findViewById(R.id.orderHistoryAddLineBtn).setClickable(false);
+                root.findViewById(R.id.orderHistoryAddLineBtn).setVisibility(View.GONE);
             }
         });
 
@@ -221,7 +233,7 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
      * @return Series of DataPoints
      */
     private LineGraphSeries<DataPoint> getDataSeriesProduct(String product, GraphType type) {
-        return getDataSeriesProduct(product, type, Calendar.getInstance().getTimeInMillis());
+        return getDataSeriesProduct(product, type, System.currentTimeMillis());
     }
 
     /**
@@ -275,7 +287,7 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
                 break;
         }
 
-        long to = from - interval * 12;
+        long to = from - (interval * 24);
 
         return getDataSeriesProduct(product, type, from, to);
     }
@@ -293,10 +305,11 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
      * @return Series of DataPoints
      */
     private LineGraphSeries<DataPoint> getDataSeriesProduct(String product, GraphType type, long from, long to) {
-        //******** THIS IS HOW IT IS SUPPOSED TO BE IMPLEMENTED ********
-
         // First get a list of orders done with the specified product
-        List<Order> orderList = AppData.allOrders;
+        List<Order> orderList = new ArrayList<>();
+
+        for(Order o : this.orders)
+            orderList.add(o);
 
         // Specify total time between "from" and "to"
         long totalTime = from - to;
@@ -336,8 +349,7 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
                 break;
         }
 
-        // How many weeks we've counted so far (this will indicate where on the x-axis
-        // the saleCount will be placed
+        // How many iterations (x-axis) we've counted so far
         int iterations = 0;
 
         // A temporary list to store the DataPoints for the different weeks
@@ -345,13 +357,17 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
 
         // Count backwards "from" towards "to" with the given interval
         while (totalTime > 0) {
-            long currentIteration = totalTime - interval;
+            long currentIteration = from - interval * (iterations + 1);
 
             // Current week's saleCount
             int saleCount = 0;
 
+            // A temp list of orders already counted
+            List<Order> tempOrders = new ArrayList<>();
+
             // For each on all orders
             for (Order o : orderList) {
+
                 // Break if the current order's date is less (before) the current interval
                 if (o.getTimestampAsDate().getTime() < currentIteration)
                     break;
@@ -362,7 +378,14 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
                     if (p.getName().equals(product))
                         saleCount++;
                 }
+
+                tempOrders.add(o);
             }
+
+            // Remove all used orders
+            for(Order o : tempOrders)
+                    if(orderList.contains(o))
+                        orderList.remove(o);
 
             // Create a new DataPoint for current week and week's sale of product
             temp.add(new DataPoint(iterations, saleCount));
@@ -394,8 +417,12 @@ public class Accounting extends Fragment implements DatePickerDialog.OnDateSetLi
     private List<String> getProductListNames() {
         List<String> productList = new ArrayList<>();
 
-        for (Product p : AppData.allProducts)
-            productList.add(p.getName());
+        try {
+            for (Product p : this.products)
+                productList.add(p.getName());
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+        }
 
         return productList;
     }
